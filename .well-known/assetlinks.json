@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.fozanalytics.defter",
+    "sha256_cert_fingerprints": [
+      "C4:5C:CC:28:DA:37:1D:26:CE:60:D6:17:88:1E:0A:B9:C7:10:6B:2B:C3:4A:48:95:89:78:7F:64:B7:12:67:6E"
+    ]
+  }
+}]
