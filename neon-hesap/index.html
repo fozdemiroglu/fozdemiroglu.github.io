@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07071a">
+<meta name="description" content="Neon Hesap — FOZ Yapım matematik oyunu. 1-8. sınıf konuları, adım adım açıklamalar, iki kişilik yarış ve çarpım tablosu ustalığı. Reklamsız, veri toplamaz, internetsiz çalışır.">
+<title>Neon Hesap · FOZ Yapım</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2307071a'/%3E%3Cpath d='M30 22v24M18 34h24' stroke='%23ff2bd6' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M60 26l16 16M76 26L60 42' stroke='%2300f0ff' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M18 72h24' stroke='%2339ff14' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M58 66h20M58 78h20' stroke='%23ffe600' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#07071a;--pink:#ff2bd6;--cyan:#00f0ff;--green:#39ff14;--yellow:#ffe600;--red:#ff3b5c;--violet:#b05cff;--orange:#ff8a00;
+  --text:#ecebff;--muted:#8b8ac0;--panel:rgba(20,16,60,.72);--panel2:rgba(28,22,80,.8);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% -10%,#24104d 0%,var(--bg) 62%) fixed,var(--bg);
+  color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  overflow:hidden;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,240,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,.06) 1px,transparent 1px);background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 100%,#000 0%,transparent 70%);mask-image:radial-gradient(ellipse at 50% 100%,#000 0%,transparent 70%)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+input{font:inherit;color:inherit}
+#app{position:relative;height:100vh;height:100dvh;display:flex;flex-direction:column;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#view{flex:1;min-height:0;display:flex;flex-direction:column}
+.scroll{flex:1;min-height:0;overflow-y:auto;padding:12px 16px 20px;display:flex;flex-direction:column;align-items:center}
+.wrap{width:100%;max-width:560px;display:flex;flex-direction:column;gap:14px}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 12px 6px;width:100%;max-width:760px;margin:0 auto}
+.bar h2{flex:1;font-size:1.15rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#d6fdff;text-shadow:0 0 10px var(--cyan);text-align:center}
+.icon-btn{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--panel);
+  border:1.5px solid rgba(0,240,255,.4);box-shadow:0 0 10px rgba(0,240,255,.18);transition:transform .12s}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn svg{width:22px;height:22px;fill:none;stroke:var(--cyan);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn[aria-pressed="false"]{border-color:rgba(139,138,192,.4);box-shadow:none}
+.icon-btn[aria-pressed="false"] svg{stroke:var(--muted)}
+.spacer{width:46px;flex:none}
+.logo{margin-top:6px;text-align:center;line-height:.95;font-weight:900;letter-spacing:.08em}
+.logo .l1{display:block;font-size:clamp(2.8rem,14vw,4.6rem);color:#ffd6f6;text-shadow:0 0 6px var(--pink),0 0 18px var(--pink),0 0 42px var(--pink);animation:flicker 5s infinite}
+.logo .l2{display:block;font-size:clamp(2.6rem,13vw,4.3rem);color:#fff7c2;text-shadow:0 0 6px var(--yellow),0 0 18px var(--yellow),0 0 42px #ffb300}
+@keyframes flicker{0%,92%,100%{opacity:1}93%{opacity:.55}94%{opacity:1}96%{opacity:.7}97%{opacity:1}}
+.tagline{color:var(--muted);text-align:center;font-size:1rem}
+.card{background:var(--panel);border:1.5px solid rgba(179,79,255,.35);border-radius:18px;padding:14px}
+.prof{display:flex;align-items:center;gap:12px;text-align:left;width:100%}
+.avatar{--c:var(--pink);flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:1.3rem;
+  color:#14062a;background:var(--c);box-shadow:0 0 14px var(--c)}
+.prof .info{flex:1;min-width:0;display:block}
+.prof .info>span{display:block}
+.prof .nm{font-weight:900;font-size:1.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prof .sub{color:var(--muted);font-size:.85rem}
+.xpbar{height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--yellow));box-shadow:0 0 8px var(--pink)}
+.chev{color:var(--cyan);font-size:1.3rem}
+.goal{display:flex;align-items:center;gap:12px}
+.ring{--p:0;flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:.85rem;
+  background:conic-gradient(var(--green) calc(var(--p)*1%),rgba(255,255,255,.08) 0);position:relative}
+.ring::after{content:"";position:absolute;inset:6px;border-radius:50%;background:#100b33}
+.ring span{position:relative;z-index:1}
+.goal .t{font-weight:800}.goal .s{color:var(--muted);font-size:.85rem}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode{--c:var(--cyan);text-align:left;padding:14px;border-radius:18px;background:var(--panel);border:2px solid color-mix(in srgb,var(--c) 55%,transparent);
+  box-shadow:0 0 14px color-mix(in srgb,var(--c) 22%,transparent);transition:transform .12s;display:flex;flex-direction:column;gap:4px;min-height:112px}
+.mode:active{transform:scale(.97)}
+.mode .ic{font-size:1.6rem;font-weight:900;color:var(--c);text-shadow:0 0 10px var(--c)}
+.mode b{font-size:1.08rem}
+.mode small{color:var(--muted);font-size:.8rem;line-height:1.35}
+.mode.wide{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center;gap:12px}
+.sig{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center}
+.sig b{color:var(--pink);text-shadow:0 0 8px rgba(255,43,214,.7)}
+.privacy{font-size:.78rem;color:var(--muted);text-align:center;opacity:.8}
+.btn{border-radius:16px;padding:14px 18px;font-weight:900;letter-spacing:.06em;font-size:1.1rem;text-align:center}
+.primary{background:linear-gradient(90deg,var(--pink),#a34bff 50%,var(--yellow));color:#16052a;box-shadow:0 0 22px rgba(255,43,214,.4);transition:transform .12s,filter .15s}
+.primary:hover{filter:brightness(1.08)}.primary:active{transform:scale(.97)}
+.primary:disabled{opacity:.4;filter:grayscale(.6)}
+.ghost{background:var(--panel);border:2px solid rgba(0,240,255,.45);color:var(--cyan)}
+.danger{background:transparent;border:2px solid rgba(255,59,92,.5);color:#ff8095;font-size:.95rem}
+.lbl{font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{--c:var(--cyan);padding:9px 13px;border-radius:999px;background:var(--panel);border:2px solid rgba(139,138,192,.35);font-weight:800;font-size:.95rem;color:var(--muted)}
+.chip[aria-pressed="true"]{border-color:var(--c);color:var(--c);text-shadow:0 0 8px var(--c);box-shadow:0 0 12px color-mix(in srgb,var(--c) 35%,transparent)}
+.chip:disabled{opacity:.3}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.grades .chip{border-radius:14px;padding:12px 4px;text-align:center}
+.txt{width:100%;padding:13px 14px;border-radius:14px;background:rgba(10,8,40,.85);border:2px solid rgba(0,240,255,.4);font-size:1.15rem;font-weight:700}
+.colors{display:flex;gap:10px;flex-wrap:wrap}
+.colors button{width:42px;height:42px;border-radius:50%;border:3px solid transparent}
+.colors button[aria-pressed="true"]{border-color:#fff;box-shadow:0 0 12px currentColor}
+.plist{display:flex;flex-direction:column;gap:10px}
+.topics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tp{--c:var(--cyan);display:flex;align-items:center;gap:8px;padding:10px;border-radius:14px;background:var(--panel);border:2px solid rgba(139,138,192,.3);text-align:left;font-weight:800;font-size:.92rem}
+.tp .ti{flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:.9rem;color:var(--c);border:1.5px solid var(--c);text-shadow:0 0 6px var(--c)}
+.tp small{display:block;font-weight:600;color:var(--muted);font-size:.72rem}
+.tp[aria-pressed="true"]{border-color:var(--c);box-shadow:0 0 12px color-mix(in srgb,var(--c) 35%,transparent);background:color-mix(in srgb,var(--c) 10%,var(--panel))}
+.note{color:var(--muted);font-size:.86rem;line-height:1.5;text-align:center}
+
+/* oyun ekranı */
+.hud{display:flex;gap:6px;flex:1;min-width:0}
+.st{--c:#fff;flex:1;min-width:0;padding:4px;border-radius:12px;background:var(--panel);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);text-align:center}
+.st .k{display:block;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden}
+.st .v{display:block;font-size:clamp(.9rem,4vw,1.1rem);font-weight:900;color:var(--c);text-shadow:0 0 8px color-mix(in srgb,var(--c) 60%,transparent);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
+.timebar{height:6px;margin:4px 14px 0;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;max-width:732px;width:calc(100% - 28px);align-self:center}
+.timebar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--yellow),var(--red));transition:width .25s linear}
+.play{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;padding:6px 14px 12px;gap:10px}
+.qcard{position:relative;width:100%;max-width:560px;flex:1;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  padding:16px;border-radius:22px;background:var(--panel);border:2px solid rgba(179,79,255,.45);box-shadow:0 0 30px rgba(179,79,255,.15);text-align:center;overflow:auto}
+.qcard.ok{border-color:var(--green);box-shadow:0 0 30px rgba(57,255,20,.35)}
+.qcard.bad{border-color:var(--red);box-shadow:0 0 30px rgba(255,59,92,.35);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
+.qtag{position:absolute;top:10px;left:12px;font-size:.72rem;font-weight:800;letter-spacing:.06em;color:var(--c,var(--cyan));text-transform:uppercase;opacity:.9}
+.qtag.r{left:auto;right:12px;color:var(--yellow)}
+.q{font-size:clamp(1.7rem,8.5vw,3rem);font-weight:900;line-height:1.25;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 14px rgba(0,240,255,.45)}
+.q.long{font-size:clamp(1.05rem,4.6vw,1.45rem);font-weight:700;line-height:1.5;text-shadow:none}
+.q .box{display:inline-block;min-width:1.4em;padding:0 .15em;border:2px dashed var(--yellow);border-radius:10px;color:var(--yellow)}
+.q i{font-family:Georgia,"Times New Roman",serif;color:var(--yellow)}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 .12em;font-size:.82em}
+.fr>span:first-child{border-bottom:.08em solid currentColor;padding:0 .12em .06em}
+.fr>span:last-child{padding:.06em .12em 0}
+.ans{min-height:1.5em;font-size:clamp(1.6rem,8vw,2.6rem);font-weight:900;color:var(--yellow);text-shadow:0 0 12px rgba(255,230,0,.5);font-variant-numeric:tabular-nums}
+.ans.empty{color:rgba(255,255,255,.18);text-shadow:none}
+.feedback{font-weight:900;font-size:1.2rem;min-height:1.3em}
+.feedback.ok{color:var(--green);text-shadow:0 0 10px var(--green)}
+.explain{width:100%;max-width:560px;border-radius:18px;padding:14px;background:rgba(40,8,30,.85);border:2px solid rgba(255,59,92,.55);display:flex;flex-direction:column;gap:8px;text-align:left}
+.explain .ca{font-weight:900;font-size:1.15rem}.explain .ca b{color:var(--green);font-size:1.35rem}
+.explain .yours{color:#ff8095;font-size:.9rem}
+.explain .how{line-height:1.6;font-size:1rem}
+.tipbox{width:100%;max-width:560px;border-radius:14px;padding:10px 12px;background:rgba(255,230,0,.08);border:1.5px solid rgba(255,230,0,.45);color:#fff3a8;font-size:.95rem;line-height:1.5}
+.pad{width:100%;max-width:440px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pad button{height:clamp(46px,7.2vh,62px);border-radius:14px;background:var(--panel2);border:1.5px solid rgba(0,240,255,.35);font-size:1.5rem;font-weight:900;color:#fff;transition:transform .08s,background .12s}
+.pad button:active{transform:scale(.94);background:rgba(0,240,255,.25)}
+.pad .op{color:var(--yellow);border-color:rgba(255,230,0,.4)}
+.pad .del{color:#ff8095;border-color:rgba(255,59,92,.45)}
+.pad .go{grid-column:span 2;background:linear-gradient(90deg,#1fd16a,var(--green));color:#062a10;border:0;box-shadow:0 0 16px rgba(57,255,20,.4)}
+.pad .hid{visibility:hidden}
+.row{display:flex;gap:10px;width:100%;max-width:560px}
+.row>*{flex:1}
+.small{font-size:.92rem;padding:10px 12px}
+
+/* çarpım tablosu */
+.tgrid{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;width:100%;max-width:520px}
+.tgrid button,.tgrid div{aspect-ratio:1;border-radius:7px;display:grid;place-items:center;font-size:clamp(.62rem,2.6vw,.9rem);font-weight:800;font-variant-numeric:tabular-nums}
+.tgrid .h{background:rgba(0,240,255,.12);color:var(--cyan);border:1.5px solid rgba(0,240,255,.5)}
+.tgrid .h:active{transform:scale(.92)}
+.tgrid .c0{background:rgba(255,255,255,.05);color:rgba(255,255,255,.35)}
+.tgrid .c1{background:rgba(255,138,0,.25);color:#ffd3a1}
+.tgrid .c2{background:rgba(255,230,0,.28);color:#fff6b3}
+.tgrid .c3{background:rgba(57,255,20,.38);color:#eaffdf;box-shadow:0 0 6px rgba(57,255,20,.45)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;font-size:.78rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:4px}.legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+
+/* ilerleme */
+.tbars{display:flex;flex-direction:column;gap:8px}
+.tbar{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center}
+.tbar .n{font-weight:800;font-size:.92rem}.tbar .p{color:var(--muted);font-size:.8rem;text-align:right}
+.tbar .b{grid-column:1/-1;height:7px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden}
+.tbar .b i{display:block;height:100%;background:var(--c,var(--cyan));box-shadow:0 0 6px var(--c,var(--cyan))}
+.stars{color:var(--yellow);letter-spacing:.05em}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.badge{padding:10px 6px;border-radius:14px;background:var(--panel);border:1.5px solid rgba(139,138,192,.25);text-align:center;display:flex;flex-direction:column;gap:3px;align-items:center}
+.badge .e{font-size:1.6rem;filter:grayscale(1) opacity(.35)}
+.badge b{font-size:.78rem}.badge small{font-size:.66rem;color:var(--muted);line-height:1.25}
+.badge.on{border-color:rgba(255,230,0,.6);box-shadow:0 0 12px rgba(255,230,0,.25)}
+.badge.on .e{filter:none}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.kv div{background:rgba(255,255,255,.04);border-radius:12px;padding:8px 4px}
+.kv b{display:block;font-size:1.25rem;color:var(--yellow);font-variant-numeric:tabular-nums}
+.kv small{color:var(--muted);font-size:.72rem}
+
+/* yarış */
+.race{flex:1;min-height:0;display:flex;gap:8px;padding:8px}
+.race.v{flex-direction:column}
+.side{--c:var(--pink);flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:20px;background:var(--panel);
+  border:2px solid color-mix(in srgb,var(--c) 60%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--c) 22%,transparent);position:relative;overflow:hidden}
+.race.v .side.flip{transform:rotate(180deg)}
+.side .top{display:flex;align-items:center;gap:8px}
+.side .who{font-weight:900;color:var(--c);text-shadow:0 0 8px var(--c);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side .sc{font-weight:900;font-size:1.4rem;font-variant-numeric:tabular-nums}
+.side .prog{height:8px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+.side .prog i{display:block;height:100%;background:var(--c);box-shadow:0 0 8px var(--c);transition:width .25s}
+.side .rq{flex:1;min-height:0;display:grid;place-items:center;text-align:center;font-weight:900;font-size:clamp(1.3rem,6.5vw,2.2rem);line-height:1.25;overflow:hidden;padding:2px}
+.side .rq.long{font-size:clamp(.85rem,3.6vw,1.1rem);font-weight:700;line-height:1.4}
+.side .rq .box{display:inline-block;min-width:1.2em;border:2px dashed var(--yellow);border-radius:8px;color:var(--yellow)}
+.side .rq i{font-family:Georgia,serif;color:var(--yellow)}
+.side .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.side .opts button{position:relative;min-height:clamp(46px,8.5vh,66px);border-radius:14px;background:var(--panel2);border:2px solid color-mix(in srgb,var(--c) 45%,transparent);
+  font-size:clamp(1.05rem,4.8vw,1.45rem);font-weight:900;font-variant-numeric:tabular-nums;transition:transform .08s}
+.side .opts button:active{transform:scale(.95)}
+.side .opts button.right{background:rgba(57,255,20,.3);border-color:var(--green)}
+.side .opts button.wrong{background:rgba(255,59,92,.3);border-color:var(--red)}
+.side .opts .kh{position:absolute;top:3px;left:7px;font-size:.62rem;color:var(--muted);font-weight:700}
+.side.locked .opts{opacity:.45;pointer-events:none}
+.side .flash{position:absolute;inset:0;display:grid;place-items:center;font-size:2.4rem;font-weight:900;pointer-events:none;opacity:0;transition:opacity .2s}
+.side .flash.on{opacity:1}
+.side .rg{color:var(--muted);font-size:.75rem;font-weight:700}
+
+/* katman */
+.overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(7,7,26,.82);backdrop-filter:blur(3px)}
+.modal{width:100%;max-width:420px;max-height:90vh;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:22px;background:#120c38;border:2px solid rgba(255,43,214,.5);
+  box-shadow:0 0 40px rgba(255,43,214,.3);animation:pop .25s ease-out;text-align:center}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+.modal h3{font-size:1.7rem;font-weight:900;color:#ffd6f6;text-shadow:0 0 8px var(--pink),0 0 22px var(--pink)}
+.modal p{line-height:1.55}
+.modal .mist{text-align:left;display:flex;flex-direction:column;gap:8px;max-height:36vh;overflow:auto}
+.modal .mist div{background:rgba(255,255,255,.04);border-radius:12px;padding:8px 10px;font-size:.9rem;line-height:1.5}
+.modal .mist b{color:var(--green)}
+.newbadge{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.newbadge span{padding:6px 10px;border-radius:999px;background:rgba(255,230,0,.12);border:1.5px solid rgba(255,230,0,.6);font-weight:800;font-size:.85rem}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 70px);transform:translateX(-50%);z-index:30;padding:10px 16px;border-radius:999px;
+  background:#1c1250;border:2px solid var(--yellow);box-shadow:0 0 18px rgba(255,230,0,.45);font-weight:900;white-space:nowrap;animation:pop .25s}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:40}
+@media (prefers-reduced-motion:reduce){.logo .l1{animation:none}.modal,.toast{animation:none}.qcard.bad{animation:none}}
+@media (min-width:900px){.modes{grid-template-columns:repeat(3,1fr)}.mode.wide{grid-column:auto;flex-direction:column;align-items:flex-start;min-height:112px}}
+</style>
+</head>
+<body>
+<div id="app"><div id="view"></div></div>
+<canvas id="fx"></canvas>
+<script>
+'use strict';
+/* =========================================================
+   Neon Hesap — FOZ Yapım
+   Metinler Türkçe; İngilizce için arayüz metinleri STRINGS.en ile eklenebilir.
+   ========================================================= */
+const STRINGS = { tr: {
+  tagline: 'Hesapla, öğren, yarış! 1–8. sınıf matematik.',
+  privacy: 'Reklamsız · Veri toplamaz · İnternetsiz çalışır',
+  praise: ['Harika!', 'Süper!', 'Doğru!', 'Bravo!', 'Müthiş!', 'Aynen böyle!', 'Çok iyi!', 'Şahane!'],
+  titles: ['Çırak', 'Hesapçı', 'Usta Hesapçı', 'Sayı Ninjası', 'Matematik Kahramanı', 'Sayı Sihirbazı', 'Efsane']
+}};
+const T = STRINGS.tr;
+
+/* ---------- yardımcılar ---------- */
+const R = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
+const lcm = (a, b) => a / gcd(a, b) * b;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const MINUS = '−';
+function fmtInt(n) { const s = Math.abs(n).toLocaleString('tr-TR'); return n < 0 ? MINUS + s : s; }
+function fmtDec(x) { const s = Math.abs(x).toLocaleString('tr-TR', { maximumFractionDigits: 6 }); return x < 0 ? MINUS + s : s; }
+const N = fmtInt;
+const P = n => n < 0 ? `(${fmtInt(n)})` : fmtInt(n);
+const fr = (n, d) => `<span class="fr"><span>${N(n)}</span><span>${N(d)}</span></span>`;
+const frS = (n, d) => `${n < 0 ? MINUS : ''}${fr(Math.abs(n), d)}`;
+const box = '<span class="box">?</span>';
+const X = '<i>x</i>';
+const sup = (b, e) => `${b}<sup>${e}</sup>`;
+const day = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+/* Türkçe ekler: sayıların ve isimlerin okunuşuna göre ünlü uyumu */
+const UNITS = ['', 'bir', 'iki', 'üç', 'dört', 'beş', 'altı', 'yedi', 'sekiz', 'dokuz'];
+const TENS = ['', 'on', 'yirmi', 'otuz', 'kırk', 'elli', 'altmış', 'yetmiş', 'seksen', 'doksan'];
+function lastWord(n) { n = Math.abs(n); if (n === 0) return 'sıfır'; if (n % 10) return UNITS[n % 10]; if (n % 100) return TENS[(n % 100) / 10]; if (n % 1000) return 'yüz'; if (n % 1e6) return 'bin'; return 'milyon'; }
+function ek(x, type) {
+  const w = (typeof x === 'number' ? lastWord(x) : String(x)).toLocaleLowerCase('tr');
+  const vs = [...w].filter(c => 'aeıioöuü'.includes(c)); const lv = vs[vs.length - 1] || 'e';
+  const v4 = { a: 'ı', ı: 'ı', e: 'i', i: 'i', o: 'u', u: 'u', ö: 'ü', ü: 'ü' }[lv], v2 = 'aıou'.includes(lv) ? 'a' : 'e';
+  const last = w[w.length - 1], endV = 'aeıioöuü'.includes(last), hard = 'fstkçşhp'.includes(last);
+  switch (type) {
+    case 'in': return "'" + (endV ? 'n' + v4 + 'n' : v4 + 'n');
+    case 'i': return "'" + (endV ? 'y' + v4 : v4);
+    case 'si': return "'" + (endV ? 's' + v4 : v4);
+    case 'e': return "'" + (endV ? 'y' + v2 : v2);
+    case 'de': return "'" + (hard ? 't' : 'd') + v2;
+    case 'den': return "'" + (hard ? 't' : 'd') + v2 + 'n';
+  }
+  return '';
+}
+const NAMES = ['Ali', 'Ayşe', 'Elif', 'Can', 'Zeynep', 'Mert', 'Ece', 'Emre', 'Defne', 'Kerem', 'Ela', 'Yusuf', 'Mira', 'Deniz', 'Eren', 'Asya', 'Ömer', 'Nil', 'Berk', 'Su'];
+const COLS = ['Birler', 'Onlar', 'Yüzler', 'Binler', 'On binler', 'Yüz binler'];
+
+/* ---------- cevap türleri ---------- */
+const I = v => ({ kind: 'int', v });
+const F = (n, d, simplest = false) => { if (d < 0) { n = -n; d = -d; } return { kind: 'frac', n, d, simplest }; };
+const D = v => ({ kind: 'dec', v: Math.round(v * 1e6) / 1e6 });
+function ansHTML(a) {
+  if (a.kind === 'int') return N(a.v);
+  if (a.kind === 'dec') return fmtDec(a.v);
+  const g = gcd(a.n, a.d), n = a.n / g, d = a.d / g;
+  return d === 1 ? N(n) : frS(n, d);
+}
+function ansValue(a) { return a.kind === 'frac' ? a.n / a.d : a.v; }
+function check(p, raw) {
+  const s = raw.replace(MINUS, '-').trim();
+  const a = p.a;
+  if (!s || s === '-' ) return { ok: false };
+  if (a.kind === 'frac') {
+    let n, d;
+    if (s.includes('/')) { const m = s.match(/^(-?\d+)\/(-?\d+)$/); if (!m) return { ok: false }; n = +m[1]; d = +m[2]; if (!d) return { ok: false }; }
+    else if (/^-?\d+$/.test(s)) { n = +s; d = 1; }
+    else return { ok: false };
+    if (d < 0) { n = -n; d = -d; }
+    const same = n * a.d === a.n * d;
+    if (!same) return { ok: false };
+    if (a.simplest && gcd(n, d) !== 1) return { ok: false, note: 'Değer doğru ama en sade hali değil. Pay ve paydayı EBOB\'a böl.' };
+    if (!a.simplest && gcd(n, d) !== 1 && d !== 1) return { ok: true, note: `Doğru! En sade hali: ${ansHTML(a)}` };
+    return { ok: true };
+  }
+  if (a.kind === 'dec') {
+    if (!/^-?\d+([.,]\d+)?$/.test(s)) return { ok: false };
+    return { ok: Math.abs(parseFloat(s.replace(',', '.')) - a.v) < 1e-9 };
+  }
+  if (!/^-?\d+$/.test(s)) return { ok: false };
+  return { ok: +s === a.v };
+}
+
+/* =========================================================
+   KONULAR (MEB 1–8. sınıf kazanımlarına göre)
+   gen(g = sınıf, d = zorluk 1..5) → { q, a, hint, tip?, long? }
+   ========================================================= */
+function digits(k) { return k <= 1 ? R(1, 9) : R(Math.pow(10, k - 1), Math.pow(10, k) - 1); }
+function addHint(a, b) {
+  if (a < 10 && b < 10 && a + b > 10) {
+    const big = Math.max(a, b), sm = Math.min(a, b), need = 10 - big;
+    return `Onluğa tamamla: ${big} + ${need} = 10. ${sm} sayısından geriye ${sm - need} kalır.<br>10 + ${sm - need} = <b>${a + b}</b>`;
+  }
+  if (a < 10 && b < 10) return `Parmaklarla say ya da büyük sayıdan ileri say: ${Math.max(a, b)}'dan başla, ${Math.min(a, b)} adım ilerle → <b>${a + b}</b>`;
+  const out = []; let x = a, y = b, c = 0, i = 0;
+  while ((x > 0 || y > 0 || c) && i < 6) {
+    const da = x % 10, db = y % 10, s = da + db + c;
+    out.push(`${COLS[i]}: ${da} + ${db}${c ? ' + 1 (elde)' : ''} = ${s}${s >= 10 ? ` → ${s % 10} yaz, 1 elde` : ''}`);
+    c = s >= 10 ? 1 : 0; x = Math.floor(x / 10); y = Math.floor(y / 10); i++;
+  }
+  return 'Alt alta yaz, birlerden başla:<br>' + out.join('<br>') + `<br>Sonuç: <b>${N(a + b)}</b>`;
+}
+function subHint(a, b) {
+  if (a <= 20 && b < 10) return `${a} sayısından geriye doğru ${b} say ya da toplama ile kontrol et: ${a - b} + ${b} = ${a} → <b>${a - b}</b>`;
+  const out = []; let x = a, y = b, br = 0, i = 0;
+  while ((x > 0 || y > 0) && i < 6) {
+    const orig = x % 10, da = orig - br, db = y % 10;
+    const pre = br ? `(${orig} − 1 =) ` : '';
+    if (da < db) { out.push(`${COLS[i]}: ${pre}${da} − ${db} olmaz → yandan 1 onluk al: ${da + 10} − ${db} = ${da + 10 - db}`); br = 1; }
+    else { out.push(`${COLS[i]}: ${pre}${da} − ${db} = ${da - db}`); br = 0; }
+    x = Math.floor(x / 10); y = Math.floor(y / 10); i++;
+    if (x === 0 && y === 0) break;
+  }
+  return 'Alt alta yaz, birlerden başla:<br>' + out.join('<br>') + `<br>Sonuç: <b>${N(a - b)}</b> (Kontrol: ${N(a - b)} + ${N(b)} = ${N(a)})`;
+}
+function tableHint(a, b, g) {
+  const p = a * b;
+  if (a === 1 || b === 1) return `Bir sayıyı 1 ile çarpınca sayı değişmez → <b>${p}</b>`;
+  if (a === 10 || b === 10) { const o = a === 10 ? b : a; return `10 ile çarparken sayının sağına bir 0 ekle: ${o} → <b>${p}</b>`; }
+  if (g <= 2 && Math.min(a, b) <= 5) { const k = Math.min(a, b), m = Math.max(a, b); return `${k} × ${m}, ${k} tane ${m} demek: ${Array(k).fill(m).join(' + ')} = <b>${p}</b>`; }
+  if (a === 9 || b === 9) { const o = a === 9 ? b : a; return `9 ile çarpma hilesi: 10 × ${o} = ${10 * o}, sonra ${o} çıkar → ${10 * o} − ${o} = <b>${p}</b>`; }
+  if (a === 5 || b === 5) { const o = a === 5 ? b : a; return `5 ile çarpma: önce 10 ile çarp, sonra yarısını al → ${o} × 10 = ${o * 10}, yarısı <b>${p}</b>`; }
+  if (a === 2 || b === 2) { const o = a === 2 ? b : a; return `2 ile çarpmak ikiye katlamaktır: ${o} + ${o} = <b>${p}</b>`; }
+  if (a === 4 || b === 4) { const o = a === 4 ? b : a; return `4 ile çarpma: iki kez ikiye katla → ${o} × 2 = ${o * 2}, ${o * 2} × 2 = <b>${p}</b>`; }
+  const big = Math.max(a, b), sm = Math.min(a, b), s1 = big >= 6 ? 5 : 2, s2 = big - s1;
+  return `Parçala: ${sm} × ${big} = ${sm} × ${s1} + ${sm} × ${s2} = ${sm * s1} + ${sm * s2} = <b>${p}</b>`;
+}
+function mulHint(a, b) {
+  if (a <= 10 && b <= 10) return tableHint(a, b, 9);
+  const big = Math.max(a, b), sm = Math.min(a, b);
+  if (sm < 10) {
+    const parts = []; let x = big, pl = 1;
+    while (x > 0) { const dg = x % 10; if (dg) parts.unshift(dg * pl); x = Math.floor(x / 10); pl *= 10; }
+    return `Basamaklara ayır ve her birini ${sm} ile çarp:<br>${parts.map(N).join(' + ')} → ${parts.map(v => `${N(v)} × ${sm} = ${N(v * sm)}`).join(', ')}<br>Topla: ${parts.map(v => N(v * sm)).join(' + ')} = <b>${N(a * b)}</b>`;
+  }
+  const t = sm - sm % 10, u = sm % 10;
+  return `İkinci sayıyı onluk ve birlik olarak ayır: ${sm} = ${t}${u ? ' + ' + u : ''}<br>${N(big)} × ${t} = ${N(big * t)}${u ? `<br>${N(big)} × ${u} = ${N(big * u)}` : ''}<br>Topla: <b>${N(a * b)}</b>`;
+}
+function divHint(n, d) {
+  const q = n / d;
+  if (q <= 10 && d <= 10) return `Bölmeyi çarpma ile düşün: ${d} × ? = ${n}. Çarpım tablosundan ${d} × ${q} = ${n} → <b>${q}</b>`;
+  const tens = q - q % 10, rest = n - d * tens;
+  return `Parça parça böl: ${d} × ${tens} = ${N(d * tens)}. Geriye ${N(n)} − ${N(d * tens)} = ${N(rest)} kalır.<br>${N(rest)} ÷ ${d} = ${rest / d}. Topla: ${tens} + ${rest / d} = <b>${N(q)}</b>`;
+}
+
+function genTop(g, d) {
+  let a, b;
+  if (g === 1) { const m = d <= 2 ? 10 : 20; a = R(1, m - 2); b = R(1, m - a); }
+  else {
+    const k = g === 2 ? 2 : g === 3 ? 3 : (g >= 6 && d >= 4) ? 5 : 4;
+    a = digits(d <= 1 ? Math.max(1, k - 1) : k); b = digits(d <= 2 ? Math.max(1, k - 1) : k);
+  }
+  return { q: `${N(a)} + ${N(b)}`, a: I(a + b), hint: addHint(a, b), tip: a < 10 && b < 10 ? 'Önce büyük sayıyı aklında tut, küçüğü üstüne say.' : 'Birler basamağından başla, 10 olursa eldeyi unutma.' };
+}
+function genCik(g, d) {
+  let a, b;
+  if (g === 1) { const m = d <= 2 ? 10 : 20; a = R(2, m); b = R(1, a - 1); }
+  else {
+    const k = g === 2 ? 2 : g === 3 ? 3 : (g >= 6 && d >= 4) ? 5 : 4;
+    a = digits(k); b = digits(d <= 2 ? Math.max(1, k - 1) : k);
+    if (b >= a) [a, b] = [b + R(1, 9), a];
+  }
+  return { q: `${N(a)} − ${N(b)}`, a: I(a - b), hint: subHint(a, b), tip: 'Birlerde çıkmıyorsa onlar basamağından 1 onluk al.' };
+}
+function genCarp(g, d) {
+  let a, b;
+  const table = () => { a = R(2, 10); b = R(2, 10); };
+  if (g === 2) { a = R(1, 5); b = R(1, d >= 3 ? 10 : 5); }
+  else if (g === 3) { if (d <= 1) { a = R(1, 5); b = R(1, 10); } else table(); }
+  else if (g === 4) { if (d <= 2) table(); else { a = R(11, d >= 5 ? 999 : 99); b = R(2, 9); } }
+  else if (g === 5) { if (d <= 1) table(); else if (d <= 3) { a = R(11, 99); b = R(2, 9); } else { a = R(11, 99); b = R(11, d >= 5 ? 99 : 30); } }
+  else { if (d <= 1) table(); else if (d === 2) { a = R(11, 99); b = R(2, 9); } else if (d === 3) { a = R(101, 999); b = R(2, 9); } else if (d === 4) { a = R(11, 99); b = R(11, 99); } else { a = R(101, 999); b = R(11, 99); } }
+  if (Math.random() < .5 && a <= 10 && b <= 10) [a, b] = [b, a];
+  return { q: `${N(a)} × ${N(b)}`, a: I(a * b), hint: a <= 10 && b <= 10 ? tableHint(a, b, g) : mulHint(a, b), tip: a <= 10 && b <= 10 ? 'Bildiğin bir çarpımdan başla: 5 katını ya da 10 katını düşün.' : 'Büyük sayıyı basamaklarına ayırıp ayrı ayrı çarp.', table: a <= 10 && b <= 10 ? [a, b] : null };
+}
+function genBol(g, d) {
+  let dv, q;
+  if (g === 3 || (g >= 4 && d <= 2)) { dv = R(2, 10); q = R(2, 10); }
+  else if (g === 4 || d === 3) { dv = R(2, 9); q = R(11, Math.floor(999 / dv)); }
+  else { dv = R(11, d >= 5 ? 40 : 25); q = R(2, d >= 5 ? 60 : 30); }
+  const n = dv * q;
+  return { q: `${N(n)} ÷ ${dv}`, a: I(q), hint: divHint(n, dv), tip: `${dv} ile hangi sayıyı çarparsan ${N(n)} eder?`, table: dv <= 10 && q <= 10 ? [dv, q] : null };
+}
+function genEksik(g, d) {
+  const types = g <= 2 ? ['+', '-'] : ['+', '-', '×', '÷'];
+  const t = pick(types);
+  if (t === '+' || t === '-') {
+    const m = g === 1 ? (d <= 2 ? 10 : 20) : g === 2 ? 100 : 1000;
+    const a = R(1, m - 1), b = R(1, m - a), c = a + b;
+    if (t === '+') {
+      return Math.random() < .5
+        ? { q: `${box} + ${N(b)} = ${N(c)}`, a: I(a), hint: `Eksik toplananı bulmak için toplamdan bilinen toplananı çıkar: ${N(c)} − ${N(b)} = <b>${N(a)}</b>`, tip: 'Toplamdan diğer sayıyı çıkar.' }
+        : { q: `${N(a)} + ${box} = ${N(c)}`, a: I(b), hint: `Eksik toplananı bulmak için toplamdan bilinen toplananı çıkar: ${N(c)} − ${N(a)} = <b>${N(b)}</b>`, tip: 'Toplamdan diğer sayıyı çıkar.' };
+    }
+    return Math.random() < .5
+      ? { q: `${N(c)} − ${box} = ${N(a)}`, a: I(b), hint: `Çıkanı bulmak için eksilenden farkı çıkar: ${N(c)} − ${N(a)} = <b>${N(b)}</b>`, tip: 'Büyük sayıdan sonucu çıkar.' }
+      : { q: `${box} − ${N(b)} = ${N(a)}`, a: I(c), hint: `Eksileni bulmak için farkla çıkanı topla: ${N(a)} + ${N(b)} = <b>${N(c)}</b>`, tip: 'Sonuçla çıkanı topla.' };
+  }
+  const x = R(2, 10), y = R(2, 10), p = x * y;
+  if (t === '×') return { q: `${box} × ${y} = ${p}`, a: I(x), hint: `Eksik çarpanı bulmak için çarpımı bilinen çarpana böl: ${p} ÷ ${y} = <b>${x}</b>`, tip: `${y} ile hangi sayı çarpılınca ${p} olur?`, table: [x, y] };
+  return { q: `${p} ÷ ${box} = ${x}`, a: I(y), hint: `Böleni bulmak için bölüneni bölüme böl: ${p} ÷ ${x} = <b>${y}</b>`, tip: `${x} ile hangi sayıyı çarparsan ${p} eder?`, table: [x, y] };
+}
+function genOrun(g, d) {
+  let seq, rule, kind = 'add';
+  const lv = g + d;
+  if (lv <= 4) { const s = pick([1, 2, 5, 10]), st = R(0, 10); seq = [0, 1, 2, 3, 4].map(i => st + i * s); rule = `Her adımda ${s} artıyor`; }
+  else if (lv <= 7) { const s = R(2, 9) * (Math.random() < .3 ? -1 : 1), st = s < 0 ? R(-s * 5 + 1, -s * 5 + 40) : R(1, 30); seq = [0, 1, 2, 3, 4].map(i => st + i * s); rule = `Her adımda ${Math.abs(s)} ${s > 0 ? 'artıyor' : 'azalıyor'}`; }
+  else {
+    kind = pick(g >= 5 ? ['mul', 'grow', 'sq', 'alt', 'add'] : ['mul', 'grow', 'add']);
+    if (kind === 'mul') { const r = pick([2, 3]), st = R(1, r === 2 ? 5 : 3); seq = [0, 1, 2, 3, 4].map(i => st * Math.pow(r, i)); rule = `Her sayı bir öncekinin ${r} katı`; }
+    else if (kind === 'grow') { const st = R(1, 10), inc = R(1, 3); seq = [st]; for (let i = 1; i < 5; i++) seq.push(seq[i - 1] + inc * i); rule = `Artış miktarı her adımda ${inc} büyüyor (+${inc}, +${2 * inc}, +${3 * inc}…)`; }
+    else if (kind === 'sq') { const st = R(1, 5); seq = [0, 1, 2, 3, 4].map(i => (st + i) * (st + i)); rule = `Sayılar art arda gelen sayıların kareleri: ${st}², ${st + 1}², ${st + 2}²…`; }
+    else if (kind === 'alt') { const a = R(2, 9), b = R(1, a - 1), st = R(5, 20); seq = [st]; for (let i = 1; i < 5; i++) seq.push(seq[i - 1] + (i % 2 ? a : -b)); rule = `Sırayla +${a}, −${b} yapılıyor`; }
+    else { const s = R(6, 25), st = R(1, 50); seq = [0, 1, 2, 3, 4].map(i => st + i * s); rule = `Her adımda ${s} artıyor`; }
+  }
+  let next;
+  if (kind === 'mul') next = seq[4] * (seq[1] / seq[0]);
+  else if (kind === 'grow') next = seq[4] + (seq[4] - seq[3]) + (seq[1] - seq[0]);
+  else if (kind === 'sq') next = Math.pow(Math.sqrt(seq[4]) + 1, 2);
+  else if (kind === 'alt') next = seq[4] + (seq[1] - seq[0]);
+  else next = seq[4] + (seq[1] - seq[0]);
+  return { q: seq.map(N).join(', ') + ', ' + box, a: I(next), hint: `${rule}. Sonraki sayı: <b>${N(next)}</b>`, tip: 'Ardışık iki sayı arasındaki farka (ya da kata) bak.' };
+}
+function genProblem(g, d) {
+  const n = pick(NAMES), n2 = pick(NAMES.filter(x => x !== n));
+  const T1 = [];
+  if (g <= 4) {
+    T1.push(() => { const a = R(5, g === 1 ? 10 : 60), b = R(2, g === 1 ? 9 : 40); return { q: `${n} ${a} kalem aldı. Sonra ${b} kalem daha aldı. Toplam kaç kalem oldu?`, a: I(a + b), hint: `"Daha aldı, toplam" → toplama: ${a} + ${b} = <b>${a + b}</b>` }; });
+    T1.push(() => { const a = R(8, g === 1 ? 18 : 80), b = R(2, a - 1); return { q: `${n} ${a} balon şişirdi. Balonlardan ${b} tanesi patladı. Kaç balon kaldı?`, a: I(a - b), hint: `"Patladı, kaldı" → çıkarma: ${a} − ${b} = <b>${a - b}</b>` }; });
+  }
+  if (g >= 2 && g <= 5) {
+    T1.push(() => { const a = R(2, 10), b = R(2, g === 2 ? 5 : 10); return { q: `Bir kutuda ${a} kurabiye var. ${b} kutuda toplam kaç kurabiye vardır?`, a: I(a * b), hint: `${b} kutu, her birinde ${a} → çarpma: ${b} × ${a} = <b>${a * b}</b>` }; });
+    T1.push(() => { const a = R(20, g === 2 ? 50 : 200), b = R(5, a - 5); return { q: `${n} cebindeki ${a} TL ile markete gitti ve ${b} TL'lik meyve suyu aldı. Geriye kaç TL kaldı?`, a: I(a - b), hint: `Harcanan para çıkarılır: ${a} − ${b} = <b>${a - b}</b> TL` }; });
+  }
+  if (g >= 3) {
+    T1.push(() => { const k = R(2, 9), each = R(2, 12), t = k * each; return { q: `${t} çıkartma ${k} arkadaşa eşit olarak paylaştırılıyor. Her biri kaç çıkartma alır?`, a: I(each), hint: `Eşit paylaştırma → bölme: ${t} ÷ ${k} = <b>${each}</b>` }; });
+    T1.push(() => { const r = R(4, 8), c = R(2, 4), x = R(1, r * c - 1); return { q: `Bir sınıfta ${r} sıra var ve her sırada ${c} öğrenci oturuyor. ${x} öğrenci bahçeye çıktı. Sınıfta kaç öğrenci kaldı?`, a: I(r * c - x), hint: `Önce toplam öğrenci: ${r} × ${c} = ${r * c}. Sonra çıkanları düş: ${r * c} − ${x} = <b>${r * c - x}</b>` }; });
+    T1.push(() => { const ders = pick([30, 35, 40]), ten = pick([10, 15]), k = R(2, 4); return { q: `Bir ders ${ders} dakika, teneffüs ${ten} dakika sürüyor. ${k} ders ve aralarındaki ${k - 1} teneffüs toplam kaç dakika sürer?`, a: I(k * ders + (k - 1) * ten), hint: `Dersler: ${k} × ${ders} = ${k * ders}. Teneffüsler: ${k - 1} × ${ten} = ${(k - 1) * ten}. Toplam: <b>${k * ders + (k - 1) * ten}</b> dakika` }; });
+  }
+  if (g >= 4) {
+    T1.push(() => { const k = R(8, 25), days = R(4, 15), p = k * days; return { q: `Bir kitap ${p} sayfa. ${n} her gün ${k} sayfa okuyor. Kitabı kaç günde bitirir?`, a: I(days), hint: `Toplam sayfayı günlük sayfaya böl: ${p} ÷ ${k} = <b>${days}</b> gün` }; });
+    T1.push(() => { const a = R(3, 9) * 5, b = R(2, 6), c = R(1, 4) * 5; return { q: `${n} tanesi ${a} TL olan ${b} defter aldı ve kasaya ${a * b + c} TL verdi. Kaç TL para üstü alır?`, a: I(c), hint: `Defterlerin tutarı: ${b} × ${a} = ${a * b} TL. Para üstü: ${a * b + c} − ${a * b} = <b>${c}</b> TL` }; });
+  }
+  if (g >= 5) {
+    T1.push(() => { const dd = pick([2, 3, 4, 5, 10]), nn = R(1, dd - 1), w = dd * R(5, 30); return { q: `${n}${ek(n, 'in')} ${w} TL harçlığı var. Harçlığının ${fr(nn, dd)} kadarını kitaba harcadı. Kitaba kaç TL harcadı?`, a: I(w / dd * nn), hint: `Önce ${dd} eşit parçaya böl: ${w} ÷ ${dd} = ${w / dd}. Sonra ${nn} parçayı al: ${w / dd} × ${nn} = <b>${w / dd * nn}</b> TL`, long: true }; });
+    T1.push(() => { const p = pick([10, 20, 25, 50]), price = R(2, 20) * (p === 25 ? 40 : 10); return { q: `${price} TL'lik bir oyuncakta %${p} indirim var. Oyuncağın indirimli fiyatı kaç TL?`, a: I(price * (100 - p) / 100), hint: `İndirim: ${price} × ${p} ÷ 100 = ${price * p / 100} TL. Yeni fiyat: ${price} − ${price * p / 100} = <b>${price * (100 - p) / 100}</b> TL` }; });
+  }
+  if (g >= 6) {
+    T1.push(() => { const v = R(4, 18) * 5, t = R(2, 6); return { q: `Bir bisikletli saatte ${v} km hızla gidiyor. ${t} saatte kaç km yol alır?`, a: I(v * t), hint: `Yol = hız × zaman: ${v} × ${t} = <b>${v * t}</b> km` }; });
+    T1.push(() => { const avg = R(60, 95), a = clamp(avg + R(-10, 10), 0, 100), b = clamp(avg + R(-10, 10), 0, 100), c = 3 * avg - a - b; if (c < 0 || c > 100) return { q: `Üç sınav notu 70, 80 ve 90. Not ortalaması kaçtır?`, a: I(80), hint: `Ortalama = toplam ÷ sayı adedi: (70 + 80 + 90) ÷ 3 = 240 ÷ 3 = <b>80</b>` }; return { q: `Bir öğrencinin üç sınav notu ${a}, ${b} ve ${c}. Not ortalaması kaçtır?`, a: I(avg), hint: `Ortalama = toplam ÷ sayı adedi: (${a} + ${b} + ${c}) ÷ 3 = ${3 * avg} ÷ 3 = <b>${avg}</b>` }; });
+  }
+  if (g >= 7) {
+    T1.push(() => { const x = R(3, 15), k = R(2, 5), b = R(1, 20), r = k * x + b; return { q: `Bir sayının ${k} katının ${b} fazlası ${r} ediyor. Bu sayı kaçtır?`, a: I(x), hint: `Denklem kur: ${k}x + ${b} = ${r} → ${k}x = ${r - b} → x = ${r - b} ÷ ${k} = <b>${x}</b>` }; });
+    T1.push(() => { const age = R(6, 14), k = R(3, 4), y = R(2, 10); return { q: `${n} ${age} yaşında. Annesinin yaşı ${n}${ek(n, 'in')} yaşının ${k} katı. ${y} yıl sonra annesi kaç yaşında olur?`, a: I(age * k + y), hint: `Annenin bugünkü yaşı: ${age} × ${k} = ${age * k}. ${y} yıl sonra: ${age * k} + ${y} = <b>${age * k + y}</b>` }; });
+  }
+  let p;
+  for (let tries = 0; tries < 10; tries++) { p = pick(T1)(); if (p.a) break; }
+  if (!p.a) p = T1[0]();
+  p.long = true;
+  p.tip = 'Soruyu dikkatle oku: "toplam, daha" toplamayı; "kaldı, harcadı" çıkarmayı; "her birine eşit" bölmeyi anlatır.';
+  return p;
+}
+function genBirim(g, d) {
+  const ts = [];
+  ts.push(() => { const a = R(2, 15); return { q: `${a} m = ${box} cm`, a: I(a * 100), hint: `1 m = 100 cm. ${a} × 100 = <b>${a * 100}</b> cm` }; });
+  ts.push(() => { const a = R(2, 12); return { q: `${a} kg = ${box} g`, a: I(a * 1000), hint: `1 kg = 1000 g. ${a} × 1000 = <b>${N(a * 1000)}</b> g` }; });
+  ts.push(() => { const h = R(1, 4), m = R(1, 11) * 5; return { q: `${h} saat ${m} dakika = ${box} dakika`, a: I(h * 60 + m), hint: `1 saat = 60 dakika. ${h} × 60 = ${h * 60}, üstüne ${m} ekle: <b>${h * 60 + m}</b> dakika` }; });
+  ts.push(() => { const a = R(2, 9); return { q: `${a} dakika = ${box} saniye`, a: I(a * 60), hint: `1 dakika = 60 saniye. ${a} × 60 = <b>${a * 60}</b> saniye` }; });
+  if (g >= 4) {
+    ts.push(() => { const a = R(2, 9); return { q: `${a} km = ${box} m`, a: I(a * 1000), hint: `1 km = 1000 m. ${a} × 1000 = <b>${N(a * 1000)}</b> m` }; });
+    ts.push(() => { const a = R(2, 9), b = R(1, 9) * 100; return { q: `${a} kg ${b} g = ${box} g`, a: I(a * 1000 + b), hint: `${a} kg = ${N(a * 1000)} g. ${N(a * 1000)} + ${b} = <b>${N(a * 1000 + b)}</b> g` }; });
+    ts.push(() => { const a = R(2, 7); return { q: `${a} gün = ${box} saat`, a: I(a * 24), hint: `1 gün = 24 saat. ${a} × 24 = <b>${a * 24}</b> saat` }; });
+    ts.push(() => { const a = R(2, 9); return { q: `${a} L = ${box} mL`, a: I(a * 1000), hint: `1 litre = 1000 mililitre. ${a} × 1000 = <b>${N(a * 1000)}</b> mL` }; });
+    ts.push(() => { const a = R(2, 9) * 100; return { q: `${a} cm = ${box} m`, a: I(a / 100), hint: `100 cm = 1 m. ${a} ÷ 100 = <b>${a / 100}</b> m` }; });
+  }
+  if (g >= 5) {
+    ts.push(() => { const a = R(11, 99) * 10; return { q: `${a} cm = ${box} m`, a: D(a / 100), hint: `100 cm = 1 m. ${a} ÷ 100 → virgül iki basamak sola kayar: <b>${fmtDec(a / 100)}</b> m`, keys: ['dec'] }; });
+    ts.push(() => { const a = R(11, 95) * 100; return { q: `${N(a)} g = ${box} kg`, a: D(a / 1000), hint: `1000 g = 1 kg. ${N(a)} ÷ 1000 → virgül üç basamak sola kayar: <b>${fmtDec(a / 1000)}</b> kg`, keys: ['dec'] }; });
+    ts.push(() => { const a = R(3, 19) / 2; return { q: `${fmtDec(a)} saat = ${box} dakika`, a: I(a * 60), hint: `1 saat = 60 dakika. ${fmtDec(a)} × 60 = <b>${a * 60}</b> dakika`, keys: ['dec'] }; });
+  }
+  if (g >= 6) {
+    ts.push(() => { const a = R(2, 9); return { q: `${a} m² = ${box} cm²`, a: I(a * 10000), hint: `1 m = 100 cm olduğu için 1 m² = 100 × 100 = 10.000 cm². ${a} × 10.000 = <b>${N(a * 10000)}</b> cm²` }; });
+    ts.push(() => { const a = R(2, 9); return { q: `${a} dm³ = ${box} L`, a: I(a), hint: `1 dm³ = 1 litre. Yani <b>${a}</b> L` }; });
+  }
+  const p = pick(ts)(); p.tip = 'Birimler arasındaki ilişkiyi hatırla: büyük birimden küçüğe giderken çarp, küçükten büyüğe giderken böl.';
+  p.keys = p.keys || (g >= 5 ? ['dec'] : []);
+  return p;
+}
+function genKesir(g, d) {
+  const avail = ['parca'];
+  if (g >= 4) avail.push('esitTop', 'esitCik');
+  if (g >= 5) avail.push('sade', 'esitTop');
+  if (g >= 6) avail.push('farkliTop', 'farkliCik', 'carpim');
+  if (g >= 7) avail.push('bolum', 'carpim');
+  const t = d <= 2 ? avail[R(0, Math.min(2, avail.length - 1))] : pick(avail);
+  if (t === 'parca') {
+    const dd = R(2, g <= 3 ? 5 : 10), nn = R(1, dd - 1), w = dd * R(2, g <= 3 ? 6 : 12), ans = w / dd * nn;
+    return { q: `${w}${ek(w, 'in')} ${fr(nn, dd)}${ek(nn, 'si')} kaçtır?`, a: I(ans), hint: `Önce ${dd} eşit parçaya böl: ${w} ÷ ${dd} = ${w / dd}. Sonra ${nn} parça al: ${w / dd} × ${nn} = <b>${ans}</b>`, tip: 'Önce paydaya böl, sonra payla çarp.' };
+  }
+  if (t === 'esitTop' || t === 'esitCik') {
+    const dd = R(3, 12); let a = R(1, dd - 1), b = R(1, dd - 1);
+    if (t === 'esitTop' && g <= 4 && a + b >= dd) { b = R(1, Math.max(1, dd - 1 - a)); if (a + b >= dd) { a = 1; b = 1; } }
+    if (t === 'esitCik' && b > a) [a, b] = [b, a];
+    if (t === 'esitCik' && a === b) a = Math.min(dd - 1, a + 1), b = Math.max(1, b - (a === b ? 1 : 0));
+    const r = t === 'esitTop' ? a + b : a - b;
+    return { q: `${fr(a, dd)} ${t === 'esitTop' ? '+' : '−'} ${fr(b, dd)}`, a: F(r, dd), hint: `Paydalar eşit, sadece payları ${t === 'esitTop' ? 'topla' : 'çıkar'}: ${a} ${t === 'esitTop' ? '+' : '−'} ${b} = ${r} → ${fr(r, dd)}${gcd(r, dd) > 1 && r ? ` = <b>${ansHTML(F(r, dd))}</b>` : ''}`, tip: 'Payda aynı kalır; payları işleme sok. Cevabı 3/5 gibi yaz.', keys: ['frac'] };
+  }
+  if (t === 'sade') {
+    let n0, d0; do { d0 = R(2, 12); n0 = R(1, d0 - 1); } while (gcd(n0, d0) !== 1);
+    const k = R(2, d >= 4 ? 12 : 6), n = n0 * k, dd = d0 * k;
+    return { q: `${fr(n, dd)} kesrini en sade hale getir`, a: F(n0, d0, true), hint: `Pay ve paydanın EBOB'u ${k}. İkisini de ${k}${ek(k, 'e')} böl: ${n} ÷ ${k} = ${n0}, ${dd} ÷ ${k} = ${d0} → <b>${fr(n0, d0)}</b>`, tip: 'Pay ve paydayı aynı sayıya bölebildiğin kadar böl.', keys: ['frac'] };
+  }
+  const two = () => { let d1 = R(2, d >= 4 ? 12 : 8), d2 = R(2, d >= 4 ? 12 : 8); if (d1 === d2) d2 = d1 + 1; return [R(1, d1 - 1), d1, R(1, d2 - 1), d2]; };
+  if (t === 'farkliTop' || t === 'farkliCik') {
+    let [n1, d1, n2, d2] = two();
+    if (t === 'farkliCik' && n1 / d1 < n2 / d2) [n1, d1, n2, d2] = [n2, d2, n1, d1];
+    if (t === 'farkliCik' && n1 * d2 === n2 * d1) n1 = Math.min(d1 - 1, n1 + 1);
+    const L = lcm(d1, d2), x = n1 * L / d1, y = n2 * L / d2, r = t === 'farkliTop' ? x + y : x - y, op = t === 'farkliTop' ? '+' : '−';
+    return { q: `${fr(n1, d1)} ${op} ${fr(n2, d2)}`, a: F(r, L), hint: `Paydaları eşitle. Ortak payda EKOK(${d1}, ${d2}) = ${L}.<br>${fr(n1, d1)} = ${fr(x, L)}, ${fr(n2, d2)} = ${fr(y, L)}<br>${fr(x, L)} ${op} ${fr(y, L)} = ${fr(r, L)}${gcd(r, L) > 1 ? ` = <b>${ansHTML(F(r, L))}</b>` : ''}`, tip: 'Önce paydaları eşitle (ortak katlarını bul).', keys: ['frac'] };
+  }
+  if (t === 'carpim') {
+    const [n1, d1, n2, d2] = two();
+    return { q: `${fr(n1, d1)} × ${fr(n2, d2)}`, a: F(n1 * n2, d1 * d2), hint: `Pay ile pay, payda ile payda çarpılır: ${fr(n1 * n2, d1 * d2)}${gcd(n1 * n2, d1 * d2) > 1 ? ` = <b>${ansHTML(F(n1 * n2, d1 * d2))}</b> (sadeleşti)` : ''}`, tip: 'Paylar çarpılır, paydalar çarpılır.', keys: ['frac'] };
+  }
+  const [n1, d1, n2, d2] = two();
+  return { q: `${fr(n1, d1)} ÷ ${fr(n2, d2)}`, a: F(n1 * d2, d1 * n2), hint: `İkinci kesri ters çevir ve çarp: ${fr(n1, d1)} × ${fr(d2, n2)} = ${fr(n1 * d2, d1 * n2)}${gcd(n1 * d2, d1 * n2) > 1 ? ` = <b>${ansHTML(F(n1 * d2, d1 * n2))}</b>` : ''}`, tip: 'Kesirlerde bölme: ikinciyi ters çevir, çarp.', keys: ['frac'] };
+}
+function genOndalik(g, d) {
+  const ts = ['ekle', 'cikar'];
+  if (g >= 5) ts.push('kaydir', 'kaydir');
+  if (g >= 6) ts.push('carpTam', 'bolTam');
+  if (g >= 6 && d >= 4) ts.push('carpOnd');
+  const t = d <= 1 ? pick(['ekle', 'cikar']) : pick(ts);
+  const p = genOndalik2(g, d, t); p.keys = ['dec']; return p;
+}
+function genOndalik2(g, d, t) {
+  const sc = g <= 4 ? 10 : (d >= 3 ? 100 : 10);
+  if (t === 'ekle' || t === 'cikar') {
+    let a = R(1, sc * 20), b = R(1, sc * 20); if (t === 'cikar' && b > a) [a, b] = [b, a];
+    const r = t === 'ekle' ? a + b : a - b;
+    return { q: `${fmtDec(a / sc)} ${t === 'ekle' ? '+' : '−'} ${fmtDec(b / sc)}`, a: D(r / sc), hint: `Virgülleri alt alta hizala, eksik basamağa 0 yaz. Sonra normal ${t === 'ekle' ? 'topla' : 'çıkar'}: <b>${fmtDec(r / sc)}</b>`, tip: 'Virgüller alt alta gelmeli!' };
+  }
+  if (t === 'kaydir') {
+    const v = R(1, 9999) / pick([10, 100]), k = pick([10, 100, 1000]), mul = Math.random() < .5;
+    const r = mul ? v * k : v / k, z = String(k).length - 1;
+    return { q: `${fmtDec(v)} ${mul ? '×' : '÷'} ${N(k)}`, a: D(r), hint: `${N(k)} ile ${mul ? 'çarparken virgül' : 'bölerken virgül'} ${z} basamak ${mul ? 'sağa' : 'sola'} kayar: <b>${fmtDec(r)}</b>`, tip: `${N(k)}${ek(k, 'de')} kaç tane sıfır var? Virgül o kadar kayar.` };
+  }
+  if (t === 'carpTam') {
+    const a = R(11, 99), k = R(2, 9), s = pick([10, 100]);
+    return { q: `${fmtDec(a / s)} × ${k}`, a: D(a * k / s), hint: `Virgülü yokmuş gibi çarp: ${a} × ${k} = ${a * k}. Çarpılan sayıda virgülden sonra ${String(s).length - 1} basamak var, sonuca da o kadar basamak ayır: <b>${fmtDec(a * k / s)}</b>`, tip: 'Önce virgülsüz çarp, sonra virgülü yerleştir.' };
+  }
+  if (t === 'bolTam') {
+    const k = R(2, 9), q = R(11, 99), s = 10, n = q * k;
+    return { q: `${fmtDec(n / s)} ÷ ${k}`, a: D(q / s), hint: `Virgülsüz düşün: ${n} ÷ ${k} = ${q}. Bölünende virgülden sonra 1 basamak var, sonuçta da 1 basamak: <b>${fmtDec(q / s)}</b>`, tip: 'Virgülü yokmuş gibi böl, sonra yerine koy.' };
+  }
+  const a = R(2, 49), b = R(2, 9);
+  return { q: `${fmtDec(a / 10)} × ${fmtDec(b / 10)}`, a: D(a * b / 100), hint: `Virgülsüz çarp: ${a} × ${b} = ${a * b}. Toplam 2 ondalık basamak var: <b>${fmtDec(a * b / 100)}</b>`, tip: 'İki sayıda toplam kaç ondalık basamak varsa sonuçta da o kadar olur.' };
+}
+function genOncelik(g, d) {
+  const ts = ['a+b×c', 'a×b−c', 'a−b÷c', 'a×b+c×d'];
+  if (g >= 6) ts.push('(a+b)×c', 'a×(b−c)', '(a−b)÷c');
+  if (g >= 8) ts.push('a+b²');
+  const t = pick(ts);
+  let q, v, h;
+  if (t === 'a+b×c') { const a = R(1, 20), b = R(2, 9), c = R(2, 9); v = a + b * c; q = `${a} + ${b} × ${c}`; h = `Önce çarpma: ${b} × ${c} = ${b * c}. Sonra toplama: ${a} + ${b * c} = <b>${v}</b>`; }
+  else if (t === 'a×b−c') { const a = R(2, 9), b = R(2, 9), c = R(1, a * b); v = a * b - c; q = `${a} × ${b} − ${c}`; h = `Önce çarpma: ${a} × ${b} = ${a * b}. Sonra çıkarma: ${a * b} − ${c} = <b>${v}</b>`; }
+  else if (t === 'a−b÷c') { const c = R(2, 9), k = R(2, 9), b = c * k, a = R(k, 40); v = a - k; q = `${a} − ${b} ÷ ${c}`; h = `Önce bölme: ${b} ÷ ${c} = ${k}. Sonra çıkarma: ${a} − ${k} = <b>${v}</b>`; }
+  else if (t === 'a×b+c×d') { const a = R(2, 9), b = R(2, 9), c = R(2, 9), e = R(2, 9); v = a * b + c * e; q = `${a} × ${b} + ${c} × ${e}`; h = `Önce iki çarpma: ${a} × ${b} = ${a * b}, ${c} × ${e} = ${c * e}. Sonra topla: <b>${v}</b>`; }
+  else if (t === '(a+b)×c') { const a = R(1, 12), b = R(1, 12), c = R(2, 9); v = (a + b) * c; q = `(${a} + ${b}) × ${c}`; h = `Önce parantez: ${a} + ${b} = ${a + b}. Sonra çarp: ${a + b} × ${c} = <b>${v}</b>`; }
+  else if (t === 'a×(b−c)') { const a = R(2, 9), b = R(5, 20), c = R(1, b - 1); v = a * (b - c); q = `${a} × (${b} − ${c})`; h = `Önce parantez: ${b} − ${c} = ${b - c}. Sonra çarp: ${a} × ${b - c} = <b>${v}</b>`; }
+  else if (t === '(a−b)÷c') { const c = R(2, 9), k = R(2, 9), b = R(1, 20), a = b + c * k; v = k; q = `(${a} − ${b}) ÷ ${c}`; h = `Önce parantez: ${a} − ${b} = ${a - b}. Sonra böl: ${a - b} ÷ ${c} = <b>${v}</b>`; }
+  else { const a = R(1, 20), b = R(2, 9); v = a + b * b; q = `${a} + ${sup(b, 2)}`; h = `Önce üs: ${b}² = ${b * b}. Sonra toplama: ${a} + ${b * b} = <b>${v}</b>`; }
+  return { q, a: I(v), hint: h, tip: 'Sıra: parantez → üs → çarpma/bölme → toplama/çıkarma.' };
+}
+function genYuzde(g, d) {
+  const ts = ['oran'];
+  if (g >= 6) ts.push('indirim');
+  if (g >= 7) ts.push('kaci', 'zam');
+  const t = pick(ts);
+  const pcts = d <= 2 ? [10, 50, 25, 20] : [5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 80];
+  const p = pick(pcts), unit = 100 / gcd(p, 100);
+  if (t === 'oran') {
+    const w = unit * R(1, Math.max(2, Math.floor(400 / unit))), r = w * p / 100;
+    const nice = p === 50 ? `%50 demek yarısı demek: ${w} ÷ 2 = <b>${r}</b>` : p === 25 ? `%25 demek dörtte biri: ${w} ÷ 4 = <b>${r}</b>` : p === 10 ? `%10 demek onda biri: ${w} ÷ 10 = <b>${r}</b>` : `${w} × ${p} ÷ 100 = <b>${r}</b> (önce %10'unu bul: ${fmtDec(w / 10)}, sonra ${p / 10} katını al)`;
+    return { q: `${w}${ek(w, 'in')} %${p}${ek(p, 'si')} kaçtır?`, a: I(r), hint: nice, tip: '%10 = sayının onda biri. Oradan diğerlerini bulabilirsin.' };
+  }
+  if (t === 'indirim' || t === 'zam') {
+    const w = unit * R(1, Math.max(2, Math.floor(600 / unit))), c = w * p / 100, r = t === 'indirim' ? w - c : w + c;
+    return { q: `${w} TL'lik bir ürüne %${p} ${t === 'indirim' ? 'indirim' : 'zam'} yapıldı. Yeni fiyatı kaç TL?`, a: I(r), hint: `${t === 'indirim' ? 'İndirim' : 'Zam'} miktarı: ${w} × ${p} ÷ 100 = ${c}. Yeni fiyat: ${w} ${t === 'indirim' ? '−' : '+'} ${c} = <b>${r}</b> TL`, tip: 'Önce indirim/zam miktarını bul.', long: true };
+  }
+  const w = unit * R(1, Math.max(2, Math.floor(400 / unit))), part = w * p / 100;
+  return { q: `${part} sayısı, ${w} sayısının yüzde kaçıdır?`, a: I(p), hint: `Oranı kur: ${part} ÷ ${w} × 100 = <b>${p}</b>. Yani %${p}`, tip: 'Parçayı bütüne böl, 100 ile çarp.', long: true };
+}
+function genEbob(g, d) {
+  if (Math.random() < .5) {
+    const k = R(2, d >= 3 ? 15 : 9), a = k * R(1, 8), b = k * R(1, 8); const x = a === b ? a * 2 : a, y = b, G = gcd(x, y);
+    const dv = n => { const r = []; for (let i = 1; i <= n; i++) if (n % i === 0) r.push(i); return r; };
+    return { q: `EBOB(${x}, ${y}) = ${box}`, a: I(G), hint: `EBOB = en büyük ortak bölen.<br>${x}: ${dv(x).join(', ')}<br>${y}: ${dv(y).join(', ')}<br>İkisini de bölen en büyük sayı: <b>${G}</b>`, tip: 'İki sayıyı da tam bölen en büyük sayıyı ara.' };
+  }
+  const a = R(2, d >= 3 ? 15 : 10), b0 = R(2, d >= 3 ? 15 : 10), b = a === b0 ? b0 + 1 : b0, L = lcm(a, b);
+  const ms = n => { const r = []; for (let i = n; i <= L; i += n) r.push(i); return r; };
+  return { q: `EKOK(${a}, ${b}) = ${box}`, a: I(L), hint: `EKOK = en küçük ortak kat.<br>${a}: ${ms(a).join(', ')}<br>${b}: ${ms(b).join(', ')}<br>İlk ortak kat: <b>${L}</b>`, tip: 'İki sayının katlarını yaz, ilk ortak olanı bul.' };
+}
+function genTam(g, d) {
+  const ops = g <= 6 ? ['+', '−'] : ['+', '−', '×', '÷'];
+  const op = pick(ops), m = d >= 3 ? 30 : 12;
+  const nz = () => { let v = 0; while (!v) v = R(-m, m); return v; };
+  let a = nz(), b = nz(), v, h;
+  if (op === '+') { v = a + b; h = a * b > 0 ? `İşaretler aynı: sayıları topla, ortak işareti koy → <b>${N(v)}</b>` : `İşaretler farklı: büyükten küçüğü çıkar (${Math.max(Math.abs(a), Math.abs(b))} − ${Math.min(Math.abs(a), Math.abs(b))}), büyüğün işaretini al → <b>${N(v)}</b>`; }
+  else if (op === '−') { v = a - b; h = `Çıkarma, çıkanın ters işaretlisini toplamaktır: ${P(a)} + ${P(-b)} = <b>${N(v)}</b>`; }
+  else if (op === '×') { a = clamp(a, -12, 12) || 3; b = clamp(b, -12, 12) || -4; v = a * b; h = `${Math.abs(a)} × ${Math.abs(b)} = ${Math.abs(v)}. İşaret kuralı: aynı işaretliler → (+), farklı işaretliler → (−). Sonuç: <b>${N(v)}</b>`; }
+  else { const q = nz() % 12 || 5, dv = (R(2, 9)) * (Math.random() < .5 ? -1 : 1); a = q * dv; b = dv; v = q; h = `${Math.abs(a)} ÷ ${Math.abs(b)} = ${Math.abs(v)}. Aynı işaretliler → (+), farklı → (−). Sonuç: <b>${N(v)}</b>`; }
+  return { q: `${P(a)} ${op} ${P(b)}`, a: I(v), hint: h, tip: 'Önce işareti, sonra sayıyı düşün.', keys: ['neg'] };
+}
+function genUs(g, d) {
+  const ts = ['kare', 'kup'];
+  if (g >= 7) ts.push('negTaban', 'negTaban');
+  if (g >= 8) ts.push('genel', 'on', 'sifir', 'carpim');
+  const t = pick(ts);
+  if (t === 'kare') { const b = R(2, d >= 3 ? 20 : 12); return { q: sup(b, 2), a: I(b * b), hint: `${b}² = ${b} × ${b} = <b>${b * b}</b>`, tip: 'Kare: sayıyı kendisiyle çarp.' }; }
+  if (t === 'kup') { const b = R(2, d >= 3 ? 10 : 5); return { q: sup(b, 3), a: I(b * b * b), hint: `${b}³ = ${b} × ${b} × ${b} = ${b * b} × ${b} = <b>${b * b * b}</b>`, tip: 'Küp: sayıyı üç kez yan yana çarp.' }; }
+  if (t === 'negTaban') { const b = R(2, 5), e = R(2, 4), v = Math.pow(-b, e); return { q: sup(`(${MINUS}${b})`, e), a: I(v), hint: `${Array(e).fill(`(${MINUS}${b})`).join(' × ')} = ${N(v)}. Negatif sayının çift kuvveti pozitif, tek kuvveti negatiftir → <b>${N(v)}</b>`, tip: 'Üs çiftse sonuç pozitif, tekse negatif.', keys: ['neg'] }; }
+  if (t === 'genel') { const b = R(2, 5), e = b === 2 ? R(4, 8) : R(3, 4), v = Math.pow(b, e); return { q: sup(b, e), a: I(v), hint: `${Array(e).fill(b).join(' × ')} = <b>${N(v)}</b>`, tip: 'Tabanı üs kadar yan yana yazıp çarp.' }; }
+  if (t === 'on') { const e = R(2, 6), v = Math.pow(10, e); return { q: sup(10, e), a: I(v), hint: `10 üzeri ${e}: 1'in yanına ${e} tane sıfır → <b>${N(v)}</b>`, tip: '10\'un kuvvetinde üs kadar sıfır vardır.' }; }
+  if (t === 'sifir') { const b = R(2, 99); return { q: sup(b, 0), a: I(1), hint: `Sıfırdan farklı her sayının 0. kuvveti <b>1</b>'dir.`, tip: 'Sıfırıncı kuvvet kuralını hatırla.' }; }
+  const b = R(2, 3), e1 = R(1, 3), e2 = R(1, 3), v = Math.pow(b, e1 + e2);
+  return { q: `${sup(b, e1)} × ${sup(b, e2)}`, a: I(v), hint: `Tabanlar aynı: üsler toplanır → ${b}<sup>${e1 + e2}</sup> = <b>${v}</b>`, tip: 'Aynı tabanlı çarpımda üsleri topla.' };
+}
+function genKok(g, d) {
+  const t = d <= 2 ? 'tek' : pick(['tek', 'toplam', 'fark', 'carpim']);
+  const k = () => R(2, d >= 4 ? 20 : 12);
+  if (t === 'tek') { const a = k(); return { q: `√${a * a}`, a: I(a), hint: `Hangi sayının karesi ${a * a}? ${a} × ${a} = ${a * a} → <b>${a}</b>`, tip: 'Kendisiyle çarpınca bu sayıyı veren sayıyı bul.' }; }
+  const a = k(), b = k();
+  if (t === 'toplam') return { q: `√${a * a} + √${b * b}`, a: I(a + b), hint: `√${a * a} = ${a}, √${b * b} = ${b}. Topla: <b>${a + b}</b>`, tip: 'Önce her kökü ayrı bul.' };
+  if (t === 'fark') { const [x, y] = a >= b ? [a, b] : [b, a]; return { q: `√${x * x} − √${y * y}`, a: I(x - y), hint: `√${x * x} = ${x}, √${y * y} = ${y}. Çıkar: <b>${x - y}</b>`, tip: 'Önce her kökü ayrı bul.' }; }
+  return { q: `√${a * a} × √${b * b}`, a: I(a * b), hint: `√${a * a} = ${a}, √${b * b} = ${b}. Çarp: <b>${a * b}</b>`, tip: 'Önce her kökü ayrı bul.' };
+}
+function genDenklem(g, d) {
+  const neg = d >= 4;
+  const x = neg ? R(-12, 12) || 4 : R(1, 15);
+  const ts = ['ax+b', 'ax-b', 'a(x+b)'];
+  if (g >= 8 || d >= 3) ts.push('x/a+b');
+  if (g >= 8 && d >= 4) ts.push('ax+b=cx+e');
+  const t = pick(ts);
+  if (t === 'ax+b') { const a = R(2, 9), b = R(1, 20), c = a * x + b; return { q: `${a}${X} + ${b} = ${N(c)}`, a: I(x), hint: `${b}${ek(b, 'i')} karşıya at: ${a}x = ${N(c)} − ${b} = ${N(c - b)}<br>${a}${ek(a, 'e')} böl: x = ${N(c - b)} ÷ ${a} = <b>${N(x)}</b>`, tip: 'Önce sabit sayıyı karşıya at (işaretini değiştir), sonra katsayıya böl.', keys: ['neg'] }; }
+  if (t === 'ax-b') { const a = R(2, 9), b = R(1, 20), c = a * x - b; return { q: `${a}${X} − ${b} = ${N(c)}`, a: I(x), hint: `${b}${ek(b, 'i')} karşıya at: ${a}x = ${N(c)} + ${b} = ${N(c + b)}<br>x = ${N(c + b)} ÷ ${a} = <b>${N(x)}</b>`, tip: 'Önce sabit sayıyı karşıya at, sonra katsayıya böl.', keys: ['neg'] }; }
+  if (t === 'a(x+b)') { const a = R(2, 6), b = R(1, 9), c = a * (x + b); return { q: `${a}(${X} + ${b}) = ${N(c)}`, a: I(x), hint: `İki tarafı ${a}${ek(a, 'e')} böl: x + ${b} = ${N(c / a)}<br>x = ${N(c / a)} − ${b} = <b>${N(x)}</b>`, tip: 'Önce parantezin dışındaki sayıya böl.', keys: ['neg'] }; }
+  if (t === 'x/a+b') { const a = R(2, 6), xx = a * (neg ? R(-6, 6) || 2 : R(1, 8)), b = R(1, 15), c = xx / a + b; return { q: `<span class="fr"><span>${X}</span><span>${a}</span></span> + ${b} = ${N(c)}`, a: I(xx), hint: `${b}${ek(b, 'i')} karşıya at: x/${a} = ${N(c - b)}<br>${a} ile çarp: x = ${N(c - b)} × ${a} = <b>${N(xx)}</b>`, tip: 'Önce sabiti at, sonra paydayla çarp.', keys: ['neg'] }; }
+  const a = R(4, 9), c2 = R(1, a - 1), b = R(1, 15), e = (a - c2) * x + b;
+  return { q: `${a}${X} + ${b} = ${c2}${X} + ${N(e)}`, a: I(x), hint: `x'li terimleri bir tarafa, sayıları diğer tarafa topla: ${a}x − ${c2}x = ${N(e)} − ${b}<br>${a - c2}x = ${N(e - b)} → x = <b>${N(x)}</b>`, tip: 'Bilinmeyenleri bir tarafa, sayıları diğer tarafa topla.', keys: ['neg'] };
+}
+
+const TOPICS = [
+  { id: 'top',     name: 'Toplama',          ic: '+',   g: [1, 8], c: '#39ff14', gen: genTop },
+  { id: 'cik',     name: 'Çıkarma',          ic: '−',   g: [1, 8], c: '#00f0ff', gen: genCik },
+  { id: 'carp',    name: 'Çarpma',           ic: '×',   g: [2, 8], c: '#ff2bd6', gen: genCarp },
+  { id: 'bol',     name: 'Bölme',            ic: '÷',   g: [3, 8], c: '#ffe600', gen: genBol },
+  { id: 'eksik',   name: 'Eksik Sayı',       ic: '?',   g: [1, 6], c: '#ff8a00', gen: genEksik },
+  { id: 'orun',    name: 'Örüntüler',        ic: '…',   g: [1, 6], c: '#b05cff', gen: genOrun },
+  { id: 'problem', name: 'Problemler',       ic: '✎',   g: [1, 8], c: '#4d7cff', gen: genProblem },
+  { id: 'birim',   name: 'Ölçü Birimleri',   ic: 'm',   g: [3, 7], c: '#00f0ff', gen: genBirim },
+  { id: 'kesir',   name: 'Kesirler',         ic: '½',   g: [3, 8], c: '#ff2bd6', gen: genKesir },
+  { id: 'ondalik', name: 'Ondalık Sayılar',  ic: '0,5', g: [4, 8], c: '#39ff14', gen: genOndalik },
+  { id: 'oncelik', name: 'İşlem Önceliği',   ic: '( )', g: [5, 8], c: '#ffe600', gen: genOncelik },
+  { id: 'yuzde',   name: 'Yüzdeler',         ic: '%',   g: [5, 8], c: '#ff8a00', gen: genYuzde },
+  { id: 'ebob',    name: 'EBOB – EKOK',      ic: 'EB',  g: [6, 8], c: '#b05cff', gen: genEbob },
+  { id: 'tam',     name: 'Tam Sayılar',      ic: '±',   g: [6, 8], c: '#4d7cff', gen: genTam },
+  { id: 'us',      name: 'Üslü Sayılar',     ic: 'x²',  g: [6, 8], c: '#ff3b5c', gen: genUs },
+  { id: 'kok',     name: 'Kareköklü Sayılar',ic: '√',   g: [8, 8], c: '#00f0ff', gen: genKok },
+  { id: 'denklem', name: 'Denklemler',       ic: 'x=',  g: [7, 8], c: '#39ff14', gen: genDenklem }
+];
+const TOPIC = Object.fromEntries(TOPICS.map(t => [t.id, t]));
+const topicsFor = g => TOPICS.filter(t => g >= t.g[0] && g <= t.g[1]);
+function makeProblem(tid, g, d) {
+  const t = TOPIC[tid];
+  for (let k = 0; k < 6; k++) {
+    try {
+      const p = t.gen(clamp(g, t.g[0], 8), clamp(d, 1, 5));
+      if (p && p.a && isFinite(ansValue(p.a))) { p.topic = tid; p.keys = p.keys || []; p.long = p.long || String(p.q).replace(/<[^>]+>/g, '').length > 26; return p; }
+    } catch (e) { /* yeniden dene */ }
+  }
+  const a = R(1, 9), b = R(1, 9); return { q: `${a} + ${b}`, a: I(a + b), hint: addHint(a, b), topic: 'top', keys: [] };
+}
+
+/* ---------- yarış şıkları ---------- */
+function choices(p) {
+  const a = p.a, out = [a], keyOf = x => x.kind === 'frac' ? (x.n / x.d).toFixed(8) : x.v.toFixed(6);
+  const seen = new Set([keyOf(a)]);
+  const add = x => { if (out.length >= 4) return; if (x.kind === 'frac' && (x.d <= 0 || x.n === 0)) return; const k = keyOf(x); if (!isFinite(+k) || seen.has(k)) return; if (ansValue(a) >= 0 && ansValue(x) < 0) return; seen.add(k); out.push(x); };
+  if (a.kind === 'int') {
+    const v = a.v, digitsRev = +String(Math.abs(v)).split('').reverse().join('') * Math.sign(v || 1);
+    const cand = shuffle([v + 1, v - 1, v + 2, v - 2, v + 10, v - 10, digitsRev, v + R(3, 6), v - R(3, 6), v * 2, Math.round(v / 2), -v]);
+    for (const c of cand) add(I(c));
+    let k = 11; while (out.length < 4) add(I(v + k++));
+  } else if (a.kind === 'dec') {
+    const v = a.v; for (const c of shuffle([v + .1, v - .1, v * 10, v / 10, v + 1, v - 1, v + .01, v + .5])) add(D(c));
+    let k = 2; while (out.length < 4) add(D(v + k++));
+  } else {
+    const g = gcd(a.n, a.d), n = a.n / g, dd = a.d / g;
+    for (const c of shuffle([[n + 1, dd], [n, dd + 1], [dd, n], [n - 1, dd], [n + 1, dd + 1], [n * 2, dd + 1], [n + 2, dd]])) add(F(c[0], c[1]));
+    let k = 2; while (out.length < 4) add(F(n + k++, dd));
+  }
+  return shuffle(out);
+}
+
+/* =========================================================
+   KAYIT
+   ========================================================= */
+const KEY = 'foz-neon-hesap-v1';
+const PCOLORS = ['#ff2bd6', '#00f0ff', '#39ff14', '#ffe600', '#ff8a00', '#b05cff'];
+let DB = { profiles: [], cur: null, sound: true };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.profiles)) DB = Object.assign(DB, s); } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
+function newProfile(name, grade, color) {
+  return { id: 'p' + Date.now().toString(36) + R(100, 999), name, grade, color, xp: 0, ok: 0, n: 0, bestStreak: 0, topics: {}, table: Array(100).fill(0),
+    badges: {}, daily: { date: '', count: 0, streak: 0, last: '' }, best: {}, raceWins: 0, perfect: 0 };
+}
+const me = () => DB.profiles.find(p => p.id === DB.cur) || null;
+function tstat(p, tid) {
+  if (!p.topics[tid]) { const t = TOPIC[tid]; p.topics[tid] = { d: clamp(1 + (p.grade - t.g[0]), 1, 3), ok: 0, n: 0, s: 0, w: 0 }; }
+  return p.topics[tid];
+}
+function levelOf(xp) { let n = 1; while (xp >= 50 * n * (n + 1)) n++; const lo = 50 * (n - 1) * n, hi = 50 * n * (n + 1); return { n, pct: (xp - lo) / (hi - lo) * 100, title: T.titles[Math.min(T.titles.length - 1, Math.floor((n - 1) / 3))] }; }
+const GOAL = 20;
+function dailyOf(p) { const t = day(); if (p.daily.date !== t) { p.daily.date = t; p.daily.count = 0; } return p.daily; }
+
+const BADGES = [
+  { id: 'ilk', e: '🌱', n: 'İlk Adım', d: 'İlk doğru cevap', ok: p => p.ok >= 1 },
+  { id: 'seri10', e: '🔥', n: 'Seri 10', d: 'Art arda 10 doğru', ok: p => p.bestStreak >= 10 },
+  { id: 'seri25', e: '☄️', n: 'Seri 25', d: 'Art arda 25 doğru', ok: p => p.bestStreak >= 25 },
+  { id: 'd100', e: '💯', n: '100 Doğru', d: 'Toplam 100 doğru', ok: p => p.ok >= 100 },
+  { id: 'd500', e: '🏅', n: '500 Doğru', d: 'Toplam 500 doğru', ok: p => p.ok >= 500 },
+  { id: 'd1000', e: '🏆', n: '1000 Doğru', d: 'Toplam 1000 doğru', ok: p => p.ok >= 1000 },
+  { id: 'gun3', e: '📅', n: '3 Gün', d: '3 gün üst üste günlük hedef', ok: p => p.daily.streak >= 3 },
+  { id: 'gun7', e: '🗓️', n: '7 Gün', d: '7 gün üst üste günlük hedef', ok: p => p.daily.streak >= 7 },
+  { id: 'tablo', e: '✖️', n: 'Çarpım Ustası', d: 'Çarpım tablosunun tamamı yeşil', ok: p => p.table.every(v => v >= 3) },
+  { id: 'tablo50', e: '🧩', n: 'Yarı Yol', d: 'Çarpım tablosunun yarısı yeşil', ok: p => p.table.filter(v => v >= 3).length >= 50 },
+  { id: 'hiz', e: '⚡', n: 'Şimşek', d: 'Zamana karşıda 20+ doğru', ok: p => Object.values(p.best).some(v => v >= 20) },
+  { id: 'yaris', e: '🥇', n: 'Yarış Galibi', d: 'İki kişilik yarış kazan', ok: p => p.raceWins >= 1 },
+  { id: 'kesir', e: '🍕', n: 'Kesir Kaşifi', d: 'Kesirlerde 25 doğru', ok: p => (p.topics.kesir || {}).ok >= 25 },
+  { id: 'denklem', e: '🔍', n: 'Dedektif', d: 'Denklemlerde 25 doğru', ok: p => (p.topics.denklem || {}).ok >= 25 },
+  { id: 'kasif', e: '🧭', n: 'Kaşif', d: '5 farklı konuda 10+ doğru', ok: p => Object.values(p.topics).filter(t => t.ok >= 10).length >= 5 },
+  { id: 'problem', e: '📖', n: 'Problem Çözücü', d: 'Problemlerde 25 doğru', ok: p => (p.topics.problem || {}).ok >= 25 },
+  { id: 'hatasiz', e: '💎', n: 'Hatasız', d: 'Antrenmanda hatasız 20 soru', ok: p => p.perfect >= 20 },
+  { id: 'lvl10', e: '👑', n: 'Seviye 10', d: '10. seviyeye ulaş', ok: p => levelOf(p.xp).n >= 10 }
+];
+function checkBadges(p) {
+  const fresh = [];
+  for (const b of BADGES) if (!p.badges[b.id] && b.ok(p)) { p.badges[b.id] = day(); fresh.push(b); }
+  return fresh;
+}
+
+/* =========================================================
+   SES VE EFEKTLER
+   ========================================================= */
+let AC = null;
+function audio() { if (!DB.sound) return null; try { if (!AC) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; AC = new C(); } if (AC.state === 'suspended') AC.resume(); } catch (e) { return null; } return AC; }
+function tone(f, d = .08, type = 'square', v = .045, slide = 0, delay = 0) {
+  const a = audio(); if (!a) return; const t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, f * slide), t + d);
+  g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d + .03);
+}
+const sfx = {
+  ok: s => { const b = 523 * Math.pow(2, Math.min(s, 12) / 12); tone(b, .08, 'square', .045); tone(b * 1.5, .1, 'square', .04, 0, .07); },
+  bad: () => tone(220, .25, 'sawtooth', .045, .6),
+  key: () => tone(900, .025, 'triangle', .025),
+  win: () => [523, 659, 784, 659, 784, 1047].forEach((f, i) => tone(f, .12, 'square', .05, 0, i * .09)),
+  badge: () => [784, 988, 1175, 1568].forEach((f, i) => tone(f, .1, 'triangle', .06, 0, i * .07)),
+  tick: () => tone(1200, .03, 'square', .02)
+};
+const REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const fx = document.getElementById('fx'), fxc = fx.getContext('2d'); let parts = [], fxOn = false;
+function confetti(n = 120) {
+  if (REDUCED) n = 25;
+  fx.width = innerWidth * devicePixelRatio; fx.height = innerHeight * devicePixelRatio; fx.style.width = innerWidth + 'px'; fx.style.height = innerHeight + 'px';
+  for (let i = 0; i < n; i++) parts.push({ x: Math.random() * innerWidth, y: -10 - Math.random() * 200, vx: (Math.random() - .5) * 120, vy: 80 + Math.random() * 160, r: Math.random() * 6, c: PCOLORS[i % 6], s: 4 + Math.random() * 5, t: 0 });
+  if (!fxOn) { fxOn = true; let last = performance.now(); const step = now => { const dt = Math.min(.05, (now - last) / 1000); last = now; fxc.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); fxc.clearRect(0, 0, innerWidth, innerHeight);
+    for (const p of parts) { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 40 * dt; fxc.save(); fxc.translate(p.x, p.y); fxc.rotate(p.r + p.t * 5); fxc.fillStyle = p.c; fxc.fillRect(-p.s / 2, -p.s, p.s, p.s * 2); fxc.restore(); }
+    parts = parts.filter(p => p.y < innerHeight + 20 && p.t < 6); if (parts.length) requestAnimationFrame(step); else { fxOn = false; fxc.clearRect(0, 0, innerWidth, innerHeight); } }; requestAnimationFrame(step); }
+}
+function toast(html, ms = 1800) { const t = document.createElement('div'); t.className = 'toast'; t.innerHTML = html; document.body.append(t); setTimeout(() => t.remove(), ms); }
+
+/* =========================================================
+   ARAYÜZ
+   ========================================================= */
+const $v = document.getElementById('view');
+const ICON = {
+  back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
+  snd: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
+  mute: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>',
+  x: '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+};
+let cleanup = null, keyHandler = null;
+function render(html, onKey) {
+  if (cleanup) { cleanup(); cleanup = null; }
+  keyHandler = onKey || null;
+  $v.innerHTML = html;
+  $v.querySelectorAll('[data-snd]').forEach(b => b.addEventListener('click', () => { DB.sound = !DB.sound; save(); b.innerHTML = DB.sound ? ICON.snd : ICON.mute; b.setAttribute('aria-pressed', DB.sound); b.setAttribute('aria-label', DB.sound ? 'Sesi kapat' : 'Sesi aç'); }));
+}
+const sndBtn = () => `<button class="icon-btn" data-snd aria-pressed="${DB.sound}" aria-label="${DB.sound ? 'Sesi kapat' : 'Sesi aç'}">${DB.sound ? ICON.snd : ICON.mute}</button>`;
+const topBar = (title, backTo = 'home') => `<div class="bar"><button class="icon-btn" data-go="${backTo}" aria-label="Geri">${ICON.back}</button><h2>${title}</h2>${sndBtn()}</div>`;
+document.addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) { audio(); go(g.dataset.go); } });
+document.addEventListener('keydown', e => { if (keyHandler) keyHandler(e); });
+function go(where) { const f = SCREENS[where]; if (f) f(); }
+function overlay(html, btns) {
+  const o = document.createElement('div'); o.className = 'overlay'; o.innerHTML = `<div class="modal" role="dialog" aria-modal="true">${html}<div style="display:flex;flex-direction:column;gap:10px"></div></div>`;
+  const box = o.querySelector('.modal > div:last-child');
+  btns.forEach(([label, cls, fn]) => { const b = document.createElement('button'); b.className = 'btn ' + cls; b.textContent = label; b.addEventListener('click', () => { o.remove(); fn && fn(); }); box.append(b); });
+  document.body.append(o); setTimeout(() => { const f = box.querySelector('button'); f && f.focus(); }, 30);
+  return o;
+}
+
+/* ---------- ana ekran ---------- */
+function screenHome() {
+  const p = me(); if (!p) return screenProfileEdit(null, true);
+  const L = levelOf(p.xp), dl = dailyOf(p), pct = Math.min(100, dl.count / GOAL * 100);
+  render(`
+  <div class="scroll"><div class="wrap">
+    <div class="bar" style="padding:0"><span class="spacer"></span><span style="flex:1"></span>${sndBtn()}</div>
+    <h1 class="logo"><span class="l1">NEON</span><span class="l2">HESAP</span></h1>
+    <p class="tagline">${T.tagline}</p>
+    <button class="card prof" data-go="profiles" aria-label="Oyuncu değiştir">
+      <span class="avatar" style="--c:${p.color}">${esc(p.name[0] || '?').toLocaleUpperCase('tr')}</span>
+      <span class="info"><span class="nm">${esc(p.name)}</span><span class="sub">${p.grade}. sınıf · Seviye ${L.n} · ${L.title}</span><span class="xpbar"><i style="width:${L.pct}%"></i></span></span>
+      <span class="chev">›</span>
+    </button>
+    <div class="card goal"><span class="ring" style="--p:${pct}"><span>${Math.min(dl.count, GOAL)}/${GOAL}</span></span>
+      <span><span class="t">${dl.count >= GOAL ? 'Günlük hedef tamam! 🎉' : 'Günlük hedef: ' + GOAL + ' doğru'}</span><br><span class="s">${p.daily.streak ? '🔥 ' + p.daily.streak + ' gün üst üste' : 'Her gün biraz pratik, büyük fark yaratır.'}</span></span></div>
+    <div class="modes">
+      <button class="mode" style="--c:var(--green)" data-go="topics"><span class="ic">∞</span><b>Antrenman</b><small>Sınırsız soru, yanlışta adım adım açıklama</small></button>
+      <button class="mode" style="--c:var(--yellow)" data-go="timeSetup"><span class="ic">⏱</span><b>Zamana Karşı</b><small>60–120 saniyede kaç doğru?</small></button>
+      <button class="mode" style="--c:var(--pink)" data-go="raceSetup"><span class="ic">⚔</span><b>İki Kişilik Yarış</b><small>Aynı ekranda, herkes kendi sınıfından</small></button>
+      <button class="mode" style="--c:var(--cyan)" data-go="table"><span class="ic">×</span><b>Çarpım Tablosu</b><small>100 kutuyu yeşile boya</small></button>
+      <button class="mode wide" style="--c:var(--violet)" data-go="progress"><span class="ic">★</span><span><b>İlerlemem ve Rozetler</b><br><small>${p.ok} doğru · ${Object.keys(p.badges).length}/${BADGES.length} rozet</small></span></button>
+    </div>
+    <p class="privacy">${T.privacy}</p>
+    <p class="sig"><b>FOZ</b> Yapım sunar</p>
+  </div></div>`);
+}
+
+/* ---------- profiller ---------- */
+function screenProfiles() {
+  render(`${topBar('Oyuncular')}
+  <div class="scroll"><div class="wrap">
+    <div class="plist">${DB.profiles.map(p => { const L = levelOf(p.xp); return `
+      <div class="card prof" style="${p.id === DB.cur ? 'border-color:' + p.color + ';box-shadow:0 0 14px ' + p.color + '55' : ''}">
+        <span class="avatar" style="--c:${p.color}">${esc(p.name[0] || '?').toLocaleUpperCase('tr')}</span>
+        <button class="info" data-sel="${p.id}" style="text-align:left"><span class="nm">${esc(p.name)}</span><span class="sub">${p.grade}. sınıf · Seviye ${L.n} · ${p.ok} doğru</span></button>
+        <button class="btn ghost small" data-edit="${p.id}">Düzenle</button>
+      </div>`; }).join('')}</div>
+    ${DB.profiles.length < 6 ? '<button class="btn primary" data-new>+ Yeni oyuncu</button>' : ''}
+    <p class="note">Her çocuğun ilerlemesi, rozetleri ve çarpım tablosu ayrı tutulur. Bilgiler yalnızca bu cihazda saklanır.</p>
+  </div></div>`);
+  $v.querySelectorAll('[data-sel]').forEach(b => b.addEventListener('click', () => { DB.cur = b.dataset.sel; save(); go('home'); }));
+  $v.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => screenProfileEdit(DB.profiles.find(p => p.id === b.dataset.edit))));
+  const nb = $v.querySelector('[data-new]'); if (nb) nb.addEventListener('click', () => screenProfileEdit(null));
+}
+function screenProfileEdit(p, first) {
+  let name = p ? p.name : '', grade = p ? p.grade : 0, color = p ? p.color : PCOLORS[DB.profiles.length % 6];
+  render(`${first ? '<div class="bar"><span class="spacer"></span><h2>Hoş geldin!</h2>' + sndBtn() + '</div>' : topBar(p ? 'Oyuncuyu düzenle' : 'Yeni oyuncu', 'profiles')}
+  <div class="scroll"><div class="wrap">
+    ${first ? '<h1 class="logo"><span class="l1">NEON</span><span class="l2">HESAP</span></h1><p class="tagline">Başlamadan önce seni tanıyalım.</p>' : ''}
+    <label class="lbl" for="nm">Adın</label>
+    <input class="txt" id="nm" maxlength="14" autocomplete="off" placeholder="Örn. Elif" value="${esc(name)}">
+    <span class="lbl">Kaçıncı sınıftasın?</span>
+    <div class="grades">${[1, 2, 3, 4, 5, 6, 7, 8].map(g => `<button class="chip" data-g="${g}" aria-pressed="${g === grade}" style="--c:var(--yellow)">${g}. sınıf</button>`).join('')}</div>
+    <span class="lbl">Rengin</span>
+    <div class="colors">${PCOLORS.map(c => `<button data-c="${c}" style="background:${c};color:${c}" aria-label="Renk" aria-pressed="${c === color}"></button>`).join('')}</div>
+    <button class="btn primary" id="ok" ${name && grade ? '' : 'disabled'}>${p ? 'Kaydet' : 'Başla ▶'}</button>
+    ${p && DB.profiles.length > 1 ? '<button class="btn danger" id="del">Bu oyuncuyu sil</button>' : ''}
+  </div></div>`);
+  const ok = $v.querySelector('#ok'), nm = $v.querySelector('#nm');
+  const upd = () => { ok.disabled = !(name.trim() && grade); };
+  nm.addEventListener('input', () => { name = nm.value; upd(); });
+  $v.querySelectorAll('[data-g]').forEach(b => b.addEventListener('click', () => { grade = +b.dataset.g; $v.querySelectorAll('[data-g]').forEach(x => x.setAttribute('aria-pressed', x === b)); upd(); }));
+  $v.querySelectorAll('[data-c]').forEach(b => b.addEventListener('click', () => { color = b.dataset.c; $v.querySelectorAll('[data-c]').forEach(x => x.setAttribute('aria-pressed', x === b)); }));
+  ok.addEventListener('click', () => {
+    if (p) { p.name = name.trim(); p.grade = grade; p.color = color; }
+    else { const np = newProfile(name.trim(), grade, color); DB.profiles.push(np); DB.cur = np.id; }
+    save(); go(first ? 'home' : 'profiles');
+  });
+  const del = $v.querySelector('#del');
+  if (del) del.addEventListener('click', () => overlay(`<h3>Silinsin mi?</h3><p>${esc(p.name)} adlı oyuncunun tüm ilerlemesi silinecek. Bu geri alınamaz.</p>`, [
+    ['Evet, sil', 'danger', () => { DB.profiles = DB.profiles.filter(x => x !== p); if (DB.cur === p.id) DB.cur = DB.profiles[0] ? DB.profiles[0].id : null; save(); go('profiles'); }], ['Vazgeç', 'ghost']]));
+  if (!first) nm.focus();
+}
+
+/* ---------- konu seçimi ---------- */
+let SEL = null;
+function screenTopics() {
+  const p = me(); const list = topicsFor(p.grade);
+  if (!SEL || !SEL.every(id => list.some(t => t.id === id))) SEL = [];
+  render(`${topBar('Antrenman')}
+  <div class="scroll"><div class="wrap">
+    <p class="note">${p.grade}. sınıf konuları. Hiç seçmezsen hepsi karışık gelir. Zorluk, cevaplarına göre kendiliğinden ayarlanır.</p>
+    <div class="topics">${list.map(t => { const s = p.topics[t.id]; const acc = s && s.n ? Math.round(s.ok / s.n * 100) + '%' : 'yeni'; return `
+      <button class="tp" data-t="${t.id}" style="--c:${t.c}" aria-pressed="${SEL.includes(t.id)}"><span class="ti">${t.ic}</span><span>${t.name}<small>${s ? '★'.repeat(s.d) + '☆'.repeat(5 - s.d) + ' · ' + acc : 'Henüz denenmedi'}</small></span></button>`; }).join('')}</div>
+    <button class="btn primary" id="start">${SEL.length ? 'Seçilenlerle başla ▶' : 'Karışık başla ▶'}</button>
+    <p class="note">Başka sınıfın konularını denemek için oyuncu ayarlarından sınıfı değiştirebilirsin.</p>
+  </div></div>`);
+  const st = $v.querySelector('#start');
+  $v.querySelectorAll('[data-t]').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.t; SEL = SEL.includes(id) ? SEL.filter(x => x !== id) : [...SEL, id]; b.setAttribute('aria-pressed', SEL.includes(id));
+    st.textContent = SEL.length ? 'Seçilenlerle başla ▶' : 'Karışık başla ▶';
+  }));
+  st.addEventListener('click', () => startPlay({ mode: 'train', topics: SEL.length ? SEL.slice() : null }));
+}
+function screenTimeSetup() {
+  let dur = 60;
+  render(`${topBar('Zamana Karşı')}
+  <div class="scroll"><div class="wrap">
+    <p class="note">Süre bitmeden olabildiğince çok soru çöz. Yanlışların sonunda açıklamalarıyla birlikte gösterilir.</p>
+    <span class="lbl">Süre</span>
+    <div class="chips">${[60, 90, 120].map(s => `<button class="chip" data-s="${s}" aria-pressed="${s === dur}" style="--c:var(--yellow)">${s} saniye</button>`).join('')}</div>
+    <div class="card"><b>Rekorların</b><div class="kv" style="margin-top:8px">${[60, 90, 120].map(s => `<div><b>${me().best['t' + s] || 0}</b><small>${s} sn</small></div>`).join('')}</div></div>
+    <button class="btn primary" id="start">Başla ▶</button>
+  </div></div>`);
+  $v.querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => { dur = +b.dataset.s; $v.querySelectorAll('[data-s]').forEach(x => x.setAttribute('aria-pressed', x === b)); }));
+  $v.querySelector('#start').addEventListener('click', () => startPlay({ mode: 'time', dur, topics: SEL && SEL.length ? SEL.slice() : null }));
+}
+
+/* ---------- çarpım tablosu ---------- */
+function screenTable() {
+  const p = me(); const t = p.table, green = t.filter(v => v >= 3).length;
+  let cells = '<div class="h" style="background:none;border:0">×</div>';
+  for (let c = 1; c <= 10; c++) cells += `<button class="h" data-row="${c}" aria-label="${c} sütunu">${c}</button>`;
+  for (let r = 1; r <= 10; r++) {
+    cells += `<button class="h" data-row="${r}" aria-label="${r} ler tablosunu çalış">${r}</button>`;
+    for (let c = 1; c <= 10; c++) cells += `<div class="c${t[(r - 1) * 10 + c - 1]}" title="${r} × ${c}">${r * c}</div>`;
+  }
+  render(`${topBar('Çarpım Tablosu')}
+  <div class="scroll"><div class="wrap" style="align-items:center">
+    <p class="note">Bir satır numarasına dokun ve o sayının tablosunu çalış. Her kutu 3 doğru cevapla yeşile döner. <b style="color:var(--green)">${green}/100</b> yeşil.</p>
+    <div class="tgrid">${cells}</div>
+    <div class="legend"><span><i style="background:rgba(255,255,255,.08)"></i>Yeni</span><span><i style="background:rgba(255,138,0,.4)"></i>1 doğru</span><span><i style="background:rgba(255,230,0,.45)"></i>2 doğru</span><span><i style="background:rgba(57,255,20,.6)"></i>Öğrenildi</span></div>
+    <div class="row"><button class="btn primary" id="mix">Karışık çalış ▶</button></div>
+    <p class="note">Karışık çalışmada en az bildiğin kutular daha sık sorulur.</p>
+  </div></div>`);
+  $v.querySelectorAll('[data-row]').forEach(b => b.addEventListener('click', () => startPlay({ mode: 'table', row: +b.dataset.row })));
+  $v.querySelector('#mix').addEventListener('click', () => startPlay({ mode: 'table', row: 0 }));
+}
+function tableProblem(row) {
+  const p = me(), t = p.table;
+  let a, b;
+  if (row) { const ws = []; for (let c = 1; c <= 10; c++) ws.push(4 - t[(row - 1) * 10 + c - 1] + .3); let r = Math.random() * ws.reduce((s, x) => s + x, 0); b = 1; for (let c = 0; c < 10; c++) { r -= ws[c]; if (r <= 0) { b = c + 1; break; } } a = row; if (Math.random() < .5) [a, b] = [b, a]; }
+  else { const ws = t.map(v => 4 - v + .2); let r = Math.random() * ws.reduce((s, x) => s + x, 0); let i = 0; for (; i < 100; i++) { r -= ws[i]; if (r <= 0) break; } i = Math.min(i, 99); a = Math.floor(i / 10) + 1; b = i % 10 + 1; }
+  const asDiv = p.grade >= 3 && Math.random() < .25;
+  if (asDiv) return { q: `${a * b} ÷ ${b}`, a: I(a), hint: divHint(a * b, b), tip: `${b} ile hangi sayıyı çarparsan ${a * b} eder?`, topic: 'carp', keys: [], table: [a, b] };
+  return { q: `${a} × ${b}`, a: I(a * b), hint: tableHint(a, b, p.grade), tip: 'Bildiğin bir komşu çarpımdan başla.', topic: 'carp', keys: [], table: [a, b] };
+}
+
+/* ---------- oyun (antrenman / zamana karşı / tablo) ---------- */
+let G = null;
+function startPlay(opt) {
+  const p = me();
+  G = Object.assign({ ok: 0, bad: 0, streak: 0, best: 0, xp: 0, count: 0, review: [], mistakes: [], input: '', p: null, lock: false, start: performance.now(), newBadges: [], tipShown: false }, opt);
+  if (G.mode === 'time') G.end = performance.now() + G.dur * 1000;
+  const title = G.mode === 'train' ? 'Antrenman' : G.mode === 'time' ? 'Zamana Karşı' : (G.row ? G.row + ' Tablosu' : 'Çarpım Tablosu');
+  render(`<div class="bar"><button class="icon-btn" id="quit" aria-label="Bitir">${ICON.x}</button>
+    <div class="hud"><div class="st" style="--c:var(--green)"><span class="k">Doğru</span><span class="v" id="hOk">0</span></div>
+    <div class="st" style="--c:var(--yellow)"><span class="k">Seri</span><span class="v" id="hSt">0</span></div>
+    <div class="st" style="--c:var(--pink)"><span class="k">${G.mode === 'time' ? 'Süre' : 'XP'}</span><span class="v" id="hX">${G.mode === 'time' ? G.dur : 0}</span></div></div>${sndBtn()}</div>
+    ${G.mode === 'time' ? '<div class="timebar"><i id="tb" style="width:100%"></i></div>' : ''}
+    <div class="play">
+      <div class="qcard" id="qc"><span class="qtag" id="qtag"></span><span class="qtag r" id="qtag2"></span><div class="q" id="q"></div><div class="ans empty" id="ans">?</div><div class="feedback" id="fb"></div></div>
+      <div id="extra" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:8px"></div>
+      <div class="pad" id="pad"></div>
+    </div>`, onPlayKey);
+  $v.querySelector('#quit').addEventListener('click', () => finishPlay(true));
+  if (G.mode === 'time') {
+    const iv = setInterval(() => {
+      const left = Math.max(0, G.end - performance.now());
+      const tb = document.getElementById('tb'), hx = document.getElementById('hX');
+      if (tb) tb.style.width = (left / (G.dur * 1000) * 100) + '%';
+      if (hx) hx.textContent = Math.ceil(left / 1000);
+      if (left <= 5000 && left > 0 && Math.ceil(left / 1000) !== G.lastTick) { G.lastTick = Math.ceil(left / 1000); sfx.tick(); }
+      if (left <= 0) { clearInterval(iv); finishPlay(false); }
+    }, 200);
+    cleanup = () => clearInterval(iv);
+  }
+  nextQ();
+}
+function pickTopic(p) {
+  const list = (G.topics || topicsFor(p.grade).map(t => t.id)).filter(id => TOPIC[id]);
+  const ws = list.map(id => { const t = TOPIC[id]; let w = 1; if (!G.topics) { if (t.g[0] >= p.grade - 2) w += 2; if (['top', 'cik'].includes(id) && p.grade >= 5) w = .4; } const s = p.topics[id]; if (s && s.n >= 5 && s.ok / s.n < .7) w += 1; return w; });
+  let r = Math.random() * ws.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < list.length; i++) { r -= ws[i]; if (r <= 0) return list[i]; }
+  return list[list.length - 1];
+}
+function nextQ() {
+  const p = me(); G.count++; G.input = ''; G.lock = false; G.tipShown = false;
+  let q = null;
+  if (G.mode === 'train' && G.review.length && G.review[0].due <= G.count) { q = G.review.shift().p; q.review = true; }
+  else if (G.mode === 'table') q = tableProblem(G.row);
+  else { const tid = pickTopic(p); q = makeProblem(tid, p.grade, tstat(p, tid).d); }
+  G.p = q;
+  const t = TOPIC[q.topic];
+  const qc = document.getElementById('qc'); qc.className = 'qcard'; qc.style.setProperty('--c', t.c);
+  document.getElementById('qtag').textContent = t.name; document.getElementById('qtag').style.color = t.c;
+  document.getElementById('qtag2').textContent = q.review ? '↻ Tekrar' : '';
+  const qe = document.getElementById('q'); qe.innerHTML = q.q; qe.className = 'q' + (q.long ? ' long' : '');
+  document.getElementById('fb').textContent = ''; document.getElementById('fb').className = 'feedback';
+  const ex = document.getElementById('extra'); ex.innerHTML = '';
+  if (G.mode !== 'time' && q.tip) { const b = document.createElement('button'); b.className = 'btn ghost small'; b.textContent = '💡 İpucu'; b.style.maxWidth = '200px'; b.addEventListener('click', () => { if (G.lock) return; G.tipShown = true; ex.innerHTML = `<div class="tipbox">💡 ${q.tip}</div>`; }); ex.append(b); }
+  buildPad(q); showInput();
+}
+function buildPad(q) {
+  const k = new Set(q.keys);
+  const pad = document.getElementById('pad');
+  const L = ['1', '2', '3', 'del', '4', '5', '6', k.has('frac') ? '/' : '_', '7', '8', '9', k.has('dec') ? ',' : '_', k.has('neg') ? '-' : '_', '0', 'go'];
+  pad.innerHTML = L.map(x => x === 'del' ? '<button class="del" data-k="del" aria-label="Sil">⌫</button>' : x === 'go' ? '<button class="go" data-k="go" aria-label="Cevapla">✓</button>' : x === '_' ? '<button class="hid" tabindex="-1" aria-hidden="true"></button>' : `<button class="${'/,-'.includes(x) ? 'op' : ''}" data-k="${x}">${x === '-' ? MINUS : x}</button>`).join('');
+  pad.querySelectorAll('[data-k]').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); audio(); press(b.dataset.k); }));
+}
+function press(k) {
+  if (!G || G.lock) { if (G && G.waiting && k === 'go') continueAfterWrong(); return; }
+  if (k === 'go') return submit();
+  if (k === 'del') G.input = G.input.slice(0, -1);
+  else if (k === '-') { G.input = G.input.startsWith('-') ? G.input.slice(1) : '-' + G.input; }
+  else if (k === ',' || k === '.') { if (!G.input.includes(',') && G.input.replace('-', '').length) G.input += ','; }
+  else if (k === '/') { if (!G.input.includes('/') && /\d$/.test(G.input)) G.input += '/'; }
+  else if (/^\d$/.test(k)) { if (G.input.replace(/[-,/]/g, '').length < 9) G.input += k; }
+  sfx.key(); showInput();
+}
+function showInput() {
+  const a = document.getElementById('ans'); if (!a) return;
+  if (!G.input) { a.textContent = '?'; a.className = 'ans empty'; return; }
+  a.className = 'ans';
+  if (G.input.includes('/')) { const [n, d] = G.input.split('/'); a.innerHTML = `${n.startsWith('-') ? MINUS : ''}<span class="fr"><span>${n.replace('-', '') || '&nbsp;'}</span><span>${d || '&nbsp;'}</span></span>`; }
+  else a.textContent = G.input.replace('-', MINUS);
+}
+function onPlayKey(e) {
+  if (document.querySelector('.overlay')) return;
+  const k = e.key;
+  if (/^\d$/.test(k)) { e.preventDefault(); press(k); }
+  else if (k === 'Backspace') { e.preventDefault(); press('del'); }
+  else if (k === 'Enter') { e.preventDefault(); if (G.waiting) continueAfterWrong(); else press('go'); }
+  else if (k === '-' && G.p && G.p.keys.includes('neg')) press('-');
+  else if ((k === ',' || k === '.') && G.p && G.p.keys.includes('dec')) press(',');
+  else if (k === '/' && G.p && G.p.keys.includes('frac')) press('/');
+  else if (k === 'Escape') finishPlay(true);
+}
+function submit() {
+  if (!G.input || G.input === '-') return;
+  const p = me(), q = G.p, res = check(q, G.input.replace(',', ','));
+  const st = tstat(p, q.topic);
+  st.n++; p.n++;
+  G.lock = true;
+  const qc = document.getElementById('qc'), fb = document.getElementById('fb');
+  if (q.table) { const [a, b] = q.table; const i1 = (a - 1) * 10 + b - 1, i2 = (b - 1) * 10 + a - 1; for (const i of new Set([i1, i2])) p.table[i] = res.ok ? Math.min(3, p.table[i] + 1) : Math.max(0, p.table[i] - 2); }
+  if (res.ok) {
+    G.ok++; G.streak++; G.best = Math.max(G.best, G.streak); st.ok++; p.ok++; st.s++; st.w = 0;
+    if (st.s >= 3 && st.d < 5) { st.d++; st.s = 0; }
+    p.bestStreak = Math.max(p.bestStreak, G.streak);
+    const gain = (G.tipShown ? 5 : 10) + Math.floor(G.streak / 5) * 2; G.xp += gain; const before = levelOf(p.xp).n; p.xp += gain;
+    const dl = dailyOf(p); dl.count++;
+    if (dl.count === GOAL) { const y = new Date(Date.now() - 864e5); const yd = `${y.getFullYear()}-${String(y.getMonth() + 1).padStart(2, '0')}-${String(y.getDate()).padStart(2, '0')}`; dl.streak = dl.last === yd ? dl.streak + 1 : 1; dl.last = day(); toast('🎯 Günlük hedef tamam!'); confetti(80); }
+    if (G.mode === 'train' && G.bad === 0) p.perfect = Math.max(p.perfect, G.ok);
+    qc.classList.add('ok'); fb.className = 'feedback ok'; fb.innerHTML = res.note ? res.note : pick(T.praise) + (G.streak >= 5 && G.streak % 5 === 0 ? ` 🔥 ${G.streak} seri!` : '');
+    sfx.ok(G.streak);
+    if (levelOf(p.xp).n > before) { toast(`⭐ Seviye ${levelOf(p.xp).n}! ${levelOf(p.xp).title}`); sfx.win(); }
+    const nb = checkBadges(p); if (nb.length) { G.newBadges.push(...nb); nb.forEach((b, i) => setTimeout(() => { toast(`${b.e} Yeni rozet: ${b.n}`); sfx.badge(); }, 300 + i * 900)); }
+    save(); updHud();
+    setTimeout(() => { if (G && G.p === q) nextQ(); }, res.note ? 1600 : 650);
+  } else {
+    G.bad++; G.streak = 0; st.s = 0; st.w++;
+    if (st.w >= 2 && st.d > 1) { st.d--; st.w = 0; }
+    G.mistakes.push({ q: q.q, a: ansHTML(q.a), hint: q.hint, yours: G.input });
+    if (G.mode === 'train' && !q.review) G.review.push({ p: Object.assign({}, q), due: G.count + 3 });
+    qc.classList.add('bad'); sfx.bad(); save(); updHud();
+    if (G.mode === 'time') {
+      fb.innerHTML = `<span style="color:#ff8095">Doğrusu: ${ansHTML(q.a)}</span>`;
+      setTimeout(() => { if (G && G.p === q) nextQ(); }, 1200);
+    } else {
+      G.waiting = true;
+      document.getElementById('extra').innerHTML = `<div class="explain"><div class="ca">Doğru cevap: <b>${ansHTML(q.a)}</b></div>
+        <div class="yours">Senin cevabın: ${esc(G.input.replace('-', MINUS))}${res.note ? ' — ' + res.note : ''}</div><div class="how">${q.hint}</div>
+        <button class="btn primary small" id="cont">Anladım, devam ▶</button></div>`;
+      document.getElementById('pad').style.display = 'none';
+      document.getElementById('cont').addEventListener('click', continueAfterWrong);
+      document.getElementById('cont').focus();
+    }
+  }
+}
+function continueAfterWrong() { if (!G || !G.waiting) return; G.waiting = false; document.getElementById('pad').style.display = ''; nextQ(); }
+function updHud() {
+  const s = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  s('hOk', G.ok); s('hSt', G.streak); if (G.mode !== 'time') s('hX', G.xp);
+}
+function finishPlay(early) {
+  if (!G) return; const p = me(); const g = G;
+  if (cleanup) { cleanup(); cleanup = null; }
+  keyHandler = null; G = null;
+  if (g.ok + g.bad === 0) return go('home');
+  let rec = false;
+  if (g.mode === 'time' && !early) { const k = 't' + g.dur; if (g.ok > (p.best[k] || 0)) { p.best[k] = g.ok; rec = true; } const nb = checkBadges(p); g.newBadges.push(...nb); save(); }
+  const acc = Math.round(g.ok / Math.max(1, g.ok + g.bad) * 100), mins = Math.max(1, Math.round((performance.now() - g.start) / 60000));
+  if (rec || acc === 100) { confetti(); sfx.win(); }
+  const title = g.mode === 'time' ? (early ? 'Yarıda bırakıldı' : rec ? 'Yeni rekor! 🏆' : 'Süre doldu!') : acc >= 90 ? 'Harika iş! 🌟' : acc >= 70 ? 'Çok iyi! 👏' : 'Güzel çalıştın! 💪';
+  overlay(`<h3>${title}</h3>
+    <div class="kv"><div><b>${g.ok}</b><small>doğru</small></div><div><b>${g.bad}</b><small>yanlış</small></div><div><b>%${acc}</b><small>başarı</small></div></div>
+    <div class="kv"><div><b>+${g.xp}</b><small>XP</small></div><div><b>${g.best}</b><small>en uzun seri</small></div><div><b>${g.mode === 'time' ? (p.best['t' + g.dur] || 0) : '~' + mins + ' dk'}</b><small>${g.mode === 'time' ? 'rekor' : 'süre'}</small></div></div>
+    ${g.newBadges.length ? `<p><b>Yeni rozetler</b></p><div class="newbadge">${g.newBadges.map(b => `<span>${b.e} ${b.n}</span>`).join('')}</div>` : ''}
+    ${g.mistakes.length ? `<p><b>Yanlışlarını tekrar gözden geçir</b></p><div class="mist">${g.mistakes.slice(-8).map(m => `<div>${m.q} = <b>${m.a}</b><br><span style="color:var(--muted)">${m.hint}</span></div>`).join('')}</div>` : ''}`,
+    [['Tekrar oyna ▶', 'primary', () => startPlay({ mode: g.mode, dur: g.dur, topics: g.topics, row: g.row })], ['Ana menü', 'ghost', () => go(g.mode === 'table' ? 'table' : 'home')]]);
+  go(g.mode === 'table' ? 'table' : 'home');
+}
+
+/* ---------- ilerleme ---------- */
+function screenProgress() {
+  const p = me(), L = levelOf(p.xp);
+  const list = TOPICS.filter(t => p.topics[t.id] && p.topics[t.id].n);
+  render(`${topBar('İlerlemem')}
+  <div class="scroll"><div class="wrap">
+    <div class="card prof"><span class="avatar" style="--c:${p.color}">${esc(p.name[0] || '?').toLocaleUpperCase('tr')}</span>
+      <span class="info"><span class="nm">${esc(p.name)}</span><span class="sub">Seviye ${L.n} · ${L.title} · ${p.xp} XP</span><span class="xpbar"><i style="width:${L.pct}%"></i></span></span></div>
+    <div class="kv"><div><b>${p.ok}</b><small>toplam doğru</small></div><div><b>%${p.n ? Math.round(p.ok / p.n * 100) : 0}</b><small>başarı</small></div><div><b>${p.bestStreak}</b><small>en uzun seri</small></div></div>
+    <div class="kv"><div><b>${p.table.filter(v => v >= 3).length}</b><small>tablo kutusu</small></div><div><b>${p.daily.streak}</b><small>gün serisi</small></div><div><b>${p.raceWins}</b><small>yarış galibiyeti</small></div></div>
+    <span class="lbl">Konular</span>
+    <div class="card tbars">${list.length ? list.map(t => { const s = p.topics[t.id], acc = Math.round(s.ok / s.n * 100); return `<div class="tbar" style="--c:${t.c}"><span class="n">${t.name} <span class="stars">${'★'.repeat(s.d)}${'☆'.repeat(5 - s.d)}</span></span><span class="p">${s.ok}/${s.n} · %${acc}</span><span class="b"><i style="width:${acc}%"></i></span></div>`; }).join('') : '<p class="note">Antrenmana başlayınca konuların burada görünecek.</p>'}</div>
+    <p class="note">Yıldızlar o konudaki zorluk seviyeni gösterir. Art arda doğrularla artar.</p>
+    <span class="lbl">Rozetler · ${Object.keys(p.badges).length}/${BADGES.length}</span>
+    <div class="badges">${BADGES.map(b => `<div class="badge ${p.badges[b.id] ? 'on' : ''}"><span class="e">${b.e}</span><b>${b.n}</b><small>${b.d}</small></div>`).join('')}</div>
+  </div></div>`);
+}
+
+/* ---------- iki kişilik yarış ---------- */
+const GUEST = [{ name: 'Oyuncu 1', color: '#ff2bd6' }, { name: 'Oyuncu 2', color: '#00f0ff' }];
+let RS = null;
+function screenRaceSetup() {
+  if (!RS) RS = { pl: [{ pid: DB.cur, grade: me().grade }, { pid: (DB.profiles.find(p => p.id !== DB.cur) || {}).id || null, grade: me().grade }], target: 10, face: true };
+  const side = i => {
+    const s = RS.pl[i];
+    return `<div class="card" style="display:flex;flex-direction:column;gap:10px;border-color:${i ? 'rgba(0,240,255,.5)' : 'rgba(255,43,214,.5)'}">
+      <b style="color:${i ? 'var(--cyan)' : 'var(--pink)'}">${i + 1}. Oyuncu</b>
+      <div class="chips">${DB.profiles.map(p => `<button class="chip" data-p="${i}" data-id="${p.id}" aria-pressed="${s.pid === p.id}" style="--c:${p.color}">${esc(p.name)}</button>`).join('')}<button class="chip" data-p="${i}" data-id="" aria-pressed="${!s.pid}" style="--c:#fff">Misafir</button></div>
+      <span class="lbl">Sorular kaçıncı sınıftan?</span>
+      <div class="grades">${[1, 2, 3, 4, 5, 6, 7, 8].map(g => `<button class="chip" data-gp="${i}" data-g="${g}" aria-pressed="${s.grade === g}" style="--c:var(--yellow)">${g}</button>`).join('')}</div></div>`;
+  };
+  render(`${topBar('İki Kişilik Yarış')}
+  <div class="scroll"><div class="wrap">
+    <p class="note">Her oyuncu kendi sınıfından soru çözer; böylece abla–kardeş, anne–çocuk adil yarışır. Doğru şıkka ilk basan puanı alır, yanlışta 1,5 saniye bekler.</p>
+    ${side(0)}${side(1)}
+    <span class="lbl">Kaç puana?</span>
+    <div class="chips">${[10, 15, 20].map(t => `<button class="chip" data-tg="${t}" aria-pressed="${RS.target === t}" style="--c:var(--green)">${t} puan</button>`).join('')}</div>
+    <span class="lbl">Ekran düzeni</span>
+    <div class="chips"><button class="chip" data-face="1" aria-pressed="${RS.face}">Karşılıklı (telefon masada)</button><button class="chip" data-face="0" aria-pressed="${!RS.face}">Yan yana</button></div>
+    <button class="btn primary" id="start">Yarışı başlat ▶</button>
+    <p class="note">Bilgisayarda: 1. oyuncu 1-2-3-4, 2. oyuncu 7-8-9-0 tuşları.</p>
+  </div></div>`);
+  $v.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => { const i = +b.dataset.p; RS.pl[i].pid = b.dataset.id || null; const pr = DB.profiles.find(p => p.id === RS.pl[i].pid); if (pr) RS.pl[i].grade = pr.grade; screenRaceSetup(); }));
+  $v.querySelectorAll('[data-gp]').forEach(b => b.addEventListener('click', () => { RS.pl[+b.dataset.gp].grade = +b.dataset.g; screenRaceSetup(); }));
+  $v.querySelectorAll('[data-tg]').forEach(b => b.addEventListener('click', () => { RS.target = +b.dataset.tg; screenRaceSetup(); }));
+  $v.querySelectorAll('[data-face]').forEach(b => b.addEventListener('click', () => { RS.face = b.dataset.face === '1'; screenRaceSetup(); }));
+  $v.querySelector('#start').addEventListener('click', startRace);
+}
+let RC = null;
+function startRace() {
+  const pls = RS.pl.map((s, i) => { const pr = DB.profiles.find(p => p.id === s.pid); return { pr, name: pr ? pr.name : GUEST[i].name, color: i === 0 ? (pr ? pr.color : GUEST[0].color) : (pr ? pr.color : GUEST[1].color), grade: s.grade, score: 0, q: null, ch: [], lock: 0, d: 2 }; });
+  if (pls[0].color === pls[1].color) pls[1].color = pls[0].color === '#00f0ff' ? '#ff2bd6' : '#00f0ff';
+  RC = { pls, target: RS.target, over: false, timers: [] };
+  const vertical = RS.face && innerWidth < innerHeight * 1.1;
+  const kh = ['1234', '7890'];
+  render(`<div class="bar"><button class="icon-btn" id="quit" aria-label="Çık">${ICON.x}</button><h2>Yarış · ${RC.target} puan</h2>${sndBtn()}</div>
+    <div class="race ${vertical ? 'v' : ''}">${pls.map((pl, i) => `
+      <div class="side ${i === 0 && vertical ? 'flip' : ''}" id="s${i}" style="--c:${pl.color}">
+        <div class="top"><span class="who">${esc(pl.name)}</span><span class="rg">${pl.grade}. sınıf</span><span class="sc" id="sc${i}">0</span></div>
+        <div class="prog"><i id="pg${i}" style="width:0"></i></div>
+        <div class="rq" id="rq${i}"></div>
+        <div class="opts" id="op${i}">${[0, 1, 2, 3].map(k => `<button data-pl="${i}" data-o="${k}"><span class="kh">${kh[i][k]}</span><span class="tx"></span></button>`).join('')}</div>
+        <div class="flash" id="fl${i}"></div>
+      </div>`).join('')}</div>`, e => {
+    if (document.querySelector('.overlay')) return;
+    const a = kh[0].indexOf(e.key), b = kh[1].indexOf(e.key);
+    if (a >= 0) { e.preventDefault(); answerRace(0, a); } else if (b >= 0) { e.preventDefault(); answerRace(1, b); }
+    else if (e.key === 'Escape') endRace(true);
+  });
+  $v.querySelector('#quit').addEventListener('click', () => endRace(true));
+  $v.querySelectorAll('[data-pl]').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); audio(); answerRace(+b.dataset.pl, +b.dataset.o); }));
+  cleanup = () => { RC && RC.timers.forEach(clearTimeout); };
+  pls.forEach((_, i) => raceQ(i));
+}
+function raceQ(i) {
+  const pl = RC.pls[i], list = topicsFor(pl.grade);
+  const w = list.map(t => t.g[0] >= pl.grade - 2 ? 3 : 1); let r = Math.random() * w.reduce((a, b) => a + b, 0), tid = list[0].id;
+  for (let k = 0; k < list.length; k++) { r -= w[k]; if (r <= 0) { tid = list[k].id; break; } }
+  const q = makeProblem(tid, pl.grade, pl.d);
+  pl.q = q; pl.ch = choices(q);
+  const rq = document.getElementById('rq' + i); rq.innerHTML = q.q; rq.className = 'rq' + (q.long ? ' long' : '');
+  document.querySelectorAll(`#op${i} button`).forEach((b, k) => { b.className = ''; b.querySelector('.tx').innerHTML = ansHTML(pl.ch[k]); });
+}
+function answerRace(i, k) {
+  if (!RC || RC.over) return; const pl = RC.pls[i]; if (pl.lock > performance.now() || !pl.q) return;
+  const pick_ = pl.ch[k], ok = ansValue(pick_) === ansValue(pl.q.a) && (pick_.kind !== 'frac' || pick_.n * pl.q.a.d === pl.q.a.n * pick_.d);
+  const btns = document.querySelectorAll(`#op${i} button`), side = document.getElementById('s' + i), fl = document.getElementById('fl' + i);
+  if (ok) {
+    pl.score++; pl.d = Math.min(5, pl.d + (pl.score % 3 === 0 ? 1 : 0)); btns[k].className = 'right'; sfx.ok(pl.score);
+    document.getElementById('sc' + i).textContent = pl.score; document.getElementById('pg' + i).style.width = (pl.score / RC.target * 100) + '%';
+    if (pl.pr) { pl.pr.ok++; pl.pr.n++; pl.pr.xp += 8; tstat(pl.pr, pl.q.topic).ok++; tstat(pl.pr, pl.q.topic).n++; }
+    pl.q = null;
+    if (pl.score >= RC.target) { RC.over = true; save(); RC.timers.push(setTimeout(() => endRace(false, i), 500)); return; }
+    RC.timers.push(setTimeout(() => raceQ(i), 380));
+  } else {
+    btns[k].className = 'wrong'; const ri = pl.ch.findIndex(c => ansValue(c) === ansValue(pl.q.a)); if (ri >= 0) btns[ri].className = 'right';
+    sfx.bad(); pl.lock = performance.now() + 1500; side.classList.add('locked'); fl.textContent = '⏳'; fl.classList.add('on');
+    if (pl.pr) { pl.pr.n++; tstat(pl.pr, pl.q.topic).n++; }
+    pl.d = Math.max(1, pl.d - 1); pl.q = null;
+    RC.timers.push(setTimeout(() => { side.classList.remove('locked'); fl.classList.remove('on'); if (RC && !RC.over) raceQ(i); }, 1500));
+  }
+}
+function endRace(early, winner) {
+  if (!RC) return; const rc = RC; RC = null;
+  if (cleanup) { cleanup(); cleanup = null; } keyHandler = null;
+  if (early) return go('raceSetup');
+  const w = rc.pls[winner], l = rc.pls[1 - winner];
+  if (w.pr) { w.pr.raceWins++; checkBadges(w.pr); }
+  save(); confetti(160); sfx.win();
+  overlay(`<h3 style="color:${w.color};text-shadow:0 0 10px ${w.color},0 0 24px ${w.color}">${esc(w.name)} kazandı! 🏆</h3>
+    <div class="kv" style="grid-template-columns:1fr 1fr"><div><b style="color:${w.color}">${w.score}</b><small>${esc(w.name)}</small></div><div><b style="color:${l.color}">${l.score}</b><small>${esc(l.name)}</small></div></div>
+    <p>${l.score >= rc.target - 2 ? 'Kıl payı! Çok çekişmeliydi.' : 'Rövanş zamanı mı?'}</p>`,
+    [['Rövanş ▶', 'primary', startRace], ['Ayarlar', 'ghost', () => go('raceSetup')], ['Ana menü', 'ghost', () => go('home')]]);
+}
+
+const SCREENS = { home: screenHome, profiles: screenProfiles, topics: screenTopics, timeSetup: screenTimeSetup, table: screenTable, progress: screenProgress, raceSetup: screenRaceSetup };
+go('home');
+window.NeonHesap = { TOPICS, makeProblem, check, choices, ansHTML, ansValue, ek, DB, game: () => G, race: () => RC };
+</script>
+</body>
+</html>

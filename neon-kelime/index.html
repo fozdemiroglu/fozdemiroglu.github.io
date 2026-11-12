@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07071a">
+<meta name="description" content="Neon Kelime — FOZ Yapım Türkçe kelime bulmaca. 1-8. sınıf seviyeleri, anlamlar ve örnek cümleler, günün kelimesi, sınırsız oyun ve bilmece. Reklamsız, veri toplamaz, internetsiz çalışır.">
+<title>Neon Kelime · FOZ Yapım</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2307071a'/%3E%3Crect x='10' y='34' width='24' height='32' rx='5' fill='%2339ff14'/%3E%3Crect x='38' y='34' width='24' height='32' rx='5' fill='%23ffe600'/%3E%3Crect x='66' y='34' width='24' height='32' rx='5' fill='%23ff2bd6'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#07071a;--pink:#ff2bd6;--cyan:#00f0ff;--green:#39ff14;--yellow:#ffe600;--red:#ff3b5c;--violet:#b05cff;
+  --text:#ecebff;--muted:#8b8ac0;--panel:rgba(20,16,60,.72);--panel2:rgba(28,22,80,.85);
+  --ok:#1fbf4a;--near:#e0b300;--miss:#2a2650;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(ellipse at 50% -10%,#24104d 0%,var(--bg) 62%) fixed,var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow:hidden;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,240,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,.06) 1px,transparent 1px);background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 100%,#000 0%,transparent 70%);mask-image:radial-gradient(ellipse at 50% 100%,#000 0%,transparent 70%)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+input{font:inherit;color:inherit}
+#app{position:relative;height:100vh;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#view{flex:1;min-height:0;display:flex;flex-direction:column}
+.scroll{flex:1;min-height:0;overflow-y:auto;padding:12px 16px 20px;display:flex;flex-direction:column;align-items:center}
+.wrap{width:100%;max-width:540px;display:flex;flex-direction:column;gap:14px}
+.bar{display:flex;align-items:center;gap:8px;padding:10px 12px 6px;width:100%;max-width:640px;margin:0 auto}
+.bar h2{flex:1;font-size:1.1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#d6fdff;text-shadow:0 0 10px var(--cyan);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--panel);border:1.5px solid rgba(0,240,255,.4);box-shadow:0 0 10px rgba(0,240,255,.18);transition:transform .12s;font-weight:900;color:var(--cyan);font-size:1.15rem}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn svg{width:22px;height:22px;fill:none;stroke:var(--cyan);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn[aria-pressed="false"]{border-color:rgba(139,138,192,.4);box-shadow:none}
+.icon-btn[aria-pressed="false"] svg{stroke:var(--muted)}
+.logo{margin-top:4px;text-align:center;line-height:.95;font-weight:900;letter-spacing:.08em}
+.logo .l1{display:block;font-size:clamp(2.8rem,14vw,4.6rem);color:#ffd6f6;text-shadow:0 0 6px var(--pink),0 0 18px var(--pink),0 0 42px var(--pink);animation:flicker 5s infinite}
+.logo .l2{display:block;font-size:clamp(2.6rem,13vw,4.3rem);color:#dcffd2;text-shadow:0 0 6px var(--green),0 0 18px var(--green),0 0 42px var(--green)}
+@keyframes flicker{0%,92%,100%{opacity:1}93%{opacity:.55}94%{opacity:1}96%{opacity:.7}97%{opacity:1}}
+.tagline{color:var(--muted);text-align:center}
+.lbl{font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center}
+.levels{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lv{--c:var(--cyan);padding:12px 8px;border-radius:16px;background:var(--panel);border:2px solid rgba(139,138,192,.35);text-align:center;font-weight:900;font-size:1.1rem;color:var(--muted);transition:transform .12s}
+.lv small{display:block;font-weight:600;font-size:.76rem;margin-top:3px;line-height:1.35}
+.lv:active{transform:scale(.96)}
+.lv[aria-checked="true"]{border-color:var(--c);color:var(--c);text-shadow:0 0 8px var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 40%,transparent)}
+.lv[aria-checked="true"] small{color:var(--text);text-shadow:none}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode{--c:var(--cyan);text-align:left;padding:14px;border-radius:18px;background:var(--panel);border:2px solid color-mix(in srgb,var(--c) 55%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--c) 22%,transparent);transition:transform .12s;display:flex;flex-direction:column;gap:4px;min-height:104px}
+.mode:active{transform:scale(.97)}
+.mode .ic{font-size:1.5rem}
+.mode b{font-size:1.05rem}
+.mode small{color:var(--muted);font-size:.8rem;line-height:1.35}
+.mode .done{color:var(--green);font-weight:800}
+.mode.wide{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center;gap:12px}
+.card{background:var(--panel);border:1.5px solid rgba(179,79,255,.35);border-radius:18px;padding:14px}
+.kv{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.kv div{background:rgba(255,255,255,.04);border-radius:12px;padding:8px 4px}
+.kv b{display:block;font-size:1.25rem;color:var(--yellow);font-variant-numeric:tabular-nums}
+.kv small{color:var(--muted);font-size:.7rem}
+.sig{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center}
+.sig b{color:var(--pink);text-shadow:0 0 8px rgba(255,43,214,.7)}
+.privacy{font-size:.78rem;color:var(--muted);text-align:center;opacity:.8}
+.btn{border-radius:16px;padding:13px 18px;font-weight:900;letter-spacing:.05em;font-size:1.05rem;text-align:center}
+.primary{background:linear-gradient(90deg,var(--pink),#a34bff 50%,var(--green));color:#16052a;box-shadow:0 0 22px rgba(255,43,214,.4);transition:transform .12s,filter .15s}
+.primary:active{transform:scale(.97)}
+.ghost{background:var(--panel);border:2px solid rgba(0,240,255,.45);color:var(--cyan)}
+.small{font-size:.9rem;padding:9px 12px;border-radius:12px}
+
+/* oyun */
+.game{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;padding:0 8px 8px;gap:8px}
+.clue{width:100%;max-width:520px;padding:9px 12px;border-radius:14px;background:rgba(255,230,0,.08);border:1.5px solid rgba(255,230,0,.45);color:#fff3a8;font-size:.98rem;line-height:1.45;text-align:center}
+.clue b{color:var(--yellow)}
+.clue .pat{display:block;letter-spacing:.35em;font-weight:900;font-size:1.15rem;margin-top:2px;color:#fff}
+.boardwrap{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}
+.board{display:grid;gap:6px}
+.row{display:grid;gap:6px}
+.row.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
+.tile{width:var(--ts);height:var(--ts);border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:calc(var(--ts)*.52);text-transform:uppercase;
+  border:2px solid rgba(139,138,192,.35);background:rgba(10,8,40,.6);color:#fff;transition:transform .12s}
+.tile.fill{border-color:rgba(0,240,255,.75);box-shadow:0 0 10px rgba(0,240,255,.3);animation:pop .1s}
+@keyframes pop{50%{transform:scale(1.08)}}
+.tile.g,.tile.y,.tile.b{border-color:transparent;animation:flip .5s ease both;animation-delay:calc(var(--i)*.22s)}
+.tile.g{background:var(--ok);box-shadow:0 0 14px rgba(57,255,20,.55)}
+.tile.y{background:var(--near);box-shadow:0 0 14px rgba(255,230,0,.45);color:#1b1400}
+.tile.b{background:var(--miss);color:#a8a5d6}
+.tile.static{animation:none}
+.row.win .tile{animation:flip .5s ease both,bounce .45s ease calc(var(--i)*.09s + 1.2s)}
+@keyframes flip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+@keyframes bounce{40%{transform:translateY(-14px)}70%{transform:translateY(3px)}}
+.hints{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.kb{width:100%;max-width:560px;display:flex;flex-direction:column;gap:6px;user-select:none}
+.kr{display:flex;gap:4px;justify-content:center}
+.k{flex:1;max-width:46px;height:clamp(44px,6.6vh,56px);border-radius:9px;background:var(--panel2);border:1.5px solid rgba(0,240,255,.28);font-weight:900;font-size:clamp(.9rem,4vw,1.15rem);color:#fff;display:grid;place-items:center;transition:transform .06s}
+.k:active{transform:scale(.92)}
+.k.wide{flex:1.6;max-width:72px;font-size:.78rem;letter-spacing:.02em}
+.k.g{background:var(--ok);border-color:transparent}
+.k.y{background:var(--near);border-color:transparent;color:#1b1400}
+.k.b{background:#17142f;border-color:transparent;color:#5d5a8a}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 64px);transform:translateX(-50%);z-index:30;padding:10px 16px;border-radius:999px;background:#1c1250;border:2px solid var(--cyan);box-shadow:0 0 18px rgba(0,240,255,.45);font-weight:900;white-space:nowrap;animation:tpop .2s}
+@keyframes tpop{from{transform:translate(-50%,-8px);opacity:0}}
+
+/* katman */
+.overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(7,7,26,.84);backdrop-filter:blur(3px)}
+.modal{width:100%;max-width:440px;max-height:92vh;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:22px;background:#120c38;border:2px solid rgba(57,255,20,.45);box-shadow:0 0 40px rgba(57,255,20,.22);animation:mpop .25s ease-out;text-align:center}
+@keyframes mpop{from{transform:scale(.9);opacity:0}}
+.modal h3{font-size:1.6rem;font-weight:900;color:#dcffd2;text-shadow:0 0 8px var(--green),0 0 22px var(--green)}
+.modal h3.lose{color:#ffd6f6;text-shadow:0 0 8px var(--pink),0 0 22px var(--pink)}
+.modal p{line-height:1.55}
+.wcard{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:16px;background:rgba(255,255,255,.04);border:1.5px solid rgba(0,240,255,.3);text-align:left}
+.wtiles{display:flex;gap:5px;justify-content:center}
+.wtiles span{width:38px;height:42px;border-radius:9px;display:grid;place-items:center;font-weight:900;font-size:1.3rem;background:var(--ok);box-shadow:0 0 12px rgba(57,255,20,.5)}
+.wcard .hece{text-align:center;color:var(--cyan);font-weight:800;letter-spacing:.06em}
+.wcard .def{font-size:1.02rem;line-height:1.5}
+.wcard .ex{color:var(--muted);font-style:italic;line-height:1.5}
+.wcard .ex b{color:var(--yellow);font-style:normal}
+.dist{display:flex;flex-direction:column;gap:4px;text-align:left}
+.dist div{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:800}
+.dist i{display:block;height:20px;min-width:22px;border-radius:5px;background:#2e2a5c;color:#fff;font-style:normal;text-align:right;padding:1px 6px;font-size:.8rem}
+.dist i.me{background:var(--ok)}
+.help .ex{display:flex;gap:5px;justify-content:center;margin:4px 0}
+.help .ex span{width:34px;height:38px;border-radius:8px;display:grid;place-items:center;font-weight:900;background:rgba(10,8,40,.6);border:2px solid rgba(139,138,192,.35)}
+.help .ex .g{background:var(--ok);border-color:transparent}.help .ex .y{background:var(--near);border-color:transparent;color:#1b1400}.help .ex .b{background:var(--miss);border-color:transparent}
+.help p{font-size:.95rem;text-align:left}
+.toggle{display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);font-size:.92rem}
+.toggle .sw{flex:none;width:46px;height:26px;border-radius:13px;background:#2e2a5c;position:relative;transition:background .2s}
+.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.toggle[aria-checked="true"] .sw{background:var(--green)}
+.toggle[aria-checked="true"] .sw::after{left:23px}
+/* defter */
+.search{width:100%;padding:12px 14px;border-radius:14px;background:rgba(10,8,40,.85);border:2px solid rgba(0,240,255,.4);font-size:1rem}
+.wlist{display:flex;flex-direction:column;gap:10px}
+.witem{text-align:left;padding:12px 14px;border-radius:16px;background:var(--panel);border:1.5px solid rgba(57,255,20,.3)}
+.witem b{font-size:1.15rem;letter-spacing:.05em;color:#dcffd2;text-transform:uppercase}
+.witem .lvb{float:right;font-size:.72rem;color:var(--muted);font-weight:700}
+.witem p{font-size:.92rem;line-height:1.45;margin-top:3px}
+.witem .ex{color:var(--muted);font-style:italic}
+.empty{color:var(--muted);text-align:center;padding:30px 10px;line-height:1.6}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:40}
+@media (prefers-reduced-motion:reduce){.logo .l1{animation:none}.tile.g,.tile.y,.tile.b,.row.win .tile{animation:none}.modal{animation:none}}
+@media (min-width:900px){.modes{grid-template-columns:repeat(3,1fr)}.mode.wide{grid-column:auto;flex-direction:column;align-items:flex-start;min-height:104px}}
+</style>
+</head>
+<body>
+<div id="app"><div id="view"></div></div>
+<canvas id="fx"></canvas>
+<script src="kelimeler.js"></script>
+<script src="sozluk.js"></script>
+<script>
+'use strict';
+/* =========================================================
+   Neon Kelime — FOZ Yapım
+   ========================================================= */
+const LEVELS = [
+  { id: 1, name: 'Seviye 1', sub: '4 harf · 1–2. sınıf', len: 4, c: 'var(--green)' },
+  { id: 2, name: 'Seviye 2', sub: '5 harf · 3–4. sınıf', len: 5, c: 'var(--cyan)' },
+  { id: 3, name: 'Seviye 3', sub: '5 harf · 5–6. sınıf', len: 5, c: 'var(--yellow)' },
+  { id: 4, name: 'Seviye 4', sub: '6 harf · 7–8. sınıf', len: 6, c: 'var(--pink)' }
+];
+const ROWS = 6;
+const WORDS = {};
+for (const l of LEVELS) WORDS[l.id] = (window.KELIMELER[l.id] || []).map(s => { const [w, def, ex] = s.split('|'); return { w, def, ex }; });
+const DICT = new Set();
+for (const k in (window.SOZLUK || {})) for (const w of window.SOZLUK[k].split(' ')) DICT.add(w);
+for (const l in WORDS) for (const x of WORDS[l]) DICT.add(x.w);
+const ALPHA = 'abcçdefgğhıijklmnoöprsştuüvyz';
+const up = s => s.toLocaleUpperCase('tr');
+const lo = s => s.toLocaleLowerCase('tr');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const R = n => Math.floor(Math.random() * n);
+function today() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+function dayNum() { const d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); }
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+/* Türkçe heceleme: iki ünlü arasındaki son ünsüz sonraki heceye geçer */
+function hecele(w) {
+  const V = 'aeıioöuü', ch = [...w], vi = ch.map((c, i) => V.includes(c) ? i : -1).filter(i => i >= 0);
+  const cuts = [];
+  for (let k = 0; k < vi.length - 1; k++) { const a = vi[k], b = vi[k + 1], cons = b - a - 1; cuts.push(cons === 0 ? b : b - 1); }
+  const out = []; let s = 0; for (const c of cuts) { out.push(ch.slice(s, c).join('')); s = c; } out.push(ch.slice(s).join(''));
+  return out.filter(Boolean).map(up).join(' – ');
+}
+function score(guess, ans) {
+  const g = [...guess], a = [...ans], res = Array(g.length).fill('b'), left = {};
+  g.forEach((c, i) => { if (c === a[i]) res[i] = 'g'; else left[a[i]] = (left[a[i]] || 0) + 1; });
+  g.forEach((c, i) => { if (res[i] !== 'g' && left[c]) { res[i] = 'y'; left[c]--; } });
+  return res;
+}
+
+/* ---------- kayıt ---------- */
+const KEY = 'foz-neon-kelime-v1';
+let DB = { lvl: 2, sound: true, loose: false, helpSeen: false, stats: {}, daily: {}, seen: {}, book: {}, points: 0, free: {} };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) DB = Object.assign(DB, s); } catch (e) {}
+if (!LEVELS.some(l => l.id === DB.lvl)) DB.lvl = 2;
+function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
+function stat(l) { return DB.stats[l] || (DB.stats[l] = { played: 0, won: 0, streak: 0, max: 0, dist: [0, 0, 0, 0, 0, 0], last: '' }); }
+
+/* ---------- ses / efekt ---------- */
+let AC = null;
+function audio() { if (!DB.sound) return null; try { if (!AC) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; AC = new C(); } if (AC.state === 'suspended') AC.resume(); } catch (e) { return null; } return AC; }
+function tone(f, d = .08, type = 'square', v = .04, slide = 0, delay = 0) {
+  const a = audio(); if (!a) return; const t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, f * slide), t + d);
+  g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d + .03);
+}
+const sfx = {
+  key: () => tone(760, .03, 'triangle', .025),
+  bad: () => tone(200, .2, 'sawtooth', .04, .6),
+  flip: (st, i) => tone(st === 'g' ? 660 + i * 60 : st === 'y' ? 520 : 300, .07, 'square', .03, 0, i * .22 + .1),
+  win: () => [523, 659, 784, 1047, 784, 1047].forEach((f, i) => tone(f, .12, 'square', .05, 0, 1.2 + i * .09)),
+  lose: () => [392, 330, 262].forEach((f, i) => tone(f, .22, 'triangle', .05, 0, 1.2 + i * .16)),
+  hint: () => tone(988, .12, 'triangle', .05, 1.5)
+};
+const REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const fx = document.getElementById('fx'), fxc = fx.getContext('2d'); let parts = [], fxOn = false;
+function confetti(n = 140) {
+  if (REDUCED) n = 25;
+  fx.width = innerWidth * devicePixelRatio; fx.height = innerHeight * devicePixelRatio; fx.style.width = innerWidth + 'px'; fx.style.height = innerHeight + 'px';
+  const C = ['#ff2bd6', '#00f0ff', '#39ff14', '#ffe600', '#ff8a00', '#b05cff'];
+  for (let i = 0; i < n; i++) parts.push({ x: Math.random() * innerWidth, y: -10 - Math.random() * 200, vx: (Math.random() - .5) * 120, vy: 80 + Math.random() * 160, r: Math.random() * 6, c: C[i % 6], s: 4 + Math.random() * 5, t: 0 });
+  if (fxOn) return; fxOn = true; let last = performance.now();
+  const step = now => { const dt = Math.min(.05, (now - last) / 1000); last = now; fxc.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); fxc.clearRect(0, 0, innerWidth, innerHeight);
+    for (const p of parts) { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 40 * dt; fxc.save(); fxc.translate(p.x, p.y); fxc.rotate(p.r + p.t * 5); fxc.fillStyle = p.c; fxc.fillRect(-p.s / 2, -p.s, p.s, p.s * 2); fxc.restore(); }
+    parts = parts.filter(p => p.y < innerHeight + 20 && p.t < 6); if (parts.length) requestAnimationFrame(step); else { fxOn = false; fxc.clearRect(0, 0, innerWidth, innerHeight); } };
+  requestAnimationFrame(step);
+}
+function toast(msg, ms = 1500) { document.querySelectorAll('.toast').forEach(t => t.remove()); const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.append(t); setTimeout(() => t.remove(), ms); }
+
+/* ---------- arayüz altyapısı ---------- */
+const $v = document.getElementById('view');
+const ICON = {
+  back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
+  snd: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
+  mute: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>',
+  stats: '<svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V4M19 20v-6"/></svg>'
+};
+let keyHandler = null;
+document.addEventListener('keydown', e => { if (keyHandler && !document.querySelector('.overlay')) keyHandler(e); else if (e.key === 'Escape') { const o = document.querySelector('.overlay'); if (o && o.dataset.esc) o.remove(); } });
+const sndBtn = () => `<button class="icon-btn" data-snd aria-pressed="${DB.sound}" aria-label="${DB.sound ? 'Sesi kapat' : 'Sesi aç'}">${DB.sound ? ICON.snd : ICON.mute}</button>`;
+function render(html, onKey) {
+  keyHandler = onKey || null; $v.innerHTML = html;
+  $v.querySelectorAll('[data-snd]').forEach(b => b.addEventListener('click', () => { DB.sound = !DB.sound; save(); b.innerHTML = DB.sound ? ICON.snd : ICON.mute; b.setAttribute('aria-pressed', DB.sound); }));
+  $v.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => { audio(); go(b.dataset.go); }));
+}
+function overlay(html, btns, opts = {}) {
+  document.querySelectorAll('.overlay').forEach(o => o.remove());
+  const o = document.createElement('div'); o.className = 'overlay'; if (opts.esc) o.dataset.esc = '1';
+  o.innerHTML = `<div class="modal ${opts.cls || ''}" role="dialog" aria-modal="true">${html}<div class="mb" style="display:flex;flex-direction:column;gap:10px"></div></div>`;
+  const box = o.querySelector('.mb');
+  btns.forEach(([label, cls, fn, keep]) => { const b = document.createElement('button'); b.className = 'btn ' + cls; b.textContent = label; b.addEventListener('click', () => { if (!keep) o.remove(); fn && fn(b); }); box.append(b); });
+  if (opts.esc) o.addEventListener('click', e => { if (e.target === o) o.remove(); });
+  document.body.append(o); setTimeout(() => { const f = box.querySelector('button'); f && f.focus(); }, 30);
+  return o;
+}
+function go(w) { ({ home: screenHome, daily: () => startGame('daily'), free: () => startGame('free'), riddle: () => startGame('riddle'), book: screenBook })[w](); }
+
+/* ---------- ana ekran ---------- */
+function screenHome() {
+  const L = LEVELS.find(l => l.id === DB.lvl), st = stat(DB.lvl), d = DB.daily[DB.lvl];
+  const dailyDone = d && d.date === today() && d.over;
+  const nBook = Object.keys(DB.book).length;
+  render(`<div class="scroll"><div class="wrap">
+    <div class="bar" style="padding:0"><button class="icon-btn" id="help" aria-label="Nasıl oynanır">?</button><span style="flex:1"></span><button class="icon-btn" id="stats" aria-label="İstatistikler">${ICON.stats}</button>${sndBtn()}</div>
+    <h1 class="logo"><span class="l1">NEON</span><span class="l2">KELİME</span></h1>
+    <p class="tagline">Gizli kelimeyi 6 denemede bul, anlamını öğren!</p>
+    <span class="lbl">Seviye</span>
+    <div class="levels" role="radiogroup" aria-label="Seviye">${LEVELS.map(l => `<button class="lv" role="radio" data-l="${l.id}" aria-checked="${l.id === DB.lvl}" style="--c:${l.c}">${l.name}<small>${l.sub}</small></button>`).join('')}</div>
+    <div class="modes">
+      <button class="mode" data-go="daily" style="--c:var(--yellow)"><span class="ic">📅</span><b>Günün Kelimesi</b><small>${dailyDone ? `<span class="done">${d.won ? '✓ Bugün bulundu' : 'Bugün denendi'}</span> · yarın yenisi` : 'Her gün herkese aynı kelime'}</small></button>
+      <button class="mode" data-go="free" style="--c:var(--green)"><span class="ic">∞</span><b>Sınırsız</b><small>Art arda kelime çöz, seriyi büyüt</small></button>
+      <button class="mode" data-go="riddle" style="--c:var(--pink)"><span class="ic">🧩</span><b>Bilmece</b><small>Anlamı okuyup kelimeyi bul</small></button>
+      <button class="mode" data-go="book" style="--c:var(--cyan)"><span class="ic">📖</span><b>Kelime Defterim</b><small>${nBook} kelime öğrendin</small></button>
+    </div>
+    <div class="card"><div class="kv"><div><b>${st.played}</b><small>oyun</small></div><div><b>%${st.played ? Math.round(st.won / st.played * 100) : 0}</b><small>başarı</small></div><div><b>${st.streak}</b><small>seri</small></div><div><b>${DB.points}</b><small>puan</small></div></div></div>
+    <p class="privacy">Reklamsız · Veri toplamaz · İnternetsiz çalışır</p>
+    <p class="sig"><b>FOZ</b> Yapım sunar</p>
+  </div></div>`);
+  $v.querySelectorAll('[data-l]').forEach(b => b.addEventListener('click', () => { DB.lvl = +b.dataset.l; save(); screenHome(); }));
+  $v.querySelector('#help').addEventListener('click', showHelp);
+  $v.querySelector('#stats').addEventListener('click', showStats);
+  if (!DB.helpSeen) { DB.helpSeen = true; save(); showHelp(); }
+}
+function showHelp() {
+  const o = overlay(`<div class="help"><h3>Nasıl oynanır?</h3>
+    <p>Gizli kelimeyi <b>6 denemede</b> bul. Her tahmin gerçek bir kelime olmalı. Yazdıktan sonra <b>GİR</b>'e bas.</p>
+    <div class="ex"><span class="g">K</span><span>A</span><span>L</span><span>E</span><span>M</span></div>
+    <p><b style="color:var(--green)">Yeşil:</b> Harf kelimede var ve yeri doğru.</p>
+    <div class="ex"><span>B</span><span class="y">A</span><span>L</span><span>O</span><span>N</span></div>
+    <p><b style="color:var(--yellow)">Sarı:</b> Harf kelimede var ama başka yerde.</p>
+    <div class="ex"><span>Ç</span><span>A</span><span>N</span><span class="b">T</span><span>A</span></div>
+    <p><b style="color:#a8a5d6">Koyu:</b> Bu harf kelimede yok.</p>
+    <p>Takılınca 💡 <b>İpucu</b> ile kelimenin anlamını ya da bir harfini görebilirsin; puanın biraz azalır. Bulduğun her kelime anlamı ve örnek cümlesiyle <b>Kelime Defteri</b>ne eklenir.</p>
+    <button class="toggle" id="loose" role="switch" aria-checked="${DB.loose}"><span class="sw"></span><span>Sözlükte olmayan tahminleri de kabul et<br><small style="color:var(--muted)">Küçük çocuklar için önerilir</small></span></button></div>`,
+    [['Anladım ▶', 'primary']], { esc: true });
+  o.querySelector('#loose').addEventListener('click', e => { DB.loose = !DB.loose; save(); e.currentTarget.setAttribute('aria-checked', DB.loose); });
+}
+function showStats() {
+  const L = LEVELS.find(l => l.id === DB.lvl), st = stat(DB.lvl), mx = Math.max(1, ...st.dist);
+  overlay(`<h3>${L.name} istatistikleri</h3><p style="color:var(--muted);margin-top:-6px">${L.sub}</p>
+    <div class="kv"><div><b>${st.played}</b><small>oyun</small></div><div><b>%${st.played ? Math.round(st.won / st.played * 100) : 0}</b><small>başarı</small></div><div><b>${st.streak}</b><small>seri</small></div><div><b>${st.max}</b><small>en iyi seri</small></div></div>
+    <p><b>Kaçıncı denemede buldun?</b></p>
+    <div class="dist">${st.dist.map((n, i) => `<div>${i + 1}<i style="width:${Math.max(8, n / mx * 100)}%">${n}</i></div>`).join('')}</div>
+    <p style="color:var(--muted)">Toplam puan: <b style="color:var(--yellow)">${DB.points}</b> · Defterdeki kelime: <b style="color:var(--yellow)">${Object.keys(DB.book).length}</b></p>`, [['Kapat', 'ghost']], { esc: true });
+}
+
+/* ---------- oyun ---------- */
+let G = null;
+function pickWord(mode) {
+  const list = WORDS[DB.lvl];
+  if (mode === 'daily') { const r = rng(dayNum() * 31 + DB.lvl * 7)(); return list[Math.floor(r * list.length)]; }
+  const key = mode + DB.lvl; let seen = DB.seen[key] || [];
+  let pool = list.filter(x => !seen.includes(x.w));
+  if (!pool.length) { seen = []; pool = list.slice(); }
+  const w = pool[R(pool.length)]; seen.push(w.w); DB.seen[key] = seen; save(); return w;
+}
+function startGame(mode) {
+  const L = LEVELS.find(l => l.id === DB.lvl);
+  let word, guesses = [], hints = { def: mode === 'riddle', letters: [] }, over = false, won = false;
+  if (mode === 'daily') {
+    word = pickWord('daily');
+    const d = DB.daily[DB.lvl];
+    if (d && d.date === today() && d.w === word.w) { guesses = d.guesses || []; hints = d.hints || hints; over = d.over; won = d.won; }
+    else DB.daily[DB.lvl] = { date: today(), w: word.w, guesses: [], hints, over: false, won: false };
+  } else if (mode === 'free' && DB.free[DB.lvl] && DB.free[DB.lvl].w && !DB.free[DB.lvl].over) {
+    const f = DB.free[DB.lvl]; word = WORDS[DB.lvl].find(x => x.w === f.w) || pickWord('free'); guesses = f.guesses || []; hints = f.hints || hints;
+  } else word = pickWord(mode);
+  G = { mode, L, word, ans: word.w, len: L.len, guesses, cur: '', hints, over, won, busy: false, run: (DB.free['run' + DB.lvl] || 0) };
+  if (mode === 'free') DB.free[DB.lvl] = { w: word.w, guesses, hints, over: false };
+  save();
+  const title = mode === 'daily' ? 'Günün Kelimesi' : mode === 'free' ? 'Sınırsız' : 'Bilmece';
+  const kb = [['e', 'r', 't', 'y', 'u', 'ı', 'o', 'p', 'ğ', 'ü'], ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ş', 'i'], ['enter', 'z', 'c', 'v', 'b', 'n', 'm', 'ö', 'ç', 'del']];
+  render(`<div class="bar"><button class="icon-btn" data-go="home" aria-label="Geri">${ICON.back}</button><h2>${title} · ${L.len} harf</h2><button class="icon-btn" id="help" aria-label="Nasıl oynanır">?</button>${sndBtn()}</div>
+    <div class="game">
+      <div id="clue"></div>
+      <div class="boardwrap" id="bw"><div class="board" id="board" role="grid" aria-label="Tahmin tablosu">${Array.from({ length: ROWS }, (_, r) => `<div class="row" role="row" style="grid-template-columns:repeat(${L.len},var(--ts))">${Array.from({ length: L.len }, (_, c) => `<div class="tile" role="gridcell" style="--i:${c}"></div>`).join('')}</div>`).join('')}</div></div>
+      <div class="hints" id="hints"></div>
+      <div class="kb" id="kb">${kb.map(row => `<div class="kr">${row.map(k => k === 'enter' ? '<button class="k wide" data-k="enter">GİR</button>' : k === 'del' ? '<button class="k wide" data-k="del" aria-label="Sil">⌫</button>' : `<button class="k" data-k="${k}">${up(k)}</button>`).join('')}</div>`).join('')}</div>
+    </div>`, onKey);
+  $v.querySelector('#help').addEventListener('click', showHelp);
+  $v.querySelectorAll('[data-k]').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); audio(); press(b.dataset.k); }));
+  fit(); paint(true); renderClue(); renderHints();
+  if (G.over) setTimeout(() => endGame(true), 300);
+}
+function fit() {
+  const bw = document.getElementById('bw'); if (!bw) return;
+  const w = bw.clientWidth - 8, h = bw.clientHeight - 8, gap = 6;
+  const ts = Math.max(30, Math.floor(Math.min((w - gap * (G.len - 1)) / G.len, (h - gap * (ROWS - 1)) / ROWS, 68)));
+  document.getElementById('board').style.setProperty('--ts', ts + 'px');
+}
+addEventListener('resize', () => { if (G && document.getElementById('board')) fit(); });
+function paint(all) {
+  const rows = document.querySelectorAll('#board .row');
+  G.guesses.forEach((g, r) => { if (!all && r !== G.guesses.length - 1) return; const res = score(g, G.ans); rows[r].querySelectorAll('.tile').forEach((t, i) => { t.textContent = up(g[i]); t.className = 'tile ' + res[i] + (all ? ' static' : ''); }); });
+  const r = G.guesses.length;
+  if (r < ROWS && !G.over) { const cells = rows[r].querySelectorAll('.tile'); const ch = [...G.cur]; cells.forEach((t, i) => { t.textContent = ch[i] ? up(ch[i]) : ''; t.className = 'tile' + (ch[i] ? ' fill' : ''); }); }
+  if (all) paintKeys();
+}
+function paintKeys() {
+  const best = {}; const rank = { g: 3, y: 2, b: 1 };
+  for (const g of G.guesses) score(g, G.ans).forEach((s, i) => { const c = [...g][i]; if (!best[c] || rank[s] > rank[best[c]]) best[c] = s; });
+  document.querySelectorAll('#kb [data-k]').forEach(b => { const k = b.dataset.k; if (k.length === 1) b.className = 'k' + (best[k] ? ' ' + best[k] : ''); });
+}
+function renderClue() {
+  const c = document.getElementById('clue'); if (!c) return;
+  if (!G.hints.def && !G.hints.letters.length) { c.innerHTML = ''; c.className = ''; return; }
+  const pat = [...G.ans].map((ch, i) => G.hints.letters.includes(i) ? up(ch) : '_').join(' ');
+  c.className = 'clue';
+  c.innerHTML = `${G.hints.def ? `<b>${G.mode === 'riddle' ? '🧩 Bilmece' : '💡 Anlamı'}:</b> ${esc(G.word.def)}` : ''}${G.hints.letters.length ? `<span class="pat">${pat}</span>` : ''}`;
+  fit();
+}
+function maxLetterHints() { return G.len <= 5 ? 1 : 2; }
+function renderHints() {
+  const h = document.getElementById('hints'); if (!h) return;
+  if (G.over) { h.innerHTML = ''; return; }
+  const btns = [];
+  if (!G.hints.def) btns.push('<button class="btn ghost small" data-h="def">💡 Anlamını göster</button>');
+  if (G.hints.letters.length < maxLetterHints() && G.guesses.length >= (G.mode === 'riddle' ? 1 : 2)) btns.push('<button class="btn ghost small" data-h="letter">🔤 Bir harf aç</button>');
+  h.innerHTML = btns.join('');
+  h.querySelectorAll('[data-h]').forEach(b => b.addEventListener('click', () => useHint(b.dataset.h)));
+}
+function useHint(t) {
+  if (G.over) return;
+  if (t === 'def') G.hints.def = true;
+  else {
+    const known = new Set(); for (const g of G.guesses) score(g, G.ans).forEach((s, i) => { if (s === 'g') known.add(i); });
+    const free = [...Array(G.len).keys()].filter(i => !known.has(i) && !G.hints.letters.includes(i));
+    if (!free.length) { toast('Bütün harfler zaten belli!'); return; }
+    G.hints.letters.push(free[R(free.length)]);
+  }
+  sfx.hint(); persist(); renderClue(); renderHints();
+}
+function persist() {
+  if (G.mode === 'daily') DB.daily[DB.lvl] = { date: today(), w: G.ans, guesses: G.guesses, hints: G.hints, over: G.over, won: G.won };
+  if (G.mode === 'free') DB.free[DB.lvl] = { w: G.ans, guesses: G.guesses, hints: G.hints, over: G.over };
+  save();
+}
+function onKey(e) {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key;
+  if (k === 'Enter') { e.preventDefault(); press('enter'); }
+  else if (k === 'Backspace') { e.preventDefault(); press('del'); }
+  else if (k.length === 1) { const c = lo(k); if (ALPHA.includes(c)) { e.preventDefault(); press(c); } }
+}
+function press(k) {
+  if (!G || G.over || G.busy) return;
+  if (k === 'enter') return submit();
+  if (k === 'del') { G.cur = [...G.cur].slice(0, -1).join(''); paint(); return; }
+  if ([...G.cur].length >= G.len) return;
+  G.cur += k; sfx.key(); paint();
+}
+function shakeRow(msg) {
+  const row = document.querySelectorAll('#board .row')[G.guesses.length]; row.classList.remove('shake'); void row.offsetWidth; row.classList.add('shake');
+  sfx.bad(); toast(msg);
+}
+function submit() {
+  const g = G.cur;
+  if ([...g].length < G.len) return shakeRow(`${G.len} harfli bir kelime yaz`);
+  if (!DB.loose && !DICT.has(g)) return shakeRow('Bu kelime sözlükte yok');
+  if (G.guesses.includes(g)) return shakeRow('Bu kelimeyi zaten denedin');
+  G.guesses.push(g); G.cur = ''; G.busy = true;
+  const res = score(g, G.ans);
+  paint(); res.forEach((s, i) => sfx.flip(s, i));
+  const won = g === G.ans, lost = !won && G.guesses.length >= ROWS;
+  if (won || lost) { G.over = true; G.won = won; }
+  persist();
+  const delay = REDUCED ? 100 : G.len * 220 + 450;
+  setTimeout(() => {
+    G.busy = false; paintKeys(); renderHints();
+    if (won) { document.querySelectorAll('#board .row')[G.guesses.length - 1].classList.add('win'); }
+    if (won || lost) endGame(false);
+  }, delay);
+}
+function endGame(restored) {
+  const st = stat(DB.lvl);
+  let pts = 0;
+  if (!restored && !G.recorded) {
+    G.recorded = true;
+    st.played++;
+    if (G.won) {
+      st.won++; st.streak++; st.max = Math.max(st.max, st.streak); st.dist[G.guesses.length - 1]++;
+      pts = Math.max(10, (ROWS + 1 - G.guesses.length) * 20 - (G.hints.def && G.mode !== 'riddle' ? 20 : 0) - G.hints.letters.length * 20);
+      DB.points += pts;
+      if (!DB.book[G.ans]) DB.book[G.ans] = { lvl: DB.lvl, date: today() };
+      if (G.mode === 'free') DB.free['run' + DB.lvl] = (DB.free['run' + DB.lvl] || 0) + 1;
+      sfx.win(); setTimeout(() => confetti(), REDUCED ? 0 : 1100);
+    } else {
+      st.streak = 0; sfx.lose();
+      if (G.mode === 'free') DB.free['run' + DB.lvl] = 0;
+    }
+    if (G.mode === 'free') DB.free[DB.lvl] = { over: true };
+    save();
+  }
+  const W = G.word, ex = esc(W.ex).replace(new RegExp(`(${G.ans}\\S*)`, 'iu'), '<b>$1</b>');
+  const praise = ['Muhteşem!', 'Harika!', 'Süper!', 'Çok iyi!', 'Güzel!', 'Son anda!'][G.guesses.length - 1];
+  const run = DB.free['run' + DB.lvl] || 0;
+  const btns = [];
+  if (G.mode !== 'daily') btns.push(['Sonraki kelime ▶', 'primary', () => startGame(G.mode)]);
+  else btns.push(['Sınırsız oyna ▶', 'primary', () => startGame('free')]);
+  btns.push(['Sonucu kopyala', 'ghost', b => copyResult(b), true]);
+  btns.push(['Menü', 'ghost', () => go('home')]);
+  setTimeout(() => overlay(`<h3 class="${G.won ? '' : 'lose'}">${G.won ? praise + ' 🎉' : 'Bu sefer olmadı'}</h3>
+    <p>${G.won ? `${G.guesses.length}. denemede buldun${pts ? ` · <b style="color:var(--yellow)">+${pts} puan</b>` : ''}` : 'Gizli kelime şuydu:'}</p>
+    <div class="wcard"><div class="wtiles">${[...G.ans].map(c => `<span>${up(c)}</span>`).join('')}</div>
+      <div class="hece">${hecele(G.ans)}</div>
+      <div class="def"><b>Anlamı:</b> ${esc(W.def)}</div>
+      <div class="ex">“${ex}”</div></div>
+    ${G.won ? '<p style="color:var(--muted);font-size:.88rem">📖 Bu kelime Kelime Defteri\'ne eklendi.</p>' : ''}
+    ${G.mode === 'free' ? `<p>Sınırsız seri: <b style="color:var(--yellow)">${run}</b></p>` : ''}
+    ${G.mode === 'daily' ? '<p style="color:var(--muted)">Yarın yeni bir kelime seni bekliyor!</p>' : ''}`, btns), restored ? 0 : (REDUCED ? 200 : 1300));
+}
+function copyResult(btn) {
+  const lines = G.guesses.map(g => score(g, G.ans).map(s => s === 'g' ? '🟩' : s === 'y' ? '🟨' : '⬛').join(''));
+  const txt = `Neon Kelime · ${G.L.name} · ${G.mode === 'daily' ? today().split('-').reverse().join('.') : G.mode === 'riddle' ? 'Bilmece' : 'Sınırsız'} · ${G.won ? G.guesses.length : 'X'}/6\n${lines.join('\n')}`;
+  const done = () => { btn.textContent = 'Kopyalandı ✓'; setTimeout(() => btn.textContent = 'Sonucu kopyala', 1500); };
+  try { navigator.clipboard.writeText(txt).then(done, () => fallback()); } catch (e) { fallback(); }
+  function fallback() { const t = document.createElement('textarea'); t.value = txt; document.body.append(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = 'Kopyalanamadı'; } t.remove(); }
+}
+
+/* ---------- kelime defteri ---------- */
+function screenBook() {
+  const all = []; for (const l of LEVELS) for (const x of WORDS[l.id]) if (DB.book[x.w]) all.push(Object.assign({ lvl: l.id }, x));
+  all.sort((a, b) => a.w.localeCompare(b.w, 'tr'));
+  render(`<div class="bar"><button class="icon-btn" data-go="home" aria-label="Geri">${ICON.back}</button><h2>Kelime Defterim</h2>${sndBtn()}</div>
+    <div class="scroll"><div class="wrap">
+      <p class="tagline">${all.length} kelime öğrendin. Her seviyede toplam ${LEVELS.map(l => WORDS[l.id].length).join(' / ')} kelime var.</p>
+      ${all.length ? '<input class="search" id="q" placeholder="Defterde ara…" autocomplete="off">' : ''}
+      <div class="wlist" id="wl">${all.length ? '' : '<p class="empty">Henüz defterin boş.<br>Bulduğun her kelime anlamı ve örnek cümlesiyle buraya eklenir.</p>'}</div>
+    </div></div>`);
+  const wl = document.getElementById('wl');
+  const draw = f => { const q = lo(f || ''); wl.innerHTML = all.filter(x => !q || x.w.includes(q) || lo(x.def).includes(q)).map(x => `<div class="witem"><span class="lvb">Seviye ${x.lvl}</span><b>${up(x.w)}</b> <span style="color:var(--cyan);font-size:.8rem;font-weight:700">${hecele(x.w)}</span><p>${esc(x.def)}</p><p class="ex">“${esc(x.ex)}”</p></div>`).join('') || '<p class="empty">Eşleşen kelime yok.</p>'; };
+  if (all.length) { draw(''); document.getElementById('q').addEventListener('input', e => draw(e.target.value)); }
+}
+
+screenHome();
+window.NeonKelime = { WORDS, DICT, score, hecele, game: () => G, DB };
+</script>
+</body>
+</html>
