@@ -8,7 +8,7 @@
 
 Topu sektir, tuğlaları kır, FOZ'a ulaş! Ücretsiz ve reklamsız neon tuğla kırma oyunu. İndirme, kurulum veya hesap gerekmez. Harici kütüphane veya CDN kullanmaz; `index.html` doğrudan açılabilir ve internetsiz çalışır.
 
-- **11 şekilli bölüm:** Isınma, Kalp, Yıldız, Türk bayrağını andıran **Ay Yıldız**, Roket, Araba, Balık, Robot, Ev, Gökkuşağı ve final: tuğlalarla yazılmış **FOZ**.
+- **11 şekilli bölüm:** Isınma, Kalp, kırmızı zeminde beyaz hilaliyle **Ay**, Yıldız, Roket, Araba, Balık, Robot, Ev, Gökkuşağı ve final: tuğlalarla yazılmış **FOZ**.
 - **İki mod:** *Minik* (yavaş top, 5 can, her turda alttaki kalkan bir kez kurtarır) ve *Klasik* (hızlı top, 3 can).
 - **Güçlendirmeler:** Geniş raket, ×3 top, Yavaş top, Lazer, Kalkan ve +1 can. ★ tuğlalardan kesin güç düşer.
 - **Tuğla türleri:** Tek vuruşluk renkli, iki vuruşluk (noktalı), kırılmaz çelik ve ★ sürpriz tuğla.
