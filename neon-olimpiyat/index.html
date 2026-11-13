@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07071a">
+<meta name="description" content="Neon Olimpiyat — FOZ Yapım spor oyunu. 100 metre, uzun atlama, cirit, yüksek atlama ve okçuluk. 1-4 kişi sırayla, bilgisayar rakipleri, madalya tablosu. Reklamsız, veri toplamaz, internetsiz çalışır.">
+<title>Neon Olimpiyat · FOZ Yapım</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2307071a'/%3E%3Cg fill='none' stroke-width='6'%3E%3Ccircle cx='28' cy='42' r='13' stroke='%2300f0ff'/%3E%3Ccircle cx='50' cy='42' r='13' stroke='%23ffffff'/%3E%3Ccircle cx='72' cy='42' r='13' stroke='%23ff3b5c'/%3E%3Ccircle cx='39' cy='58' r='13' stroke='%23ffe600'/%3E%3Ccircle cx='61' cy='58' r='13' stroke='%2339ff14'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root{--bg:#07071a;--pink:#ff2bd6;--cyan:#00f0ff;--green:#39ff14;--yellow:#ffe600;--red:#ff3b5c;--violet:#b05cff;--gold:#ffd23f;--text:#ecebff;--muted:#8b8ac0;--panel:rgba(20,16,60,.72)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(ellipse at 50% -10%,#24104d 0%,var(--bg) 62%) fixed,var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  overflow:hidden;overscroll-behavior:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+input{font:inherit;color:inherit}
+[hidden]{display:none!important}
+#app{position:relative;height:100vh;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.screen{display:none;flex:1;min-height:0;flex-direction:column}
+.screen.active{display:flex}
+.scroll{flex:1;min-height:0;overflow-y:auto;padding:12px 16px 20px;display:flex;flex-direction:column;align-items:center}
+.wrap{width:100%;max-width:540px;display:flex;flex-direction:column;gap:14px}
+.bar{display:flex;align-items:center;gap:8px;padding:10px 12px 4px;width:100%;max-width:900px;margin:0 auto}
+.bar h2{flex:1;text-align:center;font-size:1.1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#d6fdff;text-shadow:0 0 10px var(--cyan)}
+.icon-btn{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--panel);border:1.5px solid rgba(0,240,255,.4);box-shadow:0 0 10px rgba(0,240,255,.18);transition:transform .12s}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn svg{width:22px;height:22px;fill:none;stroke:var(--cyan);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn[aria-pressed="false"]{border-color:rgba(139,138,192,.4);box-shadow:none}
+.icon-btn[aria-pressed="false"] svg{stroke:var(--muted)}
+.rings{display:flex;justify-content:center;gap:0;margin-top:10px}
+.rings i{width:38px;height:38px;border-radius:50%;border:5px solid;margin:0 -4px;box-shadow:0 0 10px currentColor}
+.rings i:nth-child(even){margin-top:18px}
+.logo{text-align:center;line-height:.95;font-weight:900;letter-spacing:.06em}
+.logo .l1{display:block;font-size:clamp(2.8rem,14vw,4.6rem);color:#ffd6f6;text-shadow:0 0 6px var(--pink),0 0 18px var(--pink),0 0 42px var(--pink);animation:flicker 5s infinite}
+.logo .l2{display:block;font-size:clamp(2.1rem,10.5vw,3.6rem);color:#fff7c2;text-shadow:0 0 6px var(--gold),0 0 18px var(--gold),0 0 42px #ffb300}
+@keyframes flicker{0%,92%,100%{opacity:1}93%{opacity:.55}94%{opacity:1}96%{opacity:.7}97%{opacity:1}}
+.tagline{color:var(--muted);text-align:center;line-height:1.45}
+.lbl{font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center}
+.btn{border-radius:16px;padding:14px 18px;font-weight:900;letter-spacing:.06em;font-size:1.1rem;text-align:center}
+.primary{background:linear-gradient(90deg,var(--pink),#a34bff 50%,var(--gold));color:#16052a;box-shadow:0 0 22px rgba(255,43,214,.4);transition:transform .12s}
+.primary:active{transform:scale(.97)}
+.primary:disabled{opacity:.4}
+.ghost{background:var(--panel);border:2px solid rgba(0,240,255,.45);color:var(--cyan)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{--c:var(--cyan);padding:10px 14px;border-radius:999px;background:var(--panel);border:2px solid rgba(139,138,192,.35);font-weight:800;color:var(--muted)}
+.chip[aria-pressed="true"]{border-color:var(--c);color:var(--c);text-shadow:0 0 8px var(--c);box-shadow:0 0 12px color-mix(in srgb,var(--c) 35%,transparent)}
+.evgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.ev{--c:var(--cyan);padding:10px 4px;border-radius:14px;background:var(--panel);border:2px solid rgba(139,138,192,.3);text-align:center;font-weight:800;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;align-items:center}
+.ev .e{font-size:1.5rem;filter:grayscale(1) opacity(.5)}
+.ev[aria-pressed="true"]{border-color:var(--c);color:#fff;box-shadow:0 0 12px color-mix(in srgb,var(--c) 35%,transparent)}
+.ev[aria-pressed="true"] .e{filter:none}
+.card{background:var(--panel);border:1.5px solid rgba(179,79,255,.35);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.prow{display:flex;align-items:center;gap:10px}
+.dot{flex:none;width:30px;height:30px;border-radius:50%;box-shadow:0 0 10px currentColor}
+.txt{flex:1;min-width:0;padding:11px 12px;border-radius:12px;background:rgba(10,8,40,.85);border:2px solid rgba(0,240,255,.35);font-size:1.05rem;font-weight:700}
+.toggle{display:flex;align-items:center;gap:10px;text-align:left;font-weight:700}
+.toggle .sw{flex:none;width:46px;height:26px;border-radius:13px;background:#2e2a5c;position:relative;transition:background .2s}
+.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.toggle[aria-checked="true"] .sw{background:var(--green)}
+.toggle[aria-checked="true"] .sw::after{left:23px}
+.rec{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;font-size:.92rem}
+.rec b{color:var(--gold);font-variant-numeric:tabular-nums;text-align:right}
+.rec small{color:var(--muted)}
+.cab{display:flex;flex-direction:column;gap:6px;font-weight:800}
+.cab div{display:flex;justify-content:space-between;gap:10px}
+.sig{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center}
+.sig b{color:var(--pink);text-shadow:0 0 8px rgba(255,43,214,.7)}
+.privacy{font-size:.78rem;color:var(--muted);text-align:center;opacity:.8}
+.note{color:var(--muted);font-size:.85rem;text-align:center;line-height:1.5}
+
+/* oyun */
+.hud{flex:1;display:flex;gap:6px;min-width:0}
+.st{--c:#fff;flex:1;min-width:0;padding:4px;border-radius:12px;background:var(--panel);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);text-align:center}
+.st .k{display:block;font-size:.6rem;letter-spacing:.06em;color:var(--muted);white-space:nowrap;overflow:hidden}
+.st .v{display:block;font-size:clamp(.85rem,3.8vw,1.05rem);font-weight:900;color:var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+#stage{flex:1;min-height:0;position:relative;margin:6px 8px 0;display:flex;align-items:center;justify-content:center}
+#cv{display:block;border-radius:18px;border:1.5px solid rgba(179,79,255,.5);box-shadow:0 0 30px rgba(255,43,214,.15)}
+#ctrl{display:flex;gap:10px;padding:10px;justify-content:center;max-width:900px;width:100%;margin:0 auto}
+#ctrl button{flex:1;max-width:220px;height:clamp(64px,13vh,96px);border-radius:20px;font-weight:900;font-size:1.25rem;letter-spacing:.06em;background:rgba(28,22,80,.9);border:2.5px solid;touch-action:none;transition:transform .05s,background .1s}
+#ctrl .l,#ctrl .r{color:var(--cyan);border-color:rgba(0,240,255,.6);box-shadow:0 0 14px rgba(0,240,255,.25)}
+#ctrl .a{color:var(--gold);border-color:rgba(255,210,63,.7);box-shadow:0 0 16px rgba(255,210,63,.3)}
+#ctrl button.on{transform:scale(.95);background:rgba(0,240,255,.25)}
+#ctrl .a.on{background:rgba(255,210,63,.3)}
+#ctrl small{display:block;font-size:.62rem;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(7,7,26,.8);backdrop-filter:blur(3px)}
+.modal{width:100%;max-width:440px;max-height:92vh;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:22px;background:#120c38;border:2px solid rgba(255,210,63,.5);box-shadow:0 0 40px rgba(255,210,63,.2);animation:pop .25s ease-out;text-align:center}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+.modal h3{font-size:1.6rem;font-weight:900;color:#fff7c2;text-shadow:0 0 8px var(--gold),0 0 22px var(--gold);line-height:1.15}
+.modal .who{font-size:1.25rem;font-weight:900}
+.modal p{line-height:1.55}
+.modal .how{background:rgba(255,255,255,.04);border-radius:14px;padding:12px;text-align:left;font-size:.95rem;line-height:1.55}
+.modal .how small{display:block;color:var(--muted);margin-top:6px}
+.res{display:flex;flex-direction:column;gap:6px;text-align:left}
+.res div{display:grid;grid-template-columns:34px 1fr auto auto;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04);font-weight:800}
+.res .m{font-size:1.3rem;text-align:center}
+.res .v{font-variant-numeric:tabular-nums;color:var(--gold)}
+.res .pt{color:var(--muted);font-size:.8rem;min-width:44px;text-align:right}
+.res .me{box-shadow:inset 0 0 0 2px rgba(255,255,255,.15)}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:8px;height:150px;margin:6px 0}
+.podium div{width:30%;border-radius:12px 12px 0 0;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding-top:8px;font-weight:900;gap:2px}
+.podium span{font-size:.8rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.big{font-size:2.2rem;font-weight:900;color:#fff7c2;text-shadow:0 0 10px var(--gold)}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:40}
+@media (prefers-reduced-motion:reduce){.logo .l1{animation:none}.modal{animation:none}}
+@media (max-width:420px){.evgrid{grid-template-columns:repeat(5,1fr);gap:5px}.ev{font-size:.62rem}}
+</style>
+</head>
+<body>
+<div id="app">
+  <section id="menu" class="screen active"><div class="scroll"><div class="wrap" id="menuWrap"></div></div></section>
+  <section id="setup" class="screen"><div class="bar"><button class="icon-btn" data-back aria-label="Geri"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Olimpiyat</h2><span style="width:44px"></span></div><div class="scroll"><div class="wrap" id="setupWrap"></div></div></section>
+  <section id="game" class="screen">
+    <div class="bar"><button class="icon-btn" id="quit" aria-label="Çık"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="hud"><div class="st" id="h1"><span class="k"></span><span class="v"></span></div><div class="st" id="h2" style="--c:var(--gold)"><span class="k"></span><span class="v"></span></div><div class="st" id="h3" style="--c:var(--cyan)"><span class="k"></span><span class="v"></span></div></div>
+      <button class="icon-btn snd" aria-label="Ses"></button></div>
+    <div id="stage"><canvas id="cv"></canvas></div>
+    <div id="ctrl"><button class="l" data-b="L">SOL<small>←</small></button><button class="r" data-b="R">SAĞ<small>→</small></button><button class="a" data-b="A"><span id="aLbl">ATLA</span><small>BOŞLUK</small></button></div>
+  </section>
+</div>
+<canvas id="fx"></canvas>
+<script>
+'use strict';
+/* =========================================================
+   Neon Olimpiyat — FOZ Yapım
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const rnd = (a, b) => a + Math.random() * (b - a);
+const dec = (x, d = 2) => x.toFixed(d).replace('.', ',');
+const EVENTS = [
+  { id: 'yuz', name: '100 Metre', ic: '🏃', low: true, c: '#00f0ff', fmt: v => dec(v) + ' sn',
+    how: '“BAŞLA!” yazısından sonra <b>SOL</b> ve <b>SAĞ</b> düğmelerine sırayla, olabildiğince hızlı bas. Aynı düğmeye üst üste basarsan tökezlersin!', keys: 'Klavye: ← ve → tuşlarına sırayla bas.', cpu: { kolay: [15.4, 17.8], orta: [12.4, 13.8], zor: [10.6, 11.8] } },
+  { id: 'uzun', name: 'Uzun Atlama', ic: '🦘', c: '#39ff14', tries: 3, fmt: v => dec(v) + ' m',
+    how: '<b>SOL–SAĞ</b> ile hızlan. Beyaz tahtaya gelince <b>ATLA</b> düğmesine bas ve <b>basılı tut</b>: açı yükselir. Yaklaşık <b>45°</b>\'de bırak. Tahtayı geçersen faul! 3 hakkın var, en iyisi sayılır.', keys: 'Klavye: ← → koş, Boşluk basılı tut ve bırak.', cpu: { kolay: [3.2, 4.4], orta: [5.0, 6.2], zor: [6.6, 7.8] } },
+  { id: 'cirit', name: 'Cirit Atma', ic: '➶', c: '#ffe600', tries: 3, fmt: v => dec(v, 1) + ' m',
+    how: '<b>SOL–SAĞ</b> ile hızlan. Kırmızı atış çizgisinden önce <b>AT</b> düğmesine bas, <b>basılı tut</b> ve <b>45°</b> civarında bırak. Çizgiyi geçersen faul! 3 hakkın var.', keys: 'Klavye: ← → koş, Boşluk basılı tut ve bırak.', cpu: { kolay: [26, 38], orta: [44, 56], zor: [58, 70] } },
+  { id: 'yuksek', name: 'Yüksek Atlama', ic: '⤴', c: '#ff2bd6', fmt: v => dec(v) + ' m',
+    how: 'Sporcu kendisi koşar. Alttaki çubukta gidip gelen ışık <b>yeşil bölgedeyken ZIPLA</b>\'ya bas. Çıta her başarıda yükselir, yeşil bölge daralır. Aynı yükseklikte 3 kez düşürürsen yarışma biter.', keys: 'Klavye: Boşluk.', cpu: { kolay: [1.5, 1.7], orta: [1.75, 1.95], zor: [2.0, 2.2] } },
+  { id: 'ok', name: 'Okçuluk', ic: '🏹', c: '#ff8a00', fmt: v => v + ' puan',
+    how: 'Nişangâh titreyerek hareket eder. <b>Rüzgârı</b> hesaba kat: <b>SOL–SAĞ</b> ile nişanı kaydır, nişangâh tam yerindeyken <b>ATEŞ</b>\'e bas. 6 okun toplamı sayılır (en fazla 60).', keys: 'Klavye: ← → nişan, Boşluk ateş.', cpu: { kolay: [27, 37], orta: [40, 48], zor: [49, 56] } }
+];
+const EV = Object.fromEntries(EVENTS.map(e => [e.id, e]));
+const PCOL = ['#ff2bd6', '#00f0ff', '#39ff14', '#ffe600'];
+const CPUS = [{ name: 'Volt', color: '#9aa3c7' }, { name: 'Turbo', color: '#c9a0ff' }, { name: 'Şimşek', color: '#7fd1b9' }];
+const POINTS = [10, 8, 6, 5, 4, 3, 2, 1];
+const MEDAL = ['🥇', '🥈', '🥉'];
+
+/* ---------- kayıt ---------- */
+const KEY = 'foz-neon-olimpiyat-v1';
+let DB = { sound: true, names: ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4'], count: 1, cpu: true, diff: 'orta', events: EVENTS.map(e => e.id), best: {}, cabinet: {}, practice: 'yuz' };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) DB = Object.assign(DB, s); } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
+
+/* ---------- ses ---------- */
+let AC = null;
+function audio() { if (!DB.sound) return null; try { if (!AC) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; AC = new C(); } if (AC.state === 'suspended') AC.resume(); } catch (e) { return null; } return AC; }
+function tone(f, d = .08, type = 'square', v = .04, slide = 0, delay = 0) {
+  const a = audio(); if (!a) return; const t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, f * slide), t + d);
+  g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d + .03);
+}
+function noise(d = .3, v = .05) { const a = audio(); if (!a) return; const b = a.createBuffer(1, a.sampleRate * d, a.sampleRate), ch = b.getChannelData(0); for (let i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / ch.length); const s = a.createBufferSource(), g = a.createGain(); s.buffer = b; g.gain.value = v; s.connect(g); g.connect(a.destination); s.start(); }
+const sfx = {
+  step: () => tone(160, .03, 'triangle', .03),
+  stumble: () => tone(120, .1, 'sawtooth', .04, .6),
+  beep: hi => tone(hi ? 880 : 440, hi ? .3 : .15, 'square', .05),
+  jump: () => tone(300, .25, 'sine', .05, 2.2),
+  land: () => noise(.25, .06),
+  throw: () => tone(500, .3, 'sawtooth', .025, .4),
+  foul: () => [300, 200].forEach((f, i) => tone(f, .2, 'square', .05, 0, i * .18)),
+  good: () => [523, 659, 784].forEach((f, i) => tone(f, .1, 'square', .045, 0, i * .07)),
+  cheer: () => { noise(.9, .05); [523, 659, 784, 1047].forEach((f, i) => tone(f, .12, 'square', .04, 0, .1 + i * .08)); },
+  arrow: () => tone(900, .15, 'triangle', .04, .3),
+  hit: () => tone(200, .08, 'square', .05)
+};
+const REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const fx = $('fx'), fxc = fx.getContext('2d'); let parts = [], fxOn = false;
+function confetti(n = 150) {
+  if (REDUCED) n = 25;
+  fx.width = innerWidth * devicePixelRatio; fx.height = innerHeight * devicePixelRatio; fx.style.width = innerWidth + 'px'; fx.style.height = innerHeight + 'px';
+  const C = ['#ff2bd6', '#00f0ff', '#39ff14', '#ffe600', '#ff8a00', '#ffd23f'];
+  for (let i = 0; i < n; i++) parts.push({ x: Math.random() * innerWidth, y: -10 - Math.random() * 200, vx: (Math.random() - .5) * 120, vy: 80 + Math.random() * 160, r: Math.random() * 6, c: C[i % 6], s: 4 + Math.random() * 5, t: 0 });
+  if (fxOn) return; fxOn = true; let last = performance.now();
+  const step = now => { const dt = Math.min(.05, (now - last) / 1000); last = now; fxc.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); fxc.clearRect(0, 0, innerWidth, innerHeight);
+    for (const p of parts) { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 40 * dt; fxc.save(); fxc.translate(p.x, p.y); fxc.rotate(p.r + p.t * 5); fxc.fillStyle = p.c; fxc.fillRect(-p.s / 2, -p.s, p.s, p.s * 2); fxc.restore(); }
+    parts = parts.filter(p => p.y < innerHeight + 20 && p.t < 6); if (parts.length) requestAnimationFrame(step); else { fxOn = false; fxc.clearRect(0, 0, innerWidth, innerHeight); } };
+  requestAnimationFrame(step);
+}
+
+/* =========================================================
+   ÇİZİM
+   ========================================================= */
+const cv = $('cv'), ctx = cv.getContext('2d');
+const VH = 360, GY = 262, LANE = 300;
+let SC = 1, VW = 600;
+function fitCanvas() {
+  const st = $('stage'), w = st.clientWidth, h0 = st.clientHeight; if (!w || !h0) return;
+  const h = Math.min(h0, Math.round(w * .78));
+  cv.style.width = w + 'px'; cv.style.height = h + 'px';
+  const dpr = Math.min(devicePixelRatio || 1, 2.5); cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  SC = cv.height / VH; VW = cv.width / SC;
+}
+addEventListener('resize', () => { if ($('game').classList.contains('active')) fitCanvas(); });
+const CROWD = []; for (let i = 0; i < 420; i++) CROWD.push({ x: Math.random() * 900, y: 128 + Math.random() * 96, c: ['#ff2bd6', '#00f0ff', '#ffe600', '#39ff14', '#ffffff', '#b05cff'][i % 6], s: 1.5 + Math.random() * 2, p: Math.random() * 6 });
+let TIME = 0;
+function stadium(camPx, cheer = 0) {
+  const g = ctx.createLinearGradient(0, 0, 0, VH); g.addColorStop(0, '#0a0526'); g.addColorStop(.55, '#170b40'); g.addColorStop(1, '#07071a');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, VW, VH);
+  // projektörler
+  for (let i = 0; i < 5; i++) {
+    const x = (((i * 240 - camPx * .08) % 1200) + 1200) % 1200 - 150;
+    const rg = ctx.createRadialGradient(x + 20, 30, 2, x + 20, 30, 90); rg.addColorStop(0, 'rgba(255,255,255,.35)'); rg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = rg; ctx.fillRect(x - 70, -60, 180, 180);
+    ctx.fillStyle = '#fff'; ctx.fillRect(x, 24, 40, 10); ctx.fillStyle = '#556'; ctx.fillRect(x + 18, 34, 4, 90);
+  }
+  // tribün
+  ctx.fillStyle = '#120a35'; ctx.fillRect(0, 120, VW, GY - 120);
+  ctx.strokeStyle = 'rgba(176,92,255,.35)'; ctx.lineWidth = 1;
+  for (let y = 132; y < GY - 30; y += 16) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(VW, y); ctx.stroke(); }
+  const off = ((camPx * .3) % 900 + 900) % 900;
+  for (const d of CROWD) {
+    for (let k = 0; k < 3; k++) {
+      const x = d.x - off + k * 900; if (x < -5 || x > VW + 5) continue;
+      const jump = cheer ? Math.max(0, Math.sin(TIME * 12 + d.p)) * 4 * cheer : Math.sin(TIME * 2 + d.p) * .6;
+      ctx.fillStyle = d.c; ctx.globalAlpha = .75; ctx.fillRect(x, d.y - jump, d.s, d.s * 1.6); ctx.globalAlpha = 1;
+    }
+  }
+  // reklam panosu
+  ctx.fillStyle = '#0a0624'; ctx.fillRect(0, GY - 28, VW, 24);
+  ctx.save(); ctx.font = '900 13px system-ui,sans-serif'; ctx.textBaseline = 'middle';
+  const txt = '★ FOZ YAPIM ★ NEON OLİMPİYAT ', tw = ctx.measureText(txt).width, o2 = ((camPx * .7) % tw + tw) % tw;
+  for (let x = -o2; x < VW; x += tw) { ctx.fillStyle = (Math.floor((x + o2) / tw) % 2) ? '#ff2bd6' : '#00f0ff'; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 8; ctx.fillText(txt, x, GY - 16); }
+  ctx.restore();
+  // pist
+  ctx.fillStyle = '#4a1430'; ctx.fillRect(0, GY, VW, VH - GY);
+  ctx.fillStyle = '#5c1a3a'; ctx.fillRect(0, GY + 20, VW, 60);
+  ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 2;
+  for (const y of [GY + 20, GY + 80]) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(VW, y); ctx.stroke(); }
+}
+function athlete(x, y, phase, pose, color, opt = {}) {
+  ctx.save(); ctx.translate(x, y); if (opt.rot) ctx.rotate(opt.rot);
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 4.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.shadowColor = color; ctx.shadowBlur = 10;
+  const lean = pose === 'run' ? .25 : pose === 'throw' ? -.2 : 0;
+  const hip = [0, -24], sh = [lean * 18, -46], head = [lean * 22, -56];
+  const seg = (a, b) => { ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); };
+  const legs = (a1, k1, a2, k2) => {
+    for (const [a, k] of [[a1, k1], [a2, k2]]) {
+      const knee = [hip[0] + Math.sin(a) * 13, hip[1] + Math.cos(a) * 13], foot = [knee[0] + Math.sin(a - k) * 13, knee[1] + Math.cos(a - k) * 13];
+      seg(hip, knee); seg(knee, foot);
+    }
+  };
+  const arms = (b1, b2) => { for (const b of [b1, b2]) { const el = [sh[0] + Math.sin(b) * 11, sh[1] + Math.cos(b) * 11], hand = [el[0] + Math.sin(b + .9) * 10, el[1] + Math.cos(b + .9) * 10]; seg(sh, el); seg(el, hand); } };
+  if (pose === 'run') { const s = Math.sin(phase); legs(s * .9, .2 + Math.max(0, -s) * 1.1, -s * .9, .2 + Math.max(0, s) * 1.1); arms(-s * 1.1, s * 1.1); }
+  else if (pose === 'jump') { legs(1.1, -.2, .9, -.4); arms(2.4, 2.1); }
+  else if (pose === 'land') { legs(1.4, 1.9, 1.2, 2.0); arms(.9, 1.2); }
+  else if (pose === 'throw') { const k = opt.k || 0; legs(.5, .3, -.4, .2); arms(Math.PI - .4 - k * 2.6, -.4); }
+  else if (pose === 'bow') { legs(.25, 0, -.25, 0); ctx.beginPath(); ctx.moveTo(sh[0], sh[1]); ctx.lineTo(sh[0] + 22, sh[1] - 2); ctx.stroke(); seg(sh, [sh[0] + 6, sh[1] + 8]); }
+  else { legs(.12, 0, -.12, 0); arms(.25, -.25); }
+  seg(hip, sh); ctx.beginPath(); ctx.arc(head[0], head[1], 7, 0, 7); ctx.fill();
+  ctx.restore();
+}
+function bigText(t, y, color = '#fff7c2', size = 34) {
+  ctx.save(); ctx.font = `900 ${size}px system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = color; ctx.shadowColor = color; ctx.shadowBlur = 16; ctx.fillText(t, VW / 2, y); ctx.restore();
+}
+function label(t, x, y, color = '#fff', size = 12, align = 'center') { ctx.save(); ctx.font = `800 ${size}px system-ui,sans-serif`; ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillStyle = color; ctx.fillText(t, x, y); ctx.restore(); }
+function gauge(x, y, ang, active) {
+  ctx.save(); ctx.translate(x, y); ctx.lineWidth = 6; ctx.lineCap = 'round';
+  ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.beginPath(); ctx.arc(0, 0, 40, -Math.PI / 2, 0); ctx.stroke();
+  ctx.strokeStyle = 'rgba(57,255,20,.7)'; ctx.beginPath(); ctx.arc(0, 0, 40, -50 * Math.PI / 180, -40 * Math.PI / 180); ctx.stroke();
+  const a = -ang * Math.PI / 180; ctx.strokeStyle = active ? '#ffd23f' : '#fff'; ctx.lineWidth = 3; ctx.shadowColor = '#ffd23f'; ctx.shadowBlur = 8;
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a) * 46, Math.sin(a) * 46); ctx.stroke();
+  ctx.restore(); label(Math.round(ang) + '°', x + 30, y + 12, '#ffd23f', 13);
+}
+
+/* =========================================================
+   GİRDİ
+   ========================================================= */
+const held = { L: false, R: false, A: false };
+let E = null; // aktif branş
+function press(b) { if (held[b]) return; held[b] = true; const el = document.querySelector(`#ctrl [data-b="${b}"]`); if (el) el.classList.add('on'); if (E && E.press) E.press(b); }
+function release(b) { if (!held[b]) return; held[b] = false; const el = document.querySelector(`#ctrl [data-b="${b}"]`); if (el) el.classList.remove('on'); if (E && E.release) E.release(b); }
+document.querySelectorAll('#ctrl [data-b]').forEach(el => {
+  el.addEventListener('pointerdown', e => { e.preventDefault(); audio(); try { el.setPointerCapture(e.pointerId); } catch (_) {} press(el.dataset.b); });
+  const up = e => { release(el.dataset.b); };
+  el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); el.addEventListener('lostpointercapture', up);
+});
+const KMAP = { arrowleft: 'L', a: 'L', arrowright: 'R', d: 'R', ' ': 'A', arrowup: 'A', w: 'A', enter: 'A' };
+document.addEventListener('keydown', e => {
+  if (document.querySelector('.overlay')) { if (e.key === 'Enter' || e.key === ' ') { const b = document.querySelector('.overlay .btn.primary'); if (b) { e.preventDefault(); b.click(); } } return; }
+  if (!$('game').classList.contains('active')) return;
+  const b = KMAP[e.key.toLowerCase()]; if (!b) { if (e.key === 'Escape') quitGame(); return; }
+  e.preventDefault(); if (e.repeat) return; audio(); press(b);
+});
+document.addEventListener('keyup', e => { const b = KMAP[e.key.toLowerCase()]; if (b) release(b); });
+addEventListener('blur', () => { for (const b in held) release(b); });
+function setControls(list, aLabel) {
+  for (const b of ['L', 'R', 'A']) document.querySelector(`#ctrl [data-b="${b}"]`).hidden = !list.includes(b);
+  $('aLbl').textContent = aLabel || 'ATLA';
+  const l = document.querySelector('#ctrl [data-b="L"]'), r = document.querySelector('#ctrl [data-b="R"]');
+  if (aLabel === 'ATEŞ') { l.firstChild.textContent = '◀ NİŞAN'; r.firstChild.textContent = 'NİŞAN ▶'; } else { l.firstChild.textContent = 'SOL'; r.firstChild.textContent = 'SAĞ'; }
+}
+
+/* =========================================================
+   KOŞU MOTORU (100 m, uzun atlama, cirit)
+   ========================================================= */
+const VMAX = 12.2;
+function runner(x0) { return { x: x0, v: 0, last: null, phase: 0, stumble: 0, taps: 0 }; }
+function runTap(r, b) {
+  if (b === r.last) { r.v *= .88; r.stumble = .35; sfx.stumble(); return; }
+  r.last = b; r.taps++; r.v = Math.min(VMAX, r.v + .55); sfx.step();
+}
+function runStep(r, dt) { r.v = Math.max(0, r.v - r.v * .38 * dt); r.x += r.v * dt; r.phase += r.v * dt * 1.7 + (r.v > .2 ? dt * 2 : 0); if (r.stumble > 0) r.stumble -= dt; }
+function speedBar(r) {
+  const w = Math.min(160, VW * .4), x = 14, y = 14;
+  ctx.fillStyle = 'rgba(10,8,40,.8)'; ctx.fillRect(x, y, w, 12); const p = r.v / VMAX;
+  const g = ctx.createLinearGradient(x, 0, x + w, 0); g.addColorStop(0, '#00f0ff'); g.addColorStop(.7, '#ffe600'); g.addColorStop(1, '#ff3b5c');
+  ctx.fillStyle = g; ctx.fillRect(x, y, w * p, 12); ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.strokeRect(x, y, w, 12);
+  label('HIZ ' + dec(r.v * 3.6, 0) + ' km/sa', x, y + 24, '#cfd', 11, 'left');
+}
+
+/* ---------- 100 metre ---------- */
+function ev100(pl, done) {
+  const r = runner(0), PX = 22; let t = 0, state = 'cd', cd = 2.7, lastBeep = 4, fin = null, after = 0, fs = 0;
+  const best = DB.best.yuz && DB.best.yuz.v;
+  setControls(['L', 'R']);
+  return {
+    dbg: () => ({ state, x: r.x, v: r.v, t }),
+    hud: () => ['Süre', state === 'cd' ? '0,00' : dec(fin != null ? fin : t), 'Mesafe', Math.min(100, Math.floor(r.x)) + ' m'],
+    press(b) {
+      if (b === 'A') return;
+      if (state === 'cd') { if (cd < 1.8) { fs++; cd = 2.7; lastBeep = 4; sfx.foul(); this.msg = 'Erken çıkış! Yeniden'; this.msgT = 1.2; } return; }
+      if (state === 'run') runTap(r, b);
+    },
+    update(dt) {
+      if (state === 'cd') { cd -= dt; const k = Math.ceil(cd / .9); if (k !== lastBeep && k >= 0) { lastBeep = k; if (k > 0 && k < 3) sfx.beep(false); } if (cd <= 0) { state = 'run'; sfx.beep(true); } return; }
+      if (state === 'run') { t += dt; const px = r.x; runStep(r, dt); if (r.x >= 100 && fin == null) { fin = t - (r.x - 100) / Math.max(r.v, .1); state = 'fin'; sfx.cheer(); } if (t > 60) { fin = 60; state = 'fin'; } }
+      else if (state === 'fin') { runStep(r, dt * .6); r.v *= .97; after += dt; if (after > 1.4) { state = 'done'; done({ v: Math.round(fin * 100) / 100, text: dec(fin) + ' sn' }); } }
+      if (this.msgT > 0) this.msgT -= dt;
+    },
+    draw() {
+      const cam = r.x * PX - VW * .32; stadium(cam, state === 'fin' ? 1 : 0);
+      for (let m = 0; m <= 110; m += 10) { const sx = m * PX - cam; if (sx < -40 || sx > VW + 40) continue; ctx.fillStyle = m === 100 ? '#fff' : 'rgba(255,255,255,.35)'; ctx.fillRect(sx - (m === 100 ? 3 : 1), GY + 20, m === 100 ? 6 : 2, 60); if (m <= 100) label(m + ' m', sx, GY + 92, m === 100 ? '#ffd23f' : '#cbd', 11); }
+      const fx0 = 100 * PX - cam; if (fx0 > -50 && fx0 < VW + 50) { ctx.save(); ctx.fillStyle = '#ffd23f'; ctx.shadowColor = '#ffd23f'; ctx.shadowBlur = 14; ctx.fillRect(fx0 - 2, GY - 60, 4, 62); ctx.restore(); label('BİTİŞ', fx0, GY - 68, '#ffd23f', 12); }
+      if (best && state !== 'cd') { const gx = Math.min(100, 100 * t / best) * PX - cam; ctx.globalAlpha = .35; athlete(gx, LANE + 8, t * best * 1.7, 'run', '#ffffff'); ctx.globalAlpha = 1; label('REKOR', gx, LANE - 72, 'rgba(255,255,255,.5)', 10); }
+      athlete(r.x * PX - cam, LANE, r.phase, state === 'cd' ? 'stand' : 'run', pl.color);
+      label(pl.name, r.x * PX - cam, LANE - 74, pl.color, 12);
+      if (state !== 'cd') speedBar(r);
+      if (state === 'cd') bigText(cd > 1.8 ? 'Yerine…' : cd > .9 ? 'Hazır…' : 'Hazır…', 80, '#d6fdff');
+      else if (t < .8) bigText('BAŞLA!', 80, '#39ff14');
+      if (r.stumble > 0) label('Tökezledin! Sırayla bas', VW / 2, 120, '#ff8095', 15);
+      if (this.msgT > 0) bigText(this.msg, 120, '#ff8095', 22);
+      if (state === 'fin' || state === 'done') bigText(dec(fin) + ' sn', 80);
+    }
+  };
+}
+
+/* ---------- uzun atlama ve cirit (ortak) ---------- */
+function evJump(pl, done, kind) {
+  const isJ = kind === 'uzun', start = isJ ? -36 : -26, r = runner(start);
+  let state = 'ready', ang = 8, toff = 0, vrun = 0, fl = null, after = 0, res = null, foul = '', camPX = 24;
+  setControls(['L', 'R', 'A'], isJ ? 'ATLA' : 'AT');
+  const best = DB.best[kind] && DB.best[kind].v;
+  const launch = () => {
+    sfx[isJ ? 'jump' : 'throw']();
+    const a = ang * Math.PI / 180;
+    if (isJ) { const v0 = vrun * .78; fl = { x: toff, y: 0, vx: v0 * Math.cos(a), vy: v0 * Math.sin(a) }; }
+    else { const s = 9 + vrun * 1.5; fl = { x: toff + .5, y: 1.9, vx: s * Math.cos(a), vy: s * Math.sin(a) }; }
+    state = 'fly';
+  };
+  const doFoul = why => { foul = why; state = 'foul'; sfx.foul(); after = 0; };
+  return {
+    dbg: () => ({ state, x: r.x, v: r.v, ang }),
+    hud: () => ['Hız', dec(r.v * 3.6, 0) + ' km/sa', 'Açı', state === 'ang' || state === 'fly' || state === 'land' ? Math.round(ang) + '°' : '–'],
+    press(b) {
+      if (b === 'L' || b === 'R') { if (state === 'ready') state = 'run'; if (state === 'run') runTap(r, b); return; }
+      if (b === 'A' && state === 'run') {
+        if (r.x > .25) return doFoul(isJ ? 'Tahtayı geçtin — faul!' : 'Çizgiyi geçtin — faul!');
+        toff = Math.min(0, r.x); vrun = r.v; ang = 8; state = 'ang';
+      }
+    },
+    release(b) { if (b === 'A' && state === 'ang') launch(); },
+    update(dt) {
+      if (state === 'run') { runStep(r, dt); if (r.x > 1.2) doFoul(isJ ? 'Atlamadan tahtayı geçtin — faul!' : 'Atmadan çizgiyi geçtin — faul!'); }
+      else if (state === 'ang') { ang += 62 * dt; r.v *= Math.pow(.6, dt); r.x += r.v * dt * .4; if (ang >= 80) { ang = 80; launch(); } }
+      else if (state === 'fly') {
+        fl.vy -= 9.81 * dt; fl.x += fl.vx * dt; fl.y += fl.vy * dt;
+        if (fl.y <= 0) { fl.y = 0; res = Math.max(0, fl.x); state = 'land'; after = 0; sfx.land(); if (best == null || res > best) sfx.cheer(); else sfx.good(); }
+        if (!isJ) camPX = Math.max(7, camPX - dt * 14);
+      }
+      else if (state === 'land') { after += dt; if (after > 1.5) { state = 'done'; done({ v: Math.round(res * 100) / 100, text: EV[kind].fmt(res) }); } }
+      else if (state === 'foul') { after += dt; if (after > 1.6) { state = 'done'; done({ v: null, text: 'Faul (X)' }); } }
+    },
+    draw() {
+      const focus = state === 'fly' || state === 'land' ? fl.x : r.x;
+      const PX = isJ ? 26 : camPX;
+      const cam = focus * PX - VW * (state === 'fly' || state === 'land' ? .45 : .35);
+      stadium(cam, state === 'land' ? 1 : 0);
+      const W = x => x * PX - cam;
+      // pist işaretleri
+      if (isJ) {
+        ctx.fillStyle = '#d9b46a'; ctx.globalAlpha = .9; ctx.fillRect(W(1), GY + 22, (11 - 1) * PX, 56); ctx.globalAlpha = 1;
+        ctx.fillStyle = 'rgba(255,230,140,.35)'; for (let i = 0; i < 40; i++) ctx.fillRect(W(1 + (i * 37 % 100) / 10), GY + 26 + (i * 17 % 50), 2, 2);
+        for (let m = 3; m <= 10; m++) { ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.fillRect(W(m) - 1, GY + 72, 2, 10); label(m + ' m', W(m), GY + 92, '#ffe9a8', 11); }
+        ctx.save(); ctx.fillStyle = '#fff'; ctx.shadowColor = '#fff'; ctx.shadowBlur = 10; ctx.fillRect(W(-.2), GY + 24, .2 * PX + 4, 52); ctx.restore();
+        label('TAHTA', W(0), GY + 92, '#fff', 11);
+      } else {
+        ctx.fillStyle = '#1d5a2a'; ctx.fillRect(W(.2), GY + 20, 130 * PX, 60);
+        for (let m = 10; m <= 100; m += 10) { ctx.fillStyle = 'rgba(255,255,255,.45)'; ctx.fillRect(W(m) - 1, GY + 20, 2, 60); label(m + ' m', W(m), GY + 92, '#d6ffd0', 11); }
+        ctx.save(); ctx.fillStyle = '#ff3b5c'; ctx.shadowColor = '#ff3b5c'; ctx.shadowBlur = 12; ctx.fillRect(W(0) - 2, GY + 20, 5, 60); ctx.restore();
+      }
+      for (let m = Math.ceil(start / 5) * 5; m < 0; m += 5) label(-m + '', W(m), GY + 92, 'rgba(255,255,255,.3)', 10);
+      if (best != null) { const bx = W(best); ctx.save(); ctx.strokeStyle = 'rgba(255,210,63,.8)'; ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.moveTo(bx, GY - 10); ctx.lineTo(bx, GY + 80); ctx.stroke(); ctx.restore(); label('REKOR ' + EV[kind].fmt(best), bx, GY - 18, '#ffd23f', 11); }
+      // sporcu
+      if (state === 'fly' && isJ) athlete(W(fl.x), LANE - fl.y * PX, 0, 'jump', pl.color);
+      else if (state === 'land' && isJ) athlete(W(fl.x), LANE, 0, 'land', pl.color);
+      else if (!isJ && (state === 'ang' || state === 'fly' || state === 'land')) athlete(W(state === 'ang' ? r.x : toff + .6), LANE, 0, 'throw', pl.color, { k: state === 'ang' ? 0 : 1 });
+      else athlete(W(r.x), LANE, r.phase, state === 'ready' || state === 'foul' ? 'stand' : 'run', pl.color);
+      // cirit
+      if (!isJ) {
+        const flying = state === 'fly' || state === 'land';
+        const ja = flying ? (state === 'land' ? -.55 : Math.atan2(fl.vy, fl.vx)) : (state === 'ang' ? ang * Math.PI / 180 : .15);
+        const cx = flying ? W(fl.x) : W(r.x) + 6, cy = flying ? LANE - 8 - fl.y * PX : LANE - 50, L = Math.max(34, 2.6 * PX);
+        ctx.save(); ctx.translate(cx, cy); ctx.rotate(-ja); ctx.strokeStyle = '#ffe600'; ctx.lineWidth = 3; ctx.shadowColor = '#ffe600'; ctx.shadowBlur = 10;
+        ctx.beginPath(); ctx.moveTo(-L / 2, 0); ctx.lineTo(L / 2, 0); ctx.stroke(); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(L / 2 + 6, 0); ctx.lineTo(L / 2 - 2, -3); ctx.lineTo(L / 2 - 2, 3); ctx.fill(); ctx.restore();
+        if (flying) label(dec(Math.max(0, fl.x), 1) + ' m', cx, cy - 18, '#ffe600', 12);
+      }
+      label(pl.name, W(state === 'fly' || state === 'land' ? (isJ ? fl.x : toff) : r.x), LANE - 76, pl.color, 12);
+      if (state === 'run' || state === 'ready') speedBar(r);
+      if (state === 'ang') gauge(W(r.x) + 34, LANE - 40, ang, true);
+      if (state === 'ready') bigText('SOL–SAĞ ile koşmaya başla', 80, '#d6fdff', 20);
+      if (state === 'run' && r.x > -8 && r.x < .3) bigText(isJ ? 'ATLA!' : 'AT!', 80, '#ffd23f', 30);
+      if (r.stumble > 0 && state === 'run') label('Tökezledin! Sırayla bas', VW / 2, 120, '#ff8095', 15);
+      if (state === 'land') bigText(EV[kind].fmt(res) + (best == null || res > best ? '  🏅 REKOR!' : ''), 80);
+      if (state === 'foul') bigText(foul, 80, '#ff8095', 22);
+    }
+  };
+}
+
+/* ---------- yüksek atlama ---------- */
+function evHigh(pl, done) {
+  let h = 1.5, tries = 0, bestH = 0, state = 'intro', t = 0, m = 0, md = 1, hit = null, ax = -9, jt = 0, barFall = 0, msg = '', msgT = 0;
+  setControls(['A'], 'ZIPLA');
+  const zone = () => clamp(.38 - (h - 1.5) * .62, .07, .38);
+  const speed = () => .9 + (h - 1.5) * 1.6;
+  const begin = () => { state = 'app'; ax = -9; hit = null; m = Math.random(); md = Math.random() < .5 ? 1 : -1; jt = 0; barFall = 0; };
+  const next = ok => {
+    if (ok) { bestH = h; tries = 0; msg = 'Geçtin! ' + dec(h) + ' m'; sfx.cheer(); h = Math.round((h + (h < 2 ? .1 : .05)) * 100) / 100; if (h > 2.5) { msg = 'İnanılmaz! En üst çıta!'; return end(); } }
+    else { tries++; msg = 'Çıtayı düşürdün (' + tries + '/3)'; sfx.foul(); if (tries >= 3) return end(); }
+    msgT = 1.4; state = 'wait'; t = 0;
+  };
+  const end = () => { state = 'end'; t = 0; msgT = 1.6; };
+  begin();
+  return {
+    dbg: () => ({ state, m, zone: zone(), h, tries, bestH }),
+    hud: () => ['Çıta', dec(h) + ' m', 'Deneme', (tries + 1) + '/3'],
+    press(b) { if (b !== 'A' || state !== 'app' || hit !== null) return; const c = Math.abs(m - .5); hit = c <= zone() / 2; sfx.jump(); },
+    update(dt) {
+      t += dt;
+      if (state === 'app') {
+        m += md * speed() * dt; if (m > 1) { m = 2 - m; md = -1; } if (m < 0) { m = -m; md = 1; }
+        ax += 3.4 * dt;
+        if (ax >= -.6) { if (hit === null) hit = false; state = 'jump'; jt = 0; }
+      } else if (state === 'jump') { jt += dt; ax += 2.4 * dt; if (!hit) barFall = Math.min(1, barFall + dt * 2.5); if (jt > .9) next(hit); }
+      else if (state === 'wait') { if (t > 1.5) begin(); }
+      else if (state === 'end') { if (t > 1.7) { state = 'done'; done({ v: bestH || null, text: bestH ? dec(bestH) + ' m' : 'Geçemedi' }); } }
+      if (msgT > 0) msgT -= dt;
+    },
+    draw() {
+      const PX = 70, cam = -VW * .5; stadium(0, state === 'wait' && hit ? 1 : 0);
+      const W = x => x * PX - cam, bx = W(0), by = LANE - h * PX * .55;
+      // minder
+      ctx.fillStyle = '#2346a8'; ctx.fillRect(W(.3), LANE - 22, 2.6 * PX, 26); ctx.strokeStyle = '#7da2ff'; ctx.lineWidth = 2; ctx.strokeRect(W(.3), LANE - 22, 2.6 * PX, 26);
+      // direkler ve çıta
+      ctx.fillStyle = '#ccd'; ctx.fillRect(bx - 4, by - 10, 5, LANE - by + 10); ctx.fillRect(bx + 36, by - 18, 5, LANE - by + 18);
+      ctx.save(); ctx.strokeStyle = '#ff2bd6'; ctx.lineWidth = 4; ctx.shadowColor = '#ff2bd6'; ctx.shadowBlur = 12; ctx.beginPath();
+      if (barFall > 0) { ctx.moveTo(bx, by + barFall * (LANE - by - 10)); ctx.lineTo(bx + 38, by - 8 + barFall * 30); } else { ctx.moveTo(bx, by); ctx.lineTo(bx + 38, by - 8); }
+      ctx.stroke(); ctx.restore(); label(dec(h) + ' m', bx + 19, by - 26, '#ff9ae9', 13);
+      // sporcu
+      if (state === 'jump' || ((state === 'wait' || state === 'end') && jt > 0)) {
+        const p = Math.min(1, jt / .9), top = hit ? h * PX * .55 + 14 : h * PX * .55 - 22;
+        const x = W(-.6 + p * 2.2), y = LANE - Math.sin(p * Math.PI) * top - (p > .5 ? 0 : 0);
+        athlete(x, y, 0, p < .85 ? 'jump' : 'land', pl.color, { rot: p < .85 ? -Math.PI / 2 * Math.min(1, p * 1.6) : 0 });
+      } else athlete(W(ax), LANE, t * 12, state === 'app' ? 'run' : 'stand', pl.color);
+      label(pl.name, VW * .2, 40, pl.color, 14, 'left');
+      label('En iyi: ' + (bestH ? dec(bestH) + ' m' : '–'), VW * .2, 60, '#ffd23f', 12, 'left');
+      // zamanlama çubuğu
+      if (state === 'app') {
+        const w = Math.min(320, VW * .8), x0 = (VW - w) / 2, y0 = 92, z = zone();
+        ctx.fillStyle = 'rgba(10,8,40,.85)'; ctx.fillRect(x0, y0, w, 18);
+        ctx.save(); ctx.fillStyle = '#39ff14'; ctx.shadowColor = '#39ff14'; ctx.shadowBlur = 10; ctx.fillRect(x0 + w * (.5 - z / 2), y0, w * z, 18); ctx.restore();
+        ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.strokeRect(x0, y0, w, 18);
+        ctx.save(); ctx.fillStyle = hit === null ? '#fff' : hit ? '#39ff14' : '#ff3b5c'; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 12; ctx.fillRect(x0 + w * m - 3, y0 - 6, 6, 30); ctx.restore();
+        label(hit === null ? 'Işık yeşildeyken ZIPLA!' : hit ? 'Harika zamanlama!' : 'Kaçırdın…', VW / 2, y0 + 36, hit === false ? '#ff8095' : '#d6fdff', 14);
+      }
+      if (msgT > 0) bigText(msg, 150, msg.startsWith('Geçtin') || msg.startsWith('İnan') ? '#39ff14' : '#ff8095', 24);
+      if (state === 'end') bigText('Sonuç: ' + (bestH ? dec(bestH) + ' m' : 'Geçemedi'), 80);
+    }
+  };
+}
+
+/* ---------- okçuluk ---------- */
+function evArch(pl, done) {
+  const N = 6; let k = 0, total = 0, state = 'aim', t = Math.random() * 10, aim = 0, wind = 0, shots = [], fly = 0, last = null, after = 0;
+  setControls(['L', 'R', 'A'], 'ATEŞ');
+  const newWind = () => { wind = Math.round(rnd(-3, 3)); aim = 0; };
+  newWind();
+  const geo = () => { const R = Math.min(105, VW * .3, 120); return { cx: VW / 2, cy: 170, R }; };
+  const sway = (tt, R) => { const A = R * (.32 + k * .03); return [Math.sin(tt * 1.25) * A + Math.sin(tt * 2.7 + 1) * A * .45, Math.cos(tt * 1.05) * A * .75 + Math.sin(tt * 2.2 + .5) * A * .35]; };
+  return {
+    dbg: () => ({ state, k, total, wind }),
+    hud: () => ['Ok', Math.min(k + 1, N) + '/' + N, 'Toplam', total + ' puan'],
+    press(b) {
+      if (state !== 'aim') return;
+      if (b === 'A') { const { R } = geo(); const [sx, sy] = sway(t, R); const px = aim + sx + wind * R * .085, py = sy + R * .05; const d = Math.hypot(px, py) / R; const sc = d >= 1 ? 0 : 10 - Math.floor(d * 10); last = { x: px, y: py, s: sc }; state = 'fly'; fly = 0; sfx.arrow(); }
+    },
+    update(dt) {
+      t += dt; const { R } = geo();
+      if (state === 'aim') { if (held.L) aim -= R * .55 * dt; if (held.R) aim += R * .55 * dt; aim = clamp(aim, -R * 1.2, R * 1.2); }
+      else if (state === 'fly') { fly += dt; if (fly > .35) { shots.push(last); total += last.s; state = 'hit'; after = 0; sfx.hit(); if (last.s >= 9) sfx.cheer(); else if (last.s >= 6) sfx.good(); } }
+      else if (state === 'hit') { after += dt; if (after > 1.1) { k++; if (k >= N) { state = 'end'; after = 0; } else { state = 'aim'; newWind(); } } }
+      else if (state === 'end') { after += dt; if (after > 1.6) { state = 'done'; done({ v: total, text: total + ' puan' }); } }
+    },
+    draw() {
+      stadium(0); const { cx, cy, R } = geo();
+      // hedef
+      ctx.fillStyle = '#2b2b45'; ctx.fillRect(cx - 4, cy + R, 8, LANE - cy - R); ctx.fillRect(cx - R * .7, LANE - 4, R * 1.4, 6);
+      const ring = ['#ffffff', '#ffffff', '#2a2a3a', '#2a2a3a', '#2f6bff', '#2f6bff', '#ff3b5c', '#ff3b5c', '#ffd23f', '#ffd23f'];
+      for (let i = 0; i < 10; i++) { const rr = R * (1 - i / 10); ctx.beginPath(); ctx.arc(cx, cy, rr, 0, 7); ctx.fillStyle = ring[i]; ctx.globalAlpha = i < 2 ? .85 : 1; ctx.fill(); ctx.globalAlpha = 1; ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 1; ctx.stroke(); }
+      ctx.save(); ctx.shadowColor = '#ffd23f'; ctx.shadowBlur = 20; ctx.strokeStyle = 'rgba(255,210,63,.5)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cx, cy, R + 3, 0, 7); ctx.stroke(); ctx.restore();
+      for (const s of shots) { ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(cx + s.x, cy + s.y, 3.5, 0, 7); ctx.fill(); ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx + s.x, cy + s.y); ctx.lineTo(cx + s.x + 9, cy + s.y + 7); ctx.stroke(); }
+      // rüzgâr
+      const wx = 20, wy = 30; label('RÜZGÂR', wx, wy, '#cfd', 11, 'left');
+      ctx.save(); ctx.strokeStyle = '#00f0ff'; ctx.fillStyle = '#00f0ff'; ctx.lineWidth = 3; ctx.shadowColor = '#00f0ff'; ctx.shadowBlur = 8;
+      const L = Math.abs(wind) * 14, dir = Math.sign(wind);
+      if (wind) { ctx.beginPath(); ctx.moveTo(wx + 30 - dir * L / 2, wy + 20); ctx.lineTo(wx + 30 + dir * L / 2, wy + 20); ctx.stroke(); ctx.beginPath(); ctx.moveTo(wx + 30 + dir * (L / 2 + 6), wy + 20); ctx.lineTo(wx + 30 + dir * L / 2, wy + 15); ctx.lineTo(wx + 30 + dir * L / 2, wy + 25); ctx.fill(); }
+      ctx.restore(); label(wind ? (wind > 0 ? 'sağa ' : 'sola ') + Math.abs(wind) : 'yok', wx + 30, wy + 38, '#d6fdff', 12);
+      athlete(Math.max(40, cx - R - 90), LANE, 0, 'bow', pl.color);
+      // nişangâh
+      if (state === 'aim') {
+        const [sx, sy] = sway(t, R), x = cx + aim + sx, y = cy + sy;
+        ctx.save(); ctx.strokeStyle = '#39ff14'; ctx.lineWidth = 2; ctx.shadowColor = '#39ff14'; ctx.shadowBlur = 10;
+        ctx.beginPath(); ctx.arc(x, y, 14, 0, 7); ctx.moveTo(x - 22, y); ctx.lineTo(x - 6, y); ctx.moveTo(x + 6, y); ctx.lineTo(x + 22, y); ctx.moveTo(x, y - 22); ctx.lineTo(x, y - 6); ctx.moveTo(x, y + 6); ctx.lineTo(x, y + 22); ctx.stroke(); ctx.restore();
+        if (Math.abs(aim) > 2) label('nişan ' + (aim > 0 ? '→' : '←'), cx, cy + R + 18, '#9f9', 11);
+      }
+      if (state === 'fly') { const p = fly / .35, x = cx + last.x, y = cy + last.y; ctx.save(); ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 3; ctx.globalAlpha = .9; ctx.beginPath(); ctx.moveTo(x + (1 - p) * 120, y + (1 - p) * 60); ctx.lineTo(x + (1 - p) * 120 + 18, y + (1 - p) * 60 + 9); ctx.stroke(); ctx.restore(); }
+      if (state === 'hit') bigText(last.s === 10 ? '10! Tam isabet!' : last.s + ' puan', 70, last.s >= 9 ? '#ffd23f' : last.s >= 6 ? '#39ff14' : last.s ? '#d6fdff' : '#ff8095', 28);
+      if (state === 'end') bigText('Toplam: ' + total + ' puan', 70);
+      label(pl.name, VW - 14, 30, pl.color, 14, 'right');
+    }
+  };
+}
+const MAKERS = { yuz: ev100, uzun: (p, d) => evJump(p, d, 'uzun'), cirit: (p, d) => evJump(p, d, 'cirit'), yuksek: evHigh, ok: evArch };
+
+/* =========================================================
+   DÖNGÜ
+   ========================================================= */
+let rafOn = false, lastT = 0;
+function loop(now) {
+  if (!$('game').classList.contains('active')) { rafOn = false; return; }
+  const dt = Math.min(.05, (now - lastT) / 1000); lastT = now; TIME += dt;
+  ctx.setTransform(SC, 0, 0, SC, 0, 0);
+  if (E && !document.querySelector('.overlay')) E.update(dt);
+  if (E) { E.draw(); hud(); } else stadium(0);
+  requestAnimationFrame(loop);
+}
+function startLoop() { if (rafOn) return; rafOn = true; lastT = performance.now(); requestAnimationFrame(loop); }
+function hud() {
+  const p = CUR.player, h = E.hud();
+  const s = (id, k, v, c) => { const e = $(id); e.querySelector('.k').textContent = k.toLocaleUpperCase('tr'); e.querySelector('.v').textContent = v; if (c) e.style.setProperty('--c', c); };
+  s('h1', EV[CUR.ev].name, p.name, p.color); s('h2', h[0], h[1]); s('h3', h[2], h[3]);
+}
+
+/* =========================================================
+   OLİMPİYAT AKIŞI
+   ========================================================= */
+let O = null, CUR = null;
+function overlay(html, btns, cls = '') {
+  document.querySelectorAll('.overlay').forEach(o => o.remove());
+  const o = document.createElement('div'); o.className = 'overlay'; o.innerHTML = `<div class="modal ${cls}" role="dialog" aria-modal="true">${html}<div class="mb" style="display:flex;flex-direction:column;gap:10px"></div></div>`;
+  const box = o.querySelector('.mb');
+  btns.forEach(([l, c, fn]) => { const b = document.createElement('button'); b.className = 'btn ' + c; b.textContent = l; b.addEventListener('click', () => { o.remove(); audio(); fn && fn(); }); box.append(b); });
+  document.body.append(o); setTimeout(() => { const f = box.querySelector('button'); f && f.focus(); }, 30); return o;
+}
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id)); }
+function rankOf(evId, entries) {
+  const low = EV[evId].low;
+  const valid = entries.filter(e => e.v != null).sort((a, b) => low ? a.v - b.v : b.v - a.v);
+  const out = []; valid.forEach((e, i) => { const prev = out[i - 1]; e.rank = prev && prev.v === e.v ? prev.rank : i; out.push(e); });
+  entries.filter(e => e.v == null).forEach(e => { e.rank = 99; out.push(e); });
+  return out;
+}
+function cpuValue(evId) {
+  const [a, b] = EV[evId].cpu[DB.diff];
+  let v = rnd(a, b);
+  if (evId === 'yuksek') v = Math.round(v * 20) / 20;
+  else if (evId === 'ok') v = Math.round(v);
+  else if (evId === 'cirit') v = Math.round(v * 10) / 10;
+  else v = Math.round(v * 100) / 100;
+  if ((evId === 'uzun' || evId === 'cirit') && Math.random() < .05) return { v: null, text: 'Faul (X)' };
+  return { v, text: EV[evId].fmt(v) };
+}
+function startOlympics() {
+  const humans = Array.from({ length: DB.count }, (_, i) => ({ name: (DB.names[i] || '').trim() || `Oyuncu ${i + 1}`, color: PCOL[i], cpu: false }));
+  const cpus = DB.cpu ? CPUS.slice(0, Math.max(0, 4 - humans.length + (humans.length === 1 ? 0 : 0))).map(c => Object.assign({ cpu: true }, c)) : [];
+  O = { practice: false, players: humans.concat(cpus).map(p => Object.assign(p, { pts: 0, med: [0, 0, 0], res: {} })), events: DB.events.slice(), ei: 0 };
+  showScreen('game'); fitCanvas(); startLoop(); nextEvent();
+}
+function startPractice(evId) {
+  O = { practice: true, players: [{ name: (DB.names[0] || '').trim() || 'Oyuncu 1', color: PCOL[0], cpu: false, pts: 0, med: [0, 0, 0], res: {} }], events: [evId], ei: 0 };
+  showScreen('game'); fitCanvas(); startLoop(); nextEvent();
+}
+function nextEvent() {
+  if (O.ei >= O.events.length) return finale();
+  const evId = O.events[O.ei], ev = EV[evId], humans = O.players.filter(p => !p.cpu);
+  O.queue = []; const tries = ev.tries || 1;
+  for (let a = 0; a < tries; a++) for (const p of humans) O.queue.push({ p, a });
+  O.cur = {}; O.players.forEach(p => O.cur[p.name] = { v: null, text: '–', tries: [] });
+  E = null; CUR = { ev: evId, player: humans[0] };
+  overlay(`<div style="font-size:2.6rem">${ev.ic}</div><h3>${ev.name}</h3>${O.practice ? '<p style="color:var(--muted)">Antrenman</p>' : `<p style="color:var(--muted)">Branş ${O.ei + 1} / ${O.events.length}</p>`}
+    <div class="how">${ev.how}<small>${ev.keys}</small></div>
+    ${DB.best[evId] ? `<p>Rekor: <b style="color:var(--gold)">${ev.fmt(DB.best[evId].v)}</b> — ${esc(DB.best[evId].who)}</p>` : ''}
+    ${innerHeight > innerWidth ? '<p class="note">📱 Telefonu yan çevirirsen pist daha geniş görünür.</p>' : ''}`, [['Başlayalım ▶', 'primary', nextTurn]]);
+}
+function nextTurn() {
+  const q = O.queue.shift();
+  if (!q) return endEvent();
+  const ev = EV[CUR.ev], tries = ev.tries || 1;
+  CUR.player = q.p; E = null;
+  const prev = O.cur[q.p.name];
+  overlay(`<p style="color:var(--muted)">Sıra</p><div class="who" style="color:${q.p.color};text-shadow:0 0 10px ${q.p.color}">${esc(q.p.name)}</div>
+    <p>${ev.ic} ${ev.name}${tries > 1 ? ` · <b>${q.a + 1}. deneme</b>` : ''}</p>
+    ${tries > 1 && prev.tries.length ? `<p style="color:var(--muted)">Önceki denemeler: ${prev.tries.join(' · ')}</p>` : ''}`, [['Hazırım ▶', 'primary', () => {
+      for (const b in held) release(b);
+      E = MAKERS[CUR.ev](q.p, res => setTimeout(() => turnDone(q.p, res), 50));
+    }]]);
+}
+function turnDone(p, res) {
+  const evId = CUR.ev, ev = EV[evId], c = O.cur[p.name];
+  c.tries.push(res.text);
+  const better = res.v != null && (c.v == null || (ev.low ? res.v < c.v : res.v > c.v));
+  if (better) { c.v = res.v; c.text = res.text; }
+  let rec = false;
+  if (res.v != null && (!DB.best[evId] || (ev.low ? res.v < DB.best[evId].v : res.v > DB.best[evId].v))) { DB.best[evId] = { v: res.v, who: p.name }; rec = true; save(); }
+  E = null;
+  if (rec) { confetti(80); }
+  if (O.practice) {
+    return overlay(`<h3>${rec ? '🏅 Yeni rekor!' : ev.name}</h3><div class="big">${res.text}</div><p>Rekor: <b style="color:var(--gold)">${DB.best[evId] ? ev.fmt(DB.best[evId].v) : '–'}</b></p>`,
+      [['Tekrar dene ▶', 'primary', () => { O.queue = [{ p, a: 0 }]; nextTurn(); }], ['Başka branş', 'ghost', () => toMenu()]]);
+  }
+  nextTurn();
+  if (rec) setTimeout(() => { const m = document.querySelector('.overlay .modal'); if (m) m.insertAdjacentHTML('afterbegin', `<p style="color:var(--gold);font-weight:900">🏅 ${esc(p.name)} yeni rekor kırdı: ${res.text}</p>`); }, 40);
+}
+function endEvent() {
+  const evId = CUR.ev, ev = EV[evId];
+  for (const p of O.players) if (p.cpu) { const r = cpuValue(evId); O.cur[p.name].v = r.v; O.cur[p.name].text = r.text; }
+  const entries = O.players.map(p => ({ p, v: O.cur[p.name].v, text: O.cur[p.name].text }));
+  const ranked = rankOf(evId, entries);
+  ranked.forEach(e => { if (e.v == null) return; e.pt = POINTS[e.rank] || 0; e.p.pts += e.pt; if (e.rank < 3) e.p.med[e.rank]++; e.p.res[evId] = e.text; });
+  const topHuman = ranked.find(e => !e.p.cpu);
+  if (topHuman && topHuman.rank === 0 && topHuman.v != null) { sfx.cheer(); confetti(100); } else sfx.good();
+  O.ei++;
+  overlay(`<div style="font-size:2rem">${ev.ic}</div><h3>${ev.name} sonuçları</h3>
+    <div class="res">${ranked.map(e => `<div class="${e.p.cpu ? '' : 'me'}"><span class="m">${e.v != null && e.rank < 3 ? MEDAL[e.rank] : e.v != null ? e.rank + 1 + '.' : '–'}</span><span style="color:${e.p.color}">${esc(e.p.name)}${e.p.cpu ? ' 🤖' : ''}</span><span class="v">${e.text}</span><span class="pt">${e.pt ? '+' + e.pt : ''}</span></div>`).join('')}</div>`,
+    [[O.ei >= O.events.length ? 'Madalya töreni 🏆' : 'Sonraki branş ▶', 'primary', nextEvent], ['Olimpiyattan çık', 'ghost', toMenu]]);
+}
+function finale() {
+  E = null;
+  const st = O.players.slice().sort((a, b) => b.pts - a.pts || b.med[0] - a.med[0] || b.med[1] - a.med[1]);
+  for (const p of O.players) if (!p.cpu) { const c = DB.cabinet[p.name] || (DB.cabinet[p.name] = [0, 0, 0, 0]); for (let i = 0; i < 3; i++) c[i] += p.med[i]; if (p === st[0]) c[3]++; }
+  save(); confetti(220); sfx.cheer();
+  const pod = [st[1], st[0], st[2]].map((p, i) => p ? `<div style="height:${[70, 100, 50][i]}%;background:linear-gradient(${p.color}55,${p.color}11);border:2px solid ${p.color}"><b style="font-size:1.4rem">${['🥈', '🥇', '🥉'][i]}</b><span style="color:${p.color}">${esc(p.name)}</span><span>${p.pts} puan</span></div>` : '<div></div>').join('');
+  overlay(`<h3>🏆 ${esc(st[0].name)} şampiyon!</h3><div class="podium">${pod}</div>
+    <div class="res">${st.map((p, i) => `<div class="${p.cpu ? '' : 'me'}"><span class="m">${i + 1}.</span><span style="color:${p.color}">${esc(p.name)}${p.cpu ? ' 🤖' : ''}</span><span class="v">${p.med[0]}🥇 ${p.med[1]}🥈 ${p.med[2]}🥉</span><span class="pt">${p.pts} p</span></div>`).join('')}</div>`,
+    [['Yeni olimpiyat ▶', 'primary', startOlympics], ['Ana menü', 'ghost', toMenu]]);
+}
+function quitGame() {
+  overlay('<h3>Çıkılsın mı?</h3><p>Devam eden yarışma kaydedilmez.</p>', [['Devam et', 'primary', () => {}], ['Çık', 'ghost', toMenu]]);
+}
+function toMenu() { E = null; O = null; document.querySelectorAll('.overlay').forEach(o => o.remove()); showScreen('menu'); renderMenu(); }
+
+/* =========================================================
+   MENÜ VE KURULUM
+   ========================================================= */
+const SPK_ON = '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SPK_OFF = '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>';
+function renderSound() { document.querySelectorAll('.snd').forEach(b => { b.innerHTML = DB.sound ? SPK_ON : SPK_OFF; b.setAttribute('aria-pressed', DB.sound); }); }
+document.addEventListener('click', e => { const s = e.target.closest('.snd'); if (s) { DB.sound = !DB.sound; save(); renderSound(); } if (e.target.closest('[data-back]')) toMenu(); });
+function renderMenu() {
+  const cab = Object.entries(DB.cabinet).sort((a, b) => b[1][0] - a[1][0] || b[1][1] - a[1][1]);
+  $('menuWrap').innerHTML = `
+    <div class="bar" style="padding:0"><span style="flex:1"></span><button class="icon-btn snd" aria-label="Ses"></button></div>
+    <div class="rings" aria-hidden="true"><i style="color:#00f0ff"></i><i style="color:#ffe600"></i><i style="color:#ffffff"></i><i style="color:#39ff14"></i><i style="color:#ff3b5c"></i></div>
+    <h1 class="logo"><span class="l1">NEON</span><span class="l2">OLİMPİYAT</span></h1>
+    <p class="tagline">Koş, atla, fırlat, nişan al! 5 branş, 1–4 oyuncu,<br>bilgisayar rakipleri ve madalya töreni.</p>
+    <button class="btn primary" id="goO">OLİMPİYATA BAŞLA 🏅</button>
+    <span class="lbl">Branş antrenmanı</span>
+    <div class="evgrid">${EVENTS.map(e => `<button class="ev" data-pr="${e.id}" aria-pressed="true" style="--c:${e.c}"><span class="e">${e.ic}</span>${e.name}</button>`).join('')}</div>
+    <div class="card"><b>Rekorlar</b><div class="rec">${EVENTS.map(e => `<span>${e.ic}</span><span>${e.name}${DB.best[e.id] ? ` <small>· ${esc(DB.best[e.id].who)}</small>` : ''}</span><b>${DB.best[e.id] ? e.fmt(DB.best[e.id].v) : '–'}</b>`).join('')}</div></div>
+    ${cab.length ? `<div class="card"><b>Madalya dolabı</b><div class="cab">${cab.map(([n, c]) => `<div><span>${esc(n)}</span><span>${c[0]}🥇 ${c[1]}🥈 ${c[2]}🥉 · ${c[3]} 🏆</span></div>`).join('')}</div></div>` : ''}
+    <p class="privacy">Reklamsız · Veri toplamaz · İnternetsiz çalışır</p><p class="sig"><b>FOZ</b> Yapım sunar</p>`;
+  renderSound();
+  $('goO').addEventListener('click', () => { audio(); showScreen('setup'); renderSetup(); });
+  $('menuWrap').querySelectorAll('[data-pr]').forEach(b => b.addEventListener('click', () => { audio(); startPractice(b.dataset.pr); }));
+}
+function renderSetup() {
+  $('setupWrap').innerHTML = `
+    <span class="lbl">Kaç kişi oynayacak?</span>
+    <div class="chips">${[1, 2, 3, 4].map(n => `<button class="chip" data-n="${n}" aria-pressed="${DB.count === n}" style="--c:var(--gold)">${n} kişi</button>`).join('')}</div>
+    <div class="card">${Array.from({ length: DB.count }, (_, i) => `<div class="prow"><span class="dot" style="background:${PCOL[i]};color:${PCOL[i]}"></span><input class="txt" data-i="${i}" maxlength="12" value="${esc(DB.names[i] || '')}" placeholder="Oyuncu ${i + 1}" aria-label="${i + 1}. oyuncunun adı"></div>`).join('')}</div>
+    <button class="toggle card" id="cpu" role="switch" aria-checked="${DB.cpu}" style="flex-direction:row"><span class="sw"></span><span>Bilgisayar rakipleri katılsın<br><small style="color:var(--muted);font-weight:600">Volt, Turbo ve Şimşek kadroyu 4'e tamamlar</small></span></button>
+    <div id="diffBox" ${DB.cpu && DB.count < 4 ? '' : 'hidden'}><span class="lbl" style="display:block;margin-bottom:8px">Rakip seviyesi</span>
+    <div class="chips">${[['kolay', 'Kolay'], ['orta', 'Orta'], ['zor', 'Zor']].map(([k, l]) => `<button class="chip" data-d="${k}" aria-pressed="${DB.diff === k}" style="--c:var(--green)">${l}</button>`).join('')}</div></div>
+    <span class="lbl">Branşlar</span>
+    <div class="evgrid">${EVENTS.map(e => `<button class="ev" data-e="${e.id}" aria-pressed="${DB.events.includes(e.id)}" style="--c:${e.c}"><span class="e">${e.ic}</span>${e.name}</button>`).join('')}</div>
+    <button class="btn primary" id="start" ${DB.events.length ? '' : 'disabled'}>BAŞLA ▶</button>
+    <p class="note">Oyuncular sırayla yarışır; telefon elden ele dolaşır. Her branşta ilk üç madalya alır, puanlar (10–8–6–5…) toplanır.</p>`;
+  const W = $('setupWrap');
+  W.querySelectorAll('[data-n]').forEach(b => b.addEventListener('click', () => { DB.count = +b.dataset.n; save(); renderSetup(); }));
+  W.querySelectorAll('[data-i]').forEach(inp => inp.addEventListener('input', () => { DB.names[+inp.dataset.i] = inp.value; save(); }));
+  $('cpu').addEventListener('click', () => { DB.cpu = !DB.cpu; save(); renderSetup(); });
+  W.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => { DB.diff = b.dataset.d; save(); renderSetup(); }));
+  W.querySelectorAll('[data-e]').forEach(b => b.addEventListener('click', () => { const id = b.dataset.e; DB.events = DB.events.includes(id) ? DB.events.filter(x => x !== id) : EVENTS.map(e => e.id).filter(x => x === id || DB.events.includes(x)); save(); renderSetup(); }));
+  $('start').addEventListener('click', () => { audio(); startOlympics(); });
+}
+$('quit').addEventListener('click', quitGame);
+document.addEventListener('visibilitychange', () => { if (document.hidden) for (const b in held) release(b); });
+renderMenu();
+window.NeonOlimpiyat = { get E() { return E; }, get O() { return O; }, press, release, startOlympics, startPractice, DB, EVENTS, rankOf, cpuValue };
+</script>
+</body>
+</html>
