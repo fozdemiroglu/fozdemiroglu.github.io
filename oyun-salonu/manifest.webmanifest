@@ -1,0 +1,26 @@
+{
+  "name": "FOZ Yapım Oyun Salonu",
+  "short_name": "Oyun Salonu",
+  "description": "FOZ Yapım'ın bütün oyunları tek uygulamada. Reklamsız, veri toplamaz, internetsiz çalışır.",
+  "id": "/oyun-salonu/",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#07071a",
+  "theme_color": "#07071a",
+  "lang": "tr",
+  "dir": "ltr",
+  "categories": ["games", "kids", "education"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Benim Hayal Evim", "short_name": "Hayal Evim", "url": "./#oyna=hayal-evim", "icons": [{ "src": "icons/k-hayal-evim.png", "sizes": "96x96", "type": "image/png" }] },
+    { "name": "Neon Tuğla", "short_name": "Tuğla", "url": "./#oyna=neon-tugla", "icons": [{ "src": "icons/k-neon-tugla.png", "sizes": "96x96", "type": "image/png" }] },
+    { "name": "Neon Yılan", "short_name": "Yılan", "url": "./#oyna=neon-yilan", "icons": [{ "src": "icons/k-neon-yilan.png", "sizes": "96x96", "type": "image/png" }] },
+    { "name": "Shadow Runner", "short_name": "Shadow Runner", "url": "./#oyna=shadow-runner", "icons": [{ "src": "icons/k-shadow-runner.png", "sizes": "96x96", "type": "image/png" }] }
+  ]
+}

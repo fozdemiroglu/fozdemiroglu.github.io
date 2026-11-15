@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07071a">
+<meta name="description" content="FOZ Yapım Oyun Salonu — bütün FOZ Yapım oyunları tek uygulamada. Telefona veya bilgisayara yükle, dokun ve oyna. Reklamsız, veri toplamaz, internetsiz çalışır.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Oyun Salonu">
+<title>FOZ Yapım Oyun Salonu</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+:root{--bg:#07071a;--pink:#ff2bd6;--cyan:#00f0ff;--green:#39ff14;--yellow:#ffe600;--violet:#b05cff;--text:#ecebff;--muted:#8b8ac0;--panel:rgba(20,16,60,.78);--emoji:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{min-height:100vh;background:radial-gradient(ellipse at 50% -10%,#24104d 0%,var(--bg) 60%) fixed,var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,var(--emoji),sans-serif;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,240,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,.05) 1px,transparent 1px);background-size:42px 42px;-webkit-mask-image:radial-gradient(ellipse at 50% 100%,#000,transparent 70%);mask-image:radial-gradient(ellipse at 50% 100%,#000,transparent 70%)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:inherit}
+[hidden]{display:none!important}
+button:focus-visible,a:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.wrap{position:relative;max-width:1180px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 10px) calc(env(safe-area-inset-right) + 14px) calc(env(safe-area-inset-bottom) + 24px) calc(env(safe-area-inset-left) + 14px)}
+header{display:flex;align-items:center;gap:10px;padding:4px 0 10px}
+.logo{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.logo img{width:44px;height:44px;border-radius:12px;box-shadow:0 0 16px rgba(255,43,214,.45)}
+.logo b{display:block;font-size:.72rem;letter-spacing:.24em;color:var(--muted);font-weight:800}
+.logo h1{font-size:clamp(1.15rem,4.6vw,1.6rem);font-weight:900;letter-spacing:.05em;line-height:1.05;white-space:nowrap}
+.logo h1 .p{color:#ffd6f6;text-shadow:0 0 6px var(--pink),0 0 16px var(--pink)}
+.logo h1 .c{color:#d6fdff;text-shadow:0 0 6px var(--cyan),0 0 16px var(--cyan)}
+.hbtn{flex:none;height:44px;padding:0 14px;border-radius:14px;display:flex;align-items:center;gap:7px;font-weight:900;font-size:.88rem;background:var(--panel);border:1.5px solid rgba(0,240,255,.45);box-shadow:0 0 10px rgba(0,240,255,.18);white-space:nowrap}
+.hbtn .e{font-size:1.15rem;font-family:var(--emoji)}
+.hbtn.pri{background:linear-gradient(90deg,var(--pink),#a34bff 50%,var(--cyan));color:#16052a;border:0;box-shadow:0 0 18px rgba(255,43,214,.45)}
+.hbtn:active{transform:scale(.95)}
+@media (max-width:520px){.hbtn .t{display:none}.hbtn{width:44px;padding:0;justify-content:center}}
+.strip{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:center;padding:10px 12px;margin:2px 0 14px;border-radius:16px;background:var(--panel);border:1.5px solid rgba(179,79,255,.35);font-size:.8rem;font-weight:700;color:#cfcdf2}
+.strip span{white-space:nowrap}
+.strip .ok{color:var(--green)}
+h2{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:16px 2px 9px;font-weight:900}
+.recent{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.recent::-webkit-scrollbar{display:none}
+.rc{flex:none;display:flex;align-items:center;gap:9px;padding:6px 14px 6px 6px;border-radius:16px;background:var(--panel);border:1.5px solid rgba(255,230,0,.4);font-weight:900;font-size:.9rem;white-space:nowrap}
+.rc img{width:40px;height:40px;border-radius:11px;object-fit:cover;object-position:top}
+.rc:active{transform:scale(.96)}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 13px;border-radius:13px;border:1.5px solid rgba(139,138,192,.35);background:rgba(255,255,255,.04);font-weight:800;font-size:.86rem;color:var(--muted);white-space:nowrap}
+.chip[aria-pressed="true"]{color:var(--cyan);border-color:var(--cyan);background:rgba(0,240,255,.1);box-shadow:0 0 12px rgba(0,240,255,.3)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
+@media (min-width:700px){.grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}}
+.card{position:relative;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--panel);border:1.5px solid color-mix(in srgb,var(--c) 55%,transparent);box-shadow:0 0 0 rgba(0,0,0,0);transition:transform .15s,box-shadow .15s;text-align:left}
+.card:hover{transform:translateY(-3px);box-shadow:0 0 22px color-mix(in srgb,var(--c) 45%,transparent)}
+.card .play{display:flex;flex-direction:column;flex:1;text-align:left}
+.card .play:active{transform:scale(.97)}
+.thumb{position:relative;aspect-ratio:1/1;overflow:hidden;background:#0d0b2a}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.thumb::after{content:"";position:absolute;inset:auto 0 0 0;height:45%;background:linear-gradient(transparent,rgba(7,7,26,.92))}
+.pl{position:absolute;right:10px;bottom:10px;z-index:2;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:#0b0620;font-size:1.05rem;font-weight:900;box-shadow:0 0 16px var(--c)}
+.em{position:absolute;left:10px;bottom:10px;z-index:2;font-size:1.9rem;font-family:var(--emoji);filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+.info{padding:9px 11px 12px}
+.info h3{font-size:1rem;font-weight:900;line-height:1.15;margin-bottom:4px}
+.info p{font-size:.76rem;color:#b9b7e6;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.tags i{font-style:normal;font-size:.66rem;font-weight:800;padding:2px 7px;border-radius:8px;background:rgba(255,255,255,.07);color:#cfcdf2}
+.fav{position:absolute;top:8px;right:8px;z-index:3;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(7,7,26,.6);font-size:1.15rem;font-family:var(--emoji);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.fav[aria-pressed="false"]{filter:grayscale(1) opacity(.75)}
+.off{position:absolute;top:10px;left:10px;z-index:3;font-size:.64rem;font-weight:900;padding:3px 7px;border-radius:8px;background:rgba(57,255,20,.18);color:#c9ffbd;border:1px solid rgba(57,255,20,.5)}
+.new{position:absolute;top:10px;left:10px;z-index:3;font-size:.64rem;font-weight:900;padding:3px 7px;border-radius:8px;background:var(--pink);color:#fff}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:30px 10px;font-weight:700}
+footer{margin-top:28px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.sig{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.sig b{color:var(--pink);text-shadow:0 0 8px rgba(255,43,214,.7)}
+.privacy{font-size:.76rem;color:var(--muted)}
+.links{font-size:.8rem;color:var(--muted)}
+/* oyun ekranı */
+#player{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;background:var(--bg)}
+.pbar{flex:none;display:flex;align-items:center;gap:6px;padding:calc(env(safe-area-inset-top) + 4px) calc(env(safe-area-inset-right) + 6px) 4px calc(env(safe-area-inset-left) + 6px);background:#0b0926;border-bottom:1.5px solid rgba(0,240,255,.35)}
+.pbar .t{flex:1;min-width:0;font-weight:900;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.pb{flex:none;height:38px;min-width:38px;padding:0 10px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);font-weight:900;font-size:.85rem}
+.pb .e{font-size:1.05rem;font-family:var(--emoji)}
+.pb.x{background:rgba(255,59,92,.2);border-color:rgba(255,59,92,.7);color:#ffd0d8;font-size:1.05rem}
+.pb:active{transform:scale(.92)}
+@media (max-width:420px){.pb .lb{display:none}}
+#fwrap{flex:1;min-height:0;position:relative;padding-bottom:env(safe-area-inset-bottom)}
+#fwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:block}
+#loading{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-weight:900;color:var(--cyan);text-shadow:0 0 10px var(--cyan);pointer-events:none}
+/* sayfa altı pencere */
+.modal{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;background:rgba(4,3,18,.65);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sheet{width:100%;max-width:500px;max-height:92vh;overflow-y:auto;background:#120e38;border:1.5px solid rgba(0,240,255,.45);border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:11px;box-shadow:0 0 30px rgba(0,240,255,.25);animation:shin .25s ease-out}
+@media (min-width:560px) and (min-height:560px){.modal{align-items:center}.sheet{border-radius:22px}}
+@keyframes shin{from{transform:translateY(30px);opacity:0}}
+.sheet h3{font-size:1.1rem;color:var(--cyan);text-align:center;letter-spacing:.06em}
+.step{display:flex;gap:12px;align-items:flex-start;padding:11px 13px;border-radius:14px;background:rgba(255,255,255,.05);font-size:.92rem;line-height:1.45}
+.step .n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--pink);color:#fff;font-weight:900}
+.step b{color:var(--yellow)}
+.note{font-size:.8rem;color:var(--muted);text-align:center;line-height:1.5}
+.btn{border-radius:16px;padding:13px 18px;font-weight:900;font-size:1rem;text-align:center}
+.btn.pri{background:linear-gradient(90deg,var(--pink),#a34bff 50%,var(--cyan));color:#16052a}
+.btn.gh{background:var(--panel);border:2px solid rgba(0,240,255,.45);color:var(--cyan)}
+.bar{height:12px;border-radius:8px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width .2s}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 22px);transform:translateX(-50%);z-index:70;background:rgba(10,8,40,.94);border:2px solid var(--green);color:#d9ffd0;font-weight:900;padding:11px 18px;border-radius:16px;box-shadow:0 0 18px rgba(57,255,20,.35);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+@media (prefers-reduced-motion:reduce){.card,.card:hover{transition:none;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap" id="home">
+  <header>
+    <div class="logo"><img src="icons/icon-192.png" alt=""><div><b>FOZ YAPIM</b><h1><span class="p">OYUN</span> <span class="c">SALONU</span></h1></div></div>
+    <button class="hbtn" id="offBtn" aria-label="İnternetsiz oynamak için hazırla"><span class="e">📥</span><span class="t">İnternetsiz</span></button>
+    <button class="hbtn pri" id="instBtn" aria-label="Ana ekrana ekle"><span class="e">📲</span><span class="t">Ana Ekrana Ekle</span></button>
+  </header>
+  <div class="strip"><span id="count">🎮 15 oyun</span><span>🚫 Reklam yok</span><span>🔒 Veri toplamaz</span><span id="offState" role="button" tabindex="0" style="cursor:pointer">📡 İnternetsiz çalışır</span></div>
+  <section id="recentSec" hidden><h2>Son oynadıkların</h2><div class="recent" id="recent"></div></section>
+  <h2>Bütün oyunlar</h2>
+  <div class="chips" id="chips" role="toolbar" aria-label="Oyun türü"></div>
+  <div class="grid" id="grid"></div>
+  <footer>
+    <p class="privacy">Oyunlar bu cihazda saklanır, rekorların cihazında kalır. Hesap gerekmez.</p>
+    <p class="links"><a href="https://github.com/fozdemiroglu" target="_blank" rel="noopener">GitHub'daki oyunlar</a></p>
+    <p class="sig"><b>FOZ</b> Yapım sunar</p>
+  </footer>
+</div>
+
+<div id="player" hidden>
+  <div class="pbar">
+    <button class="pb" id="pBack" aria-label="Oyunlara dön"><span class="e">🏠</span><span class="lb">Oyunlar</span></button>
+    <div class="t" id="pTitle"></div>
+    <button class="pb" id="pReload" aria-label="Oyunu yeniden başlat"><span class="e">🔄</span></button>
+    <button class="pb" id="pFull" aria-label="Tam ekran"><span class="e">⛶</span></button>
+    <button class="pb x" id="pClose" aria-label="Oyunu kapat">✕</button>
+  </div>
+  <div id="fwrap"></div>
+  <div id="loading">Yükleniyor…</div>
+</div>
+
+<div class="modal" id="instModal" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="instT">
+    <h3 id="instT">📲 Ana ekrana ekle</h3>
+    <div id="instSteps"></div>
+    <p class="note">Eklendikten sonra simgeye dokununca Oyun Salonu uygulama gibi açılır. Simgeye basılı tutunca bazı oyunlara doğrudan girilir.</p>
+    <button class="btn gh" data-close>Tamam</button>
+  </div>
+</div>
+<div class="modal" id="offModal" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="offT">
+    <h3 id="offT">📥 İnternetsiz oyna</h3>
+    <p class="note" id="offInfo">Bütün oyunlar bu cihaza kaydedilir. Sonra internet olmadan da oynanır. İnternet olduğunda oyunlar kendiliğinden güncellenir.</p>
+    <div class="bar"><i id="offBar"></i></div>
+    <p class="note" id="offTxt"></p>
+    <button class="btn pri" id="offGo">Oyunları cihaza kaydet</button>
+    <button class="btn gh" data-close>Kapat</button>
+  </div>
+</div>
+<div id="toast" hidden></div>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const GAMES_CACHE='foz-salon-oyunlar-v1';
+const KEY='foz-oyun-salonu-v1';
+const BASE=location.pathname.replace(/[^/]*$/,'');            // /oyun-salonu/
+const PROXY=BASE+'oyna';
+// path: sitedeki gerçek adres · files: index dışındaki ek dosyalar
+const GAMES=[
+ {id:'hayal-evim',name:'Benim Hayal Evim',e:'🏠',c:'#ff8fd8',path:'/hayal-evim/',tags:['cocuk'],d:'Karakterini yap, evini döşe, eşyalarla oyna. Kaybetmek yok!'},
+ {id:'neon-olimpiyat',name:'Neon Olimpiyat',e:'🏅',c:'#ffe600',path:'/neon-olimpiyat/',tags:['aksiyon','iki'],d:'100 metre, uzun atlama, cirit, yüksek atlama ve okçuluk. 1–4 oyuncu.'},
+ {id:'neon-2048',name:'Neon 2048',e:'🔢',c:'#00f0ff',path:'/neon-2048/',tags:['akil'],d:'Kaydır, aynı sayıları birleştir, en büyük kareye ulaş.'},
+ {id:'neon-hesap',name:'Neon Hesap',e:'➗',c:'#ffe600',path:'/neon-hesap/',tags:['egitici','iki'],d:'1–8. sınıf matematik: antrenman, zamana karşı, iki kişilik yarış.'},
+ {id:'neon-kelime',name:'Neon Kelime',e:'🔤',c:'#39ff14',path:'/neon-kelime/',files:['kelimeler.js','sozluk.js'],tags:['egitici','akil'],d:'Gizli kelimeyi bul, anlamını öğren. Günün kelimesi ve bilmeceler.'},
+ {id:'neon-yilan',name:'Neon Yılan',e:'🐍',c:'#39ff14',path:'/neon-yilan/',tags:['aksiyon','iki'],d:'Elmaları topla, uza! Tek başına ya da aynı ekranda iki kişi.'},
+ {id:'neon-tugla',name:'Neon Tuğla',e:'🧱',c:'#00f0ff',path:'/neon-tugla/',tags:['aksiyon','cocuk'],d:'Topu sektir, tuğlaları kır. 11 şekilli bölüm ve güçler.'},
+ {id:'neon-hafiza',name:'Neon Hafıza',e:'🃏',c:'#ff2bd6',path:'/tas-kagit-makas/neon-hafiza/',tags:['akil','cocuk'],d:'Kartları çevir, eşlerini bul. Şekiller ve taşıtlar.'},
+ {id:'shadow-runner',name:'Shadow Runner',e:'🏃',c:'#b05cff',path:'/shadow-runner/',files:['manifest.json','icons/icon-192.png','icons/icon-512.png'],tags:['aksiyon','cocuk'],d:'Demir’in Macerası: engelleri aş, yıldızları topla.'},
+ {id:'neon-drift',name:'Neon Drift',e:'🏎️',c:'#ff2bd6',path:'/neon-drift/',tags:['aksiyon'],d:'Neon yollarda sür, elmasları topla, trafikten kaç.'},
+ {id:'neon-tower',name:'Neon Tower',e:'✨',c:'#00f0ff',path:'/neon-tower/',tags:['aksiyon'],d:'Zıplayan kaşifi yönlendir, platformlarla yüksel.'},
+ {id:'tas-kagit-makas',name:'Taş Kağıt Makas',e:'✊',c:'#ffe600',path:'/tas-kagit-makas/',tags:['iki','cocuk'],d:'Bilgisayara ya da arkadaşına karşı. İlk 3 galibiyet kazanır.'},
+ {id:'xox-sos',name:'XOX & SOS',e:'🧩',c:'#ff2bd6',path:'/tas-kagit-makas/xox-sos/',tags:['akil','iki'],d:'İki strateji oyunu bir arada. Bilgisayara karşı ya da iki kişi.'},
+ {id:'dordu-bir-yerde',name:'4’ü Bir Yerde',e:'🔵',c:'#00f0ff',path:'/tas-kagit-makas/dordu-bir-yerde/',tags:['akil','iki'],d:'Dört taşını yan yana, üst üste ya da çapraz diz.'},
+ {id:'mayin-tarlasi',name:'Mayın Tarlası',e:'🚩',c:'#39ff14',path:'/tas-kagit-makas/mayin-tarlasi/',tags:['akil'],d:'Sayı Avcısı: sayılara bak, mayınlardan kaçın.'}
+];
+const TAGS={aksiyon:'⚡ Aksiyon',akil:'🧠 Akıl & Bulmaca',egitici:'📚 Eğitici',cocuk:'🧸 Küçükler İçin',iki:'👥 2 Kişilik'};
+const CHIPS=[['hepsi','🎮 Hepsi'],['fav','⭐ Favoriler'],...Object.entries(TAGS)];
+const byId=id=>GAMES.find(g=>g.id===id);
+
+let S={fav:[],recent:[],filter:'hepsi'};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const offline=new Set();
+
+/* ---------- liste ---------- */
+function renderChips(){$('#chips').innerHTML=CHIPS.map(([k,n])=>`<button class="chip" aria-pressed="${S.filter===k}" data-f="${k}">${n}</button>`).join('')}
+function card(g){
+  const fav=S.fav.includes(g.id);
+  const badge=offline.has(g.id)?'<span class="off">✓ İnternetsiz</span>':'';
+  return `<div class="card" style="--c:${g.c}">
+    <button class="play" data-g="${g.id}" aria-label="${g.name} oyna">
+      <div class="thumb"><img src="img/${g.id}.webp" alt="" loading="lazy" width="288" height="360"><span class="pl">▶</span></div>
+      <div class="info"><h3>${g.e} ${g.name}</h3><p>${g.d}</p><div class="tags">${g.tags.map(t=>`<i>${TAGS[t]}</i>`).join('')}</div></div>
+    </button>${badge}
+    <button class="fav" data-fav="${g.id}" aria-pressed="${fav}" aria-label="${g.name} favorilere ${fav?'eklendi':'ekle'}">⭐</button>
+  </div>`;
+}
+function renderGrid(){
+  const f=S.filter;
+  const list=GAMES.filter(g=>f==='hepsi'||(f==='fav'?S.fav.includes(g.id):g.tags.includes(f)));
+  $('#grid').innerHTML=list.length?list.map(card).join(''):`<div class="empty">${f==='fav'?'Henüz favori yok. Sevdiğin oyunun ⭐ işaretine dokun!':'Bu türde oyun yok.'}</div>`;
+}
+function renderRecent(){
+  const r=S.recent.map(byId).filter(Boolean).slice(0,6);
+  $('#recentSec').hidden=!r.length;
+  $('#recent').innerHTML=r.map(g=>`<button class="rc" data-g="${g.id}" style="border-color:${g.c}"><img src="img/${g.id}.webp" alt="">${g.e} ${g.name}</button>`).join('');
+}
+function renderAll(){renderChips();renderGrid();renderRecent();$('#count').textContent=`🎮 ${GAMES.length} oyun`}
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;S.filter=b.dataset.f;save();renderChips();renderGrid()});
+document.addEventListener('click',e=>{
+  const fb=e.target.closest('[data-fav]');
+  if(fb){const id=fb.dataset.fav;S.fav=S.fav.includes(id)?S.fav.filter(x=>x!==id):[...S.fav,id];save();renderGrid();return}
+  const pb=e.target.closest('[data-g]');
+  if(pb&&!$('#home').hidden)openGame(pb.dataset.g);
+});
+
+/* ---------- oyun ekranı ---------- */
+let current=null,pushed=false;
+function gameUrl(g){
+  // Service worker çalışıyorsa oyun salonun içinden açılır (internetsiz de çalışır).
+  return (navigator.serviceWorker&&navigator.serviceWorker.controller)?PROXY+g.path:g.path;
+}
+function openGame(id,fromHash){
+  const g=byId(id);if(!g)return;
+  current=g;
+  S.recent=[id,...S.recent.filter(x=>x!==id)].slice(0,8);save();
+  $('#pTitle').textContent=g.e+' '+g.name;
+  $('#loading').hidden=false;
+  // her seferinde yeni çerçeve: geri tuşu oyunun içinde değil, salonda çalışsın
+  const fr=document.createElement('iframe');fr.id='frame';fr.title=g.name;fr.allow='fullscreen; autoplay; gamepad';fr.setAttribute('allowfullscreen','');
+  fr.addEventListener('load',onFrameLoad);fr.src=gameUrl(g);const w=$('#fwrap');w.innerHTML='';w.appendChild(fr);
+  $('#player').hidden=false;$('#home').hidden=true;document.title=g.name+' · FOZ Oyun Salonu';
+  if(!fromHash){history.pushState({oyun:id},'','#oyna='+id);pushed=true}else pushed=false;
+}
+function closeGame(viaHistory){
+  if(!current)return;
+  current=null;
+  $('#fwrap').innerHTML='';
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  $('#player').hidden=true;$('#home').hidden=false;document.title='FOZ Yapım Oyun Salonu';
+  renderRecent();renderGrid();
+  if(!viaHistory){if(pushed){pushed=false;history.back()}else history.replaceState(null,'',BASE)}
+}
+function onFrameLoad(){$('#loading').hidden=true;const fr=$('#frame');try{fr.focus();fr.contentWindow.focus()}catch(e){}if(current)markOffline(current)}
+$('#pBack').addEventListener('click',()=>closeGame(false));
+$('#pClose').addEventListener('click',()=>closeGame(false));
+$('#pReload').addEventListener('click',()=>{if(!current)return;$('#loading').hidden=false;const fr=$('#frame');try{fr.contentWindow.location.reload()}catch(e){fr.contentWindow.location.replace(gameUrl(current))}});
+const canFull=!!(document.documentElement.requestFullscreen);
+$('#pFull').hidden=!canFull;
+$('#pFull').addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});else $('#player').requestFullscreen().catch(()=>{})});
+addEventListener('popstate',()=>{const m=location.hash.match(/oyna=([\w-]+)/);if(m&&byId(m[1])){if(!current||current.id!==m[1])openGame(m[1],true)}else closeGame(true)});
+
+/* ---------- ana ekrana ekleme ---------- */
+let deferred=null;
+const standalone=()=>matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
+const ua=navigator.userAgent;
+const isIOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isAndroid=/Android/i.test(ua);
+function syncInstall(){$('#instBtn').hidden=standalone()}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;syncInstall()});
+addEventListener('appinstalled',()=>{deferred=null;syncInstall();toast('Oyun Salonu ana ekrana eklendi! 🎉')});
+function steps(list){return list.map((t,i)=>`<div class="step"><span class="n">${i+1}</span><span>${t}</span></div>`).join('')}
+$('#instBtn').addEventListener('click',async()=>{
+  if(deferred){deferred.prompt();try{await deferred.userChoice}catch(e){}deferred=null;return}
+  let h;
+  if(isIOS)h=steps(['Bu sayfayı <b>Safari</b> ile aç.','Alttaki <b>Paylaş</b> düğmesine dokun (kutudan çıkan ok ⬆️).','Listeden <b>Ana Ekrana Ekle</b>yi seç, sonra <b>Ekle</b>ye dokun.']);
+  else if(isAndroid)h=steps(['Bu sayfayı <b>Chrome</b> ile aç.','Sağ üstteki <b>⋮</b> menüsüne dokun.','<b>Ana ekrana ekle</b> ya da <b>Uygulamayı yükle</b>yi seç.']);
+  else h=steps(['Bu sayfayı <b>Chrome</b> ya da <b>Edge</b> ile aç.','Adres çubuğunun sağındaki <b>yükle</b> simgesine (💻⬇️) tıkla. Görünmüyorsa sağ üstteki menüde (⋮ ya da …) <b>uygulama olarak yükle</b> seçeneğini bul.','Oyun Salonu masaüstüne ve başlat menüsüne eklenir.']);
+  $('#instSteps').innerHTML=h;$('#instModal').hidden=false;
+});
+
+/* ---------- internetsiz ---------- */
+function filesOf(g){return [g.path,...(g.files||[]).map(f=>g.path+f)]}
+async function markOffline(g){
+  if(!('caches' in window))return;
+  try{const c=await caches.open(GAMES_CACHE);const ok=(await Promise.all(filesOf(g).map(u=>c.match(new URL(u,location.origin).href,{ignoreSearch:true})))).every(Boolean);
+    if(ok&&!offline.has(g.id)){offline.add(g.id);if(!current)renderGrid();syncOffState()}}catch(e){}
+}
+async function scanOffline(){for(const g of GAMES)await markOffline(g);renderGrid();syncOffState()}
+function syncOffState(){const n=offline.size;$('#offState').innerHTML=n>=GAMES.length?'<span class="ok">✓ Bütün oyunlar internetsiz hazır</span>':`📡 ${n}/${GAMES.length} oyun internetsiz hazır`}
+let caching=false;
+async function cacheAll(quiet){
+  if(caching||!('caches' in window))return;caching=true;
+  const all=GAMES.flatMap(g=>filesOf(g).map(u=>[g,u]));let done=0,fail=0;
+  const c=await caches.open(GAMES_CACHE);
+  for(const [g,u] of all){
+    try{const r=await fetch(u,{cache:'no-cache'});if(r.ok)await c.put(new URL(u,location.origin).href,r);else fail++}catch(e){fail++}
+    done++;$('#offBar').style.width=(done/all.length*100)+'%';$('#offTxt').textContent=`${done} / ${all.length} dosya`;
+  }
+  for(const g of GAMES)await markOffline(g);
+  caching=false;renderGrid();syncOffState();
+  if(!quiet)$('#offTxt').textContent=fail?`Bazı dosyalar indirilemedi (${fail}). İnternete bağlıyken tekrar dene.`:'Hazır! Bütün oyunlar artık internetsiz de açılır. ✓';
+}
+const openOff=()=>{$('#offModal').hidden=false;$('#offTxt').textContent=offline.size>=GAMES.length?'Bütün oyunlar zaten cihazında. ✓ İstersen en yeni sürümleri indirebilirsin.':'';$('#offGo').textContent=offline.size>=GAMES.length?'Oyunları güncelle':'Oyunları cihaza kaydet'};
+$('#offBtn').addEventListener('click',openOff);$('#offState').addEventListener('click',openOff);
+$('#offGo').addEventListener('click',()=>{if(!navigator.onLine){$('#offTxt').textContent='Şu an internet yok. Bağlanınca tekrar dene.';return}cacheAll(false)});
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m||e.target.closest('[data-close]'))m.hidden=true}));
+
+let tT;function toast(t){const el=$('#toast');el.textContent=t;el.hidden=false;clearTimeout(tT);tT=setTimeout(()=>el.hidden=true,2400)}
+
+/* ---------- başlangıç ---------- */
+renderAll();syncInstall();
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{
+    scanOffline();
+    // Uygulama olarak açıldıysa ya da veri tasarrufu yoksa oyunları arka planda cihaza kaydet
+    const saveData=navigator.connection&&navigator.connection.saveData;
+    if(navigator.onLine&&!saveData)setTimeout(()=>cacheAll(true),standalone()?1500:6000);
+  }).catch(()=>{});
+}
+const m0=location.hash.match(/oyna=([\w-]+)/);
+if(m0&&byId(m0[1])){
+  // kısayoldan doğrudan oyuna: önce ana sayfa geçmişte kalsın ki geri tuşu salona dönsün
+  history.replaceState(null,'',BASE);
+  const open=()=>openGame(m0[1]);
+  if('serviceWorker' in navigator&&!navigator.serviceWorker.controller){let done=false;const go=()=>{if(!done){done=true;open()}};navigator.serviceWorker.ready.then(()=>setTimeout(go,80),go);setTimeout(go,1500)}else open();
+}
+window.OyunSalonu={GAMES,openGame,closeGame,cacheAll,get S(){return S},offline};
+</script>
+</body>
+</html>
