@@ -2,7 +2,7 @@
    - Salonun kendi dosyalarını saklar.
    - /oyun-salonu/oyna/<oyun>/ adreslerini sitedeki gerçek oyuna (/<oyun>/) bağlar,
      internet varken en yeni sürümü getirir, yoksa saklanan kopyayı açar. */
-const SHELL = 'foz-salon-kabuk-v2';
+const SHELL = 'foz-salon-kabuk-v3';
 const GAMES = 'foz-salon-oyunlar-v1';
 const BASE = new URL('./', self.location).pathname;          // /oyun-salonu/
 const PROXY = BASE + 'oyna/';
