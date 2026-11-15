@@ -6,9 +6,9 @@
 
 **FOZ Yapım sunar · Fatih Özdemiroğlu**
 
-Türkçe konuşanlar için İngilizce kelime ve cümle oyunu. A1'den C1'e beş seviyede 468 kelime var; her kelimenin Türkçe anlamı, örnek cümlesi ve cümlenin Türkçesi verilir. Ücretsiz ve reklamsızdır, hesap gerektirmez, veri toplamaz, internetsiz çalışır. [FOZ Yapım Oyun Salonu](https://fozdemiroglu.github.io/oyun-salonu/)'nda da var.
+Türkçe konuşanlar için İngilizce kelime ve cümle oyunu. A1'den C1'e beş seviyede 1.073 kelime var; her kelimenin Türkçe anlamı, örnek cümlesi ve cümlenin Türkçesi verilir. Ücretsiz ve reklamsızdır, hesap gerektirmez, veri toplamaz, internetsiz çalışır. [FOZ Yapım Oyun Salonu](https://fozdemiroglu.github.io/oyun-salonu/)'nda da var.
 
-- **Seviyeler:** A1 Başlangıç (99), A2 Temel (100), B1 Orta (95), B2 İyi (87), C1 İleri (87). B1'den sonra deyimsel fiiller (phrasal verbs) ve kalıplar da var. 15 soruluk **Seviyemi Bul** testi uygun seviyeyi önerir.
+- **Seviyeler:** A1 Başlangıç (218), A2 Temel (226), B1 Orta (212), B2 İyi (205), C1 İleri (212). B1'den sonra deyimsel fiiller (phrasal verbs) ve kalıplar da var. 15 soruluk **Seviyemi Bul** testi uygun seviyeyi önerir.
 - **9 oyun:**
   - 📇 Kelime Kartları (çevir, dinle, "biliyorum / bilmiyorum").
   - ❓ Kelime Testi (İngilizce → Türkçe, Türkçe → İngilizce, dinle ve seç).
