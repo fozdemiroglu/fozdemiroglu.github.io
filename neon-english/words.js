@@ -220,7 +220,17 @@ behind|prep|arkasında|The ball is behind the door.|Top kapının arkasında.
 or|conj|veya, ya da|Tea or coffee?|Çay mı kahve mi?
 goodbye|phr|hoşça kal|Goodbye! See you soon.|Hoşça kal! Yakında görüşürüz.
 excuse me|phr|affedersiniz|Excuse me, where is the station?|Affedersiniz, istasyon nerede?
-good morning|phr|günaydın|Good morning, everybody!|Herkese günaydın!`,
+good morning|phr|günaydın|Good morning, everybody!|Herkese günaydın!
+salad|n|salata|I eat a salad for lunch.|Öğle yemeğinde salata yerim.
+soup|n|çorba|My grandmother makes tomato soup.|Büyükannem domates çorbası yapar.
+sandwich|n|sandviç|I have a cheese sandwich.|Peynirli bir sandviçim var.
+duck|n|ördek|A duck is swimming in the lake.|Gölde bir ördek yüzüyor.
+lion|n|aslan|The lion is the king of animals.|Aslan hayvanların kralıdır.
+monkey|n|maymun|The monkey is eating a banana.|Maymun bir muz yiyor.
+pink|adj|pembe|My sister has a pink dress.|Kız kardeşimin pembe bir elbisesi var.
+cry|v|ağlamak|Babies cry when they are hungry.|Bebekler acıkınca ağlar.
+brush|v|fırçalamak|Brush your teeth twice a day.|Dişlerini günde iki kez fırçala.
+yesterday|adv|dün|I was at home yesterday.|Dün evdeydim.`,
 
 A2: `airport|n|havalimanı|We arrived at the airport early.|Havalimanına erken vardık.
 ticket|n|bilet|I bought a ticket for the concert.|Konser için bir bilet aldım.
@@ -447,7 +457,17 @@ wake up|phr|uyanmak|I usually wake up at seven.|Genellikle yedide uyanırım.
 try on|phr|(giysi) denemek|Can I try on these jeans?|Bu kotu deneyebilir miyim?
 pick up|phr|toplamak, yerden almak|Can you pick up your toys, please?|Oyuncaklarını toplayabilir misin, lütfen?
 go out|phr|dışarı çıkmak|Let's go out for dinner.|Akşam yemeğine dışarı çıkalım.
-on time|phr|zamanında|The train arrived on time.|Tren zamanında geldi.`,
+on time|phr|zamanında|The train arrived on time.|Tren zamanında geldi.
+scarf|n|atkı, eşarp|Wear a scarf. It's windy.|Atkı tak. Hava rüzgârlı.
+gloves|n|eldiven|I need warm gloves for winter.|Kış için sıcak eldivenlere ihtiyacım var.
+postcard|n|kartpostal|I sent my grandma a postcard from Rome.|Roma'dan büyükanneme bir kartpostal gönderdim.
+recipe|n|yemek tarifi|Can you give me the recipe for this cake?|Bu pastanın tarifini verir misin?
+cousin|n|kuzen|My cousin lives in Izmir.|Kuzenim İzmir'de yaşıyor.
+surprised|adj|şaşırmış|I was surprised to see him there.|Onu orada görünce şaşırdım.
+lazy|adj|tembel|My cat is very lazy.|Kedim çok tembel.
+shy|adj|utangaç|She is shy with new people.|Yeni insanlara karşı utangaç.
+exercise|v|egzersiz yapmak|I exercise three times a week.|Haftada üç kez egzersiz yaparım.
+turn on|phr|açmak (cihaz, ışık)|Can you turn on the light?|Işığı açabilir misin?`,
 
 B1: `achieve|v|başarmak, ulaşmak|You can achieve your goals if you work hard.|Çok çalışırsan hedeflerine ulaşabilirsin.
 advice|n|tavsiye|Can you give me some advice?|Bana biraz tavsiye verebilir misin?
@@ -660,7 +680,17 @@ look forward to|phr|dört gözle beklemek|I look forward to seeing you.|Seni gö
 put up with|phr|katlanmak|I can't put up with this noise any more.|Bu gürültüye artık katlanamıyorum.
 make sure|phr|emin olmak|Make sure you lock the door.|Kapıyı kilitlediğinden emin ol.
 take place|phr|gerçekleşmek|The concert will take place in the park.|Konser parkta gerçekleşecek.
-by the way|phr|bu arada|By the way, have you seen Ali?|Bu arada, Ali'yi gördün mü?`,
+by the way|phr|bu arada|By the way, have you seen Ali?|Bu arada, Ali'yi gördün mü?
+deposit|n|depozito, kaparo|We paid a deposit for the flat.|Daire için depozito ödedik.
+refund|n|para iadesi|I'd like a refund, please.|Para iadesi istiyorum, lütfen.
+shortcut|n|kestirme yol|Let's take a shortcut through the park.|Parkın içinden kestirmeden gidelim.
+headline|n|manşet|Did you read today's headline?|Bugünkü manşeti okudun mu?
+stressful|adj|stresli|Moving house is very stressful.|Ev taşımak çok streslidir.
+brilliant|adj|harika, parlak|What a brilliant idea!|Ne harika bir fikir!
+disgusting|adj|iğrenç|This coffee tastes disgusting.|Bu kahvenin tadı iğrenç.
+exchange|v|değiştirmek, takas etmek|Can I exchange this shirt for a bigger size?|Bu gömleği daha büyük bir bedenle değiştirebilir miyim?
+recycle|v|geri dönüştürmek|We recycle paper and glass.|Kâğıdı ve camı geri dönüştürüyoruz.
+get over|phr|atlatmak, üstesinden gelmek|It took her weeks to get over the flu.|Gribi atlatması haftalar sürdü.`,
 
 B2: `accomplish|v|başarmak, tamamlamak|It took months to accomplish the task.|Görevi tamamlamak aylar sürdü.
 acknowledge|v|kabul etmek|He refused to acknowledge his mistake.|Hatasını kabul etmeyi reddetti.
@@ -866,7 +896,17 @@ rely on|phr|güvenmek, bel bağlamak|You can always rely on me.|Bana her zaman g
 stand out|phr|öne çıkmak, göze çarpmak|Her red dress made her stand out.|Kırmızı elbisesi onu öne çıkardı.
 work out|phr|bulmak, çözmek; spor yapmak|We need to work out a solution.|Bir çözüm bulmamız gerekiyor.
 as a result|phr|sonuç olarak|It rained all week. As a result, the match was cancelled.|Bütün hafta yağmur yağdı. Sonuç olarak maç iptal edildi.
-in charge of|phr|-den sorumlu|Who is in charge of this project?|Bu projeden kim sorumlu?`,
+in charge of|phr|-den sorumlu|Who is in charge of this project?|Bu projeden kim sorumlu?
+ambitious|adj|hırslı|She is ambitious and hard-working.|Hırslı ve çalışkan biri.
+cautious|adj|temkinli|Be cautious when you invest money.|Para yatırırken temkinli ol.
+drawback|n|dezavantaj, sakınca|The main drawback of the plan is the cost.|Planın asıl dezavantajı maliyeti.
+setback|n|aksilik, gerileme|The injury was a serious setback for the team.|Sakatlık takım için ciddi bir aksilikti.
+boost|v|artırmak, güçlendirmek|The new park will boost tourism.|Yeni park turizmi artıracak.
+obtain|v|elde etmek, almak|You need to obtain a visa first.|Önce vize almanız gerekiyor.
+undertake|v|üstlenmek|The company will undertake the project.|Şirket projeyi üstlenecek.
+precaution|n|önlem|Take every precaution against fire.|Yangına karşı her türlü önlemi al.
+readily|adv|kolayca, seve seve|The information is readily available online.|Bilgiye internetten kolayca ulaşılabilir.
+come across|phr|rastlamak|You might come across some useful tips in this book.|Bu kitapta bazı faydalı ipuçlarına rastlayabilirsin.`,
 
 C1: `abolish|v|kaldırmak (yasa, kural)|Many countries have voted to abolish the death penalty.|Birçok ülke idam cezasını kaldırmak için oy verdi.
 accountable|adj|hesap verebilir, sorumlu|Politicians must be held accountable for their decisions.|Politikacılar kararlarından sorumlu tutulmalıdır.
@@ -1079,7 +1119,17 @@ on the verge of|phr|-in eşiğinde|The species is on the verge of extinction.|T�
 take for granted|phr|olağan saymak, hafife almak|Many things we take for granted today were once luxuries.|Bugün olağan saydığımız birçok şey bir zamanlar lükstü.
 think outside the box|phr|kalıpların dışında düşünmek|Good designers think outside the box.|İyi tasarımcılar kalıpların dışında düşünür.
 the tip of the iceberg|phr|buzdağının görünen yüzü|These problems are just the tip of the iceberg.|Bu sorunlar sadece buzdağının görünen yüzü.
-a blessing in disguise|phr|hayırlı bir aksilik|Losing that job was a blessing in disguise.|O işi kaybetmek hayırlı bir aksilikti.`
+a blessing in disguise|phr|hayırlı bir aksilik|Losing that job was a blessing in disguise.|O işi kaybetmek hayırlı bir aksilikti.
+conundrum|n|muamma, çıkmaz|How to fund the project remains a conundrum.|Projenin nasıl finanse edileceği hâlâ bir muamma.
+disseminate|v|yaymak|The aim is to disseminate information quickly.|Amaç bilgiyi hızla yaymak.
+exemplify|v|örneklemek|These buildings exemplify modern architecture.|Bu binalar modern mimariyi örnekliyor.
+idiosyncratic|adj|kendine özgü|He has an idiosyncratic style of writing.|Kendine özgü bir yazı üslubu var.
+scrupulous|adj|son derece titiz, vicdanlı|She is scrupulous about details.|Ayrıntılar konusunda son derece titiz.
+tenacious|adj|azimli, inatçı|You have to be tenacious to succeed in business.|İş dünyasında başarılı olmak için azimli olmalısın.
+circumvent|v|atlatmak, delmek (kural)|They found a way to circumvent the rules.|Kuralları delmenin bir yolunu buldular.
+exhilarating|adj|coşku verici|The roller coaster ride was exhilarating.|Hız treni insanı coşturuyordu.
+ostensibly|adv|görünüşte|He was ostensibly there to help.|Görünüşte yardım etmek için oradaydı.
+turn a blind eye|phr|görmezden gelmek|The manager decided to turn a blind eye to the mistake.|Müdür hatayı görmezden gelmeye karar verdi.`
 };
 
 window.VERBS = `be|was/were|been|olmak|1

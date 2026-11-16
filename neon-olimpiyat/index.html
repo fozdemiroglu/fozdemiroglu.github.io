@@ -702,7 +702,7 @@ function renderMenu() {
     <div class="evgrid">${EVENTS.map(e => `<button class="ev" data-pr="${e.id}" aria-pressed="true" style="--c:${e.c}"><span class="e">${e.ic}</span>${e.name}</button>`).join('')}</div>
     <div class="card"><b>Rekorlar</b><div class="rec">${EVENTS.map(e => `<span>${e.ic}</span><span>${e.name}${DB.best[e.id] ? ` <small>· ${esc(DB.best[e.id].who)}</small>` : ''}</span><b>${DB.best[e.id] ? e.fmt(DB.best[e.id].v) : '–'}</b>`).join('')}</div></div>
     ${cab.length ? `<div class="card"><b>Madalya dolabı</b><div class="cab">${cab.map(([n, c]) => `<div><span>${esc(n)}</span><span>${c[0]}🥇 ${c[1]}🥈 ${c[2]}🥉 · ${c[3]} 🏆</span></div>`).join('')}</div></div>` : ''}
-    <p class="privacy">Reklamsız · Veri toplamaz · İnternetsiz çalışır</p><p class="sig"><b>FOZ</b> Yapım sunar</p>`;
+    <p class="privacy">Reklamsız · Veri toplamaz · İnternetsiz çalışır</p><p class="sig"><b>FOZ</b> Yapım sunar · <span style="white-space:nowrap">FATİH ÖZDEMİROĞLU · 2026</span></p>`;
   renderSound();
   $('goO').addEventListener('click', () => { audio(); showScreen('setup'); renderSetup(); });
   $('menuWrap').querySelectorAll('[data-pr]').forEach(b => b.addEventListener('click', () => { audio(); startPractice(b.dataset.pr); }));

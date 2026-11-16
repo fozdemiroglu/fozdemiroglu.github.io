@@ -274,7 +274,7 @@ function screenHome() {
     </div>
     <div class="card"><div class="kv"><div><b>${st.played}</b><small>oyun</small></div><div><b>%${st.played ? Math.round(st.won / st.played * 100) : 0}</b><small>başarı</small></div><div><b>${st.streak}</b><small>seri</small></div><div><b>${DB.points}</b><small>puan</small></div></div></div>
     <p class="privacy">Reklamsız · Veri toplamaz · İnternetsiz çalışır</p>
-    <p class="sig"><b>FOZ</b> Yapım sunar</p>
+    <p class="sig"><b>FOZ</b> Yapım sunar · <span style="white-space:nowrap">FATİH ÖZDEMİROĞLU · 2026</span></p>
   </div></div>`);
   $v.querySelectorAll('[data-l]').forEach(b => b.addEventListener('click', () => { DB.lvl = +b.dataset.l; save(); screenHome(); }));
   $v.querySelector('#help').addEventListener('click', showHelp);
