@@ -46,7 +46,7 @@ input{font:inherit;color:inherit}
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .chip{--c:var(--cyan);padding:10px 14px;border-radius:999px;background:var(--panel);border:2px solid rgba(139,138,192,.35);font-weight:800;color:var(--muted)}
 .chip[aria-pressed="true"]{border-color:var(--c);color:var(--c);text-shadow:0 0 8px var(--c);box-shadow:0 0 12px color-mix(in srgb,var(--c) 35%,transparent)}
-.evgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.evgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .ev{--c:var(--cyan);padding:10px 4px;border-radius:14px;background:var(--panel);border:2px solid rgba(139,138,192,.3);text-align:center;font-weight:800;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;align-items:center}
 .ev .e{font-size:1.5rem;filter:grayscale(1) opacity(.5)}
 .ev[aria-pressed="true"]{border-color:var(--c);color:#fff;box-shadow:0 0 12px color-mix(in srgb,var(--c) 35%,transparent)}
@@ -104,7 +104,7 @@ input{font:inherit;color:inherit}
 .big{font-size:2.2rem;font-weight:900;color:#fff7c2;text-shadow:0 0 10px var(--gold)}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:40}
 @media (prefers-reduced-motion:reduce){.logo .l1{animation:none}.modal{animation:none}}
-@media (max-width:420px){.evgrid{grid-template-columns:repeat(5,1fr);gap:5px}.ev{font-size:.62rem}}
+@media (max-width:420px){.evgrid{grid-template-columns:repeat(4,1fr);gap:5px}.ev{font-size:.62rem}}
 </style>
 </head>
 <body>
@@ -133,14 +133,20 @@ const dec = (x, d = 2) => x.toFixed(d).replace('.', ',');
 const EVENTS = [
   { id: 'yuz', name: '100 Metre', ic: '🏃', low: true, c: '#00f0ff', fmt: v => dec(v) + ' sn',
     how: '“BAŞLA!” yazısından sonra <b>SOL</b> ve <b>SAĞ</b> düğmelerine sırayla, olabildiğince hızlı bas. Aynı düğmeye üst üste basarsan tökezlersin!', keys: 'Klavye: ← ve → tuşlarına sırayla bas.', cpu: { kolay: [15.4, 17.8], orta: [12.4, 13.8], zor: [10.6, 11.8] } },
+  { id: 'engel', name: '110 m Engelli', ic: '🚧', low: true, c: '#b05cff', fmt: v => dec(v) + ' sn',
+    how: '<b>SOL–SAĞ</b> ile koş. Engel yaklaşınca <b>ATLA</b>\'ya bas: sarı “ATLA!” yazısı çıktığında atlarsan rahat geçersin. Engele takılırsan yavaşlarsın. Havadayken koşu tuşları çalışmaz.', keys: 'Klavye: ← → koş, Boşluk atla.', cpu: { kolay: [18.2, 21.5], orta: [14.6, 16.2], zor: [12.6, 13.8] } },
   { id: 'uzun', name: 'Uzun Atlama', ic: '🦘', c: '#39ff14', tries: 3, fmt: v => dec(v) + ' m',
     how: '<b>SOL–SAĞ</b> ile hızlan. Beyaz tahtaya gelince <b>ATLA</b> düğmesine bas ve <b>basılı tut</b>: açı yükselir. Yaklaşık <b>45°</b>\'de bırak. Tahtayı geçersen faul! 3 hakkın var, en iyisi sayılır.', keys: 'Klavye: ← → koş, Boşluk basılı tut ve bırak.', cpu: { kolay: [3.2, 4.4], orta: [5.0, 6.2], zor: [6.6, 7.8] } },
   { id: 'cirit', name: 'Cirit Atma', ic: '➶', c: '#ffe600', tries: 3, fmt: v => dec(v, 1) + ' m',
     how: '<b>SOL–SAĞ</b> ile hızlan. Kırmızı atış çizgisinden önce <b>AT</b> düğmesine bas, <b>basılı tut</b> ve <b>45°</b> civarında bırak. Çizgiyi geçersen faul! 3 hakkın var.', keys: 'Klavye: ← → koş, Boşluk basılı tut ve bırak.', cpu: { kolay: [26, 38], orta: [44, 56], zor: [58, 70] } },
+  { id: 'gulle', name: 'Gülle Atma', ic: '🟠', c: '#ff5f8f', tries: 3, fmt: v => dec(v) + ' m',
+    how: '3 saniye boyunca <b>SOL–SAĞ</b>\'a sırayla basarak dön ve <b>güç</b> topla. Sonra <b>AT</b> düğmesine <b>basılı tut</b>, açı yükselir; <b>40°</b> civarında bırak. Dönüş bitince 2 saniye içinde atmazsan faul! 3 hakkın var.', keys: 'Klavye: ← → dön, Boşluk basılı tut ve bırak.', cpu: { kolay: [6.5, 10.5], orta: [12, 15.5], zor: [16.5, 20] } },
   { id: 'yuksek', name: 'Yüksek Atlama', ic: '⤴', c: '#ff2bd6', fmt: v => dec(v) + ' m',
     how: 'Sporcu kendisi koşar. Alttaki çubukta gidip gelen ışık <b>yeşil bölgedeyken ZIPLA</b>\'ya bas. Çıta her başarıda yükselir, yeşil bölge daralır. Aynı yükseklikte 3 kez düşürürsen yarışma biter.', keys: 'Klavye: Boşluk.', cpu: { kolay: [1.5, 1.7], orta: [1.75, 1.95], zor: [2.0, 2.2] } },
   { id: 'ok', name: 'Okçuluk', ic: '🏹', c: '#ff8a00', fmt: v => v + ' puan',
-    how: 'Nişangâh titreyerek hareket eder. <b>Rüzgârı</b> hesaba kat: <b>SOL–SAĞ</b> ile nişanı kaydır, nişangâh tam yerindeyken <b>ATEŞ</b>\'e bas. 6 okun toplamı sayılır (en fazla 60).', keys: 'Klavye: ← → nişan, Boşluk ateş.', cpu: { kolay: [27, 37], orta: [40, 48], zor: [49, 56] } }
+    how: 'Nişangâh titreyerek hareket eder. <b>Rüzgârı</b> hesaba kat: <b>SOL–SAĞ</b> ile nişanı kaydır, nişangâh tam yerindeyken <b>ATEŞ</b>\'e bas. 6 okun toplamı sayılır (en fazla 60).', keys: 'Klavye: ← → nişan, Boşluk ateş.', cpu: { kolay: [27, 37], orta: [40, 48], zor: [49, 56] } },
+  { id: 'bayrak', name: '4×100 Bayrak', ic: '🏁', low: true, c: '#39d0ff', fmt: v => dec(v) + ' sn',
+    how: 'Dört koşucunun hepsini sen koşturursun. <b>SOL–SAĞ</b> ile koş. Yeşil <b>değişim bölgesinde</b> arkadaşın koşmaya başlar; ona yetişip “VER!” yazısı çıkınca <b>VER</b>\'e bas. Ne kadar yakından verirsen o kadar hızlı devam eder. Geç kalırsan değişim yavaş olur.', keys: 'Klavye: ← → koş, Boşluk bayrağı ver.', cpu: { kolay: [56, 64], orta: [43, 47], zor: [38.5, 41.5] } }
 ];
 const EV = Object.fromEntries(EVENTS.map(e => [e.id, e]));
 const PCOL = ['#ff2bd6', '#00f0ff', '#39ff14', '#ffe600'];
@@ -150,8 +156,11 @@ const MEDAL = ['🥇', '🥈', '🥉'];
 
 /* ---------- kayıt ---------- */
 const KEY = 'foz-neon-olimpiyat-v1';
-let DB = { sound: true, names: ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4'], count: 1, cpu: true, diff: 'orta', events: EVENTS.map(e => e.id), best: {}, cabinet: {}, practice: 'yuz' };
+let DB = { known: null, sound: true, names: ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4'], count: 1, cpu: true, diff: 'orta', events: EVENTS.map(e => e.id), best: {}, cabinet: {}, practice: 'yuz' };
 try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) DB = Object.assign(DB, s); } catch (e) {}
+{ const known = DB.known || ['yuz', 'uzun', 'cirit', 'yuksek', 'ok'], ids = EVENTS.map(e => e.id);
+  DB.events = ids.filter(id => DB.events.includes(id) || !known.includes(id)); DB.known = ids;
+  if (!EVENTS.some(e => e.id === DB.practice)) DB.practice = 'yuz'; }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
 
 /* ---------- ses ---------- */
@@ -554,7 +563,207 @@ function evArch(pl, done) {
     }
   };
 }
-const MAKERS = { yuz: ev100, uzun: (p, d) => evJump(p, d, 'uzun'), cirit: (p, d) => evJump(p, d, 'cirit'), yuksek: evHigh, ok: evArch };
+
+/* ---------- 110 m engelli ---------- */
+function evHurdles(pl, done) {
+  const r = runner(0), PX = 22, VP = 30, AIR = .56, HJ = 1.25;
+  const HS = Array.from({ length: 10 }, (_, i) => ({ x: 13.72 + i * 9.14, down: 0 }));
+  let t = 0, state = 'cd', cd = 2.7, lastBeep = 4, fin = null, after = 0, airT = 0, y = 0, hits = 0, msg = '', msgT = 0;
+  const best = DB.best.engel && DB.best.engel.v;
+  setControls(['L', 'R', 'A'], 'ATLA');
+  const nextH = () => HS.find(h => h.x > r.x - .3);
+  return {
+    dbg: () => ({ state, x: r.x, v: r.v, t, y, hits, airT, next: (nextH() || {}).x }),
+    hud: () => ['Süre', state === 'cd' ? '0,00' : dec(fin != null ? fin : t), 'Engel', HS.filter(h => h.x < r.x).length + '/10'],
+    press(b) {
+      if (state === 'cd') { if (cd < 1.8) { cd = 2.7; lastBeep = 4; sfx.foul(); msg = 'Erken çıkış! Yeniden'; msgT = 1.2; } return; }
+      if (state !== 'run') return;
+      if (b === 'A') { if (airT <= 0) { airT = AIR; sfx.jump(); } return; }
+      if (airT > 0) return;
+      runTap(r, b);
+    },
+    update(dt) {
+      if (msgT > 0) msgT -= dt;
+      if (state === 'cd') { cd -= dt; const k = Math.ceil(cd / .9); if (k !== lastBeep && k >= 0) { lastBeep = k; if (k > 0 && k < 3) sfx.beep(false); } if (cd <= 0) { state = 'run'; sfx.beep(true); } return; }
+      if (state === 'run') {
+        t += dt; const px = r.x;
+        if (airT > 0) { airT -= dt; const p = clamp(1 - airT / AIR, 0, 1); y = 4 * HJ * p * (1 - p); r.v = Math.max(0, r.v - r.v * .1 * dt); r.x += r.v * dt; r.phase += dt * 2; if (airT <= 0) { airT = 0; y = 0; sfx.step(); } }
+        else runStep(r, dt);
+        for (const h of HS) {
+          if (!h.down && px < h.x + .35 && r.x > h.x - .35 && y < .8) { h.down = .01; hits++; r.v *= .55; r.stumble = .5; sfx.stumble(); noise(.15, .05); msg = 'Engele takıldın!'; msgT = .9; }
+          if (h.down > 0 && h.down < 1) h.down = Math.min(1, h.down + dt * 4);
+        }
+        if (r.x >= 110 && fin == null) { fin = t - (r.x - 110) / Math.max(r.v, .1); state = 'fin'; sfx.cheer(); }
+        if (t > 80) { fin = 80; state = 'fin'; }
+      } else if (state === 'fin') { if (airT > 0) { airT -= dt; if (airT <= 0) y = 0; else { const p = clamp(1 - airT / AIR, 0, 1); y = 4 * HJ * p * (1 - p); } } runStep(r, dt * .6); r.v *= .97; after += dt; if (after > 1.4) { state = 'done'; done({ v: Math.round(fin * 100) / 100, text: dec(fin) + ' sn' }); } }
+    },
+    draw() {
+      const cam = r.x * PX - VW * .32; stadium(cam, state === 'fin' ? 1 : 0);
+      for (let m = 0; m <= 120; m += 10) { const sx = m * PX - cam; if (sx < -40 || sx > VW + 40) continue; ctx.fillStyle = 'rgba(255,255,255,.3)'; ctx.fillRect(sx - 1, GY + 20, 2, 60); if (m <= 110) label(m + ' m', sx, GY + 92, '#cbd', 11); }
+      const fx0 = 110 * PX - cam; if (fx0 > -50 && fx0 < VW + 50) { ctx.save(); ctx.fillStyle = '#ffd23f'; ctx.shadowColor = '#ffd23f'; ctx.shadowBlur = 14; ctx.fillRect(fx0 - 2, GY - 60, 4, 62); ctx.restore(); label('BİTİŞ', fx0, GY - 68, '#ffd23f', 12); }
+      for (const h of HS) {
+        const sx = h.x * PX - cam; if (sx < -40 || sx > VW + 40) continue;
+        ctx.save(); ctx.translate(sx, LANE + 6); ctx.strokeStyle = '#d6dcff'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+        if (h.down) ctx.rotate(h.down * 1.35);
+        ctx.beginPath(); ctx.moveTo(-6, 0); ctx.lineTo(-6, -27); ctx.moveTo(6, 0); ctx.lineTo(6, -27); ctx.stroke();
+        ctx.fillStyle = h.down ? '#ff8095' : '#ff2bd6'; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 10; ctx.fillRect(-9, -31, 18, 6);
+        ctx.restore();
+      }
+      if (best && state !== 'cd') { const gx = Math.min(110, 110 * t / best) * PX - cam; ctx.globalAlpha = .35; athlete(gx, LANE + 8, t * best * 1.7, 'run', '#ffffff'); ctx.globalAlpha = 1; label('REKOR', gx, LANE - 72, 'rgba(255,255,255,.5)', 10); }
+      athlete(r.x * PX - cam, LANE - y * VP, r.phase, state === 'cd' ? 'stand' : y > .05 ? 'jump' : 'run', pl.color);
+      label(pl.name, r.x * PX - cam, LANE - 74 - y * VP, pl.color, 12);
+      if (state !== 'cd') speedBar(r);
+      if (state === 'cd') bigText(cd > .9 ? 'Yerine…' : 'Hazır…', 80, '#d6fdff');
+      else if (t < .8) bigText('BAŞLA!', 80, '#39ff14');
+      const nh = nextH();
+      if (state === 'run' && nh && airT <= 0 && nh.x - r.x < 4.6 && nh.x - r.x > 1) bigText('ATLA!', 80, '#ffd23f', 30);
+      if (r.stumble > 0 && state === 'run' && !msgT) label('Tökezledin! Sırayla bas', VW / 2, 120, '#ff8095', 15);
+      if (msgT > 0) bigText(msg, 120, '#ff8095', 22);
+      if (state === 'fin' || state === 'done') bigText(dec(fin) + ' sn' + (hits ? '' : '  · temiz koşu!'), 80);
+    }
+  };
+}
+
+/* ---------- gülle atma ---------- */
+function evShot(pl, done) {
+  const SPIN = 3;
+  let state = 'ready', pow = 0, spin = 0, last = null, spinT = 0, waitT = 0, ang = 10, fl = null, res = null, after = 0, foul = '', st = 0;
+  const best = DB.best.gulle && DB.best.gulle.v;
+  setControls(['L', 'R', 'A'], 'AT');
+  const launch = () => { const a = ang * Math.PI / 180, v = 6 + pow * 8.5; fl = { x: .3, y: 2.0, vx: v * Math.cos(a), vy: v * Math.sin(a) }; state = 'fly'; sfx.throw(); };
+  const doFoul = w => { foul = w; state = 'foul'; after = 0; sfx.foul(); };
+  return {
+    dbg: () => ({ state, pow, ang, res, spinT }),
+    hud: () => ['Güç', Math.round(pow * 100) + '%', 'Açı', state === 'ang' || state === 'fly' || state === 'land' ? Math.round(ang) + '°' : '–'],
+    press(b) {
+      if (b === 'L' || b === 'R') {
+        if (state === 'ready') { state = 'spin'; spinT = SPIN; }
+        if (state === 'spin') { if (b === last) { pow = Math.max(0, pow - .05); st = .35; sfx.stumble(); } else { last = b; pow = Math.min(1, pow + .065); spin += .8; sfx.step(); } }
+        return;
+      }
+      if (b === 'A' && (state === 'spin' || state === 'wait')) { state = 'ang'; ang = 10; }
+    },
+    release(b) { if (b === 'A' && state === 'ang') launch(); },
+    update(dt) {
+      if (st > 0) st -= dt;
+      if (state === 'spin') { spinT -= dt; pow = Math.max(0, pow - .1 * dt); spin += dt * (2 + pow * 10); if (spinT <= 0) { state = 'wait'; waitT = 2; } }
+      else if (state === 'wait') { waitT -= dt; pow = Math.max(0, pow - .25 * dt); spin += dt * (1 + pow * 6); if (waitT <= 0) doFoul('Atmadan daireden çıktın — faul!'); }
+      else if (state === 'ang') { ang += 55 * dt; if (ang >= 75) { ang = 75; launch(); } }
+      else if (state === 'fly') { fl.vy -= 9.81 * dt; fl.x += fl.vx * dt; fl.y += fl.vy * dt; if (fl.y <= 0) { fl.y = 0; res = Math.max(0, fl.x); state = 'land'; after = 0; sfx.land(); if (best == null || res > best) sfx.cheer(); else sfx.good(); } }
+      else if (state === 'land') { after += dt; if (after > 1.5) { state = 'done'; done({ v: Math.round(res * 100) / 100, text: EV.gulle.fmt(res) }); } }
+      else if (state === 'foul') { after += dt; if (after > 1.6) { state = 'done'; done({ v: null, text: 'Faul (X)' }); } }
+    },
+    draw() {
+      stadium(0, state === 'land' ? 1 : 0);
+      const PX = Math.min(24, (VW * .8) / 25), X0 = VW * .12, W = x => X0 + x * PX, Y = y => LANE - y * PX;
+      // atış alanı
+      ctx.fillStyle = '#1d5a2a'; ctx.fillRect(W(1.1), GY + 20, VW, 60);
+      for (let m = 5; m <= 25; m += 5) { ctx.fillStyle = 'rgba(255,255,255,.45)'; ctx.fillRect(W(m) - 1, GY + 20, 2, 60); label(m + ' m', W(m), GY + 92, '#d6ffd0', 11); }
+      ctx.save(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.shadowColor = '#fff'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.ellipse(W(0), LANE + 6, 1.07 * PX + 8, 7, 0, 0, 7); ctx.stroke(); ctx.restore();
+      ctx.save(); ctx.fillStyle = '#ff8a00'; ctx.shadowColor = '#ff8a00'; ctx.shadowBlur = 10; ctx.fillRect(W(1.07) + 6, LANE - 2, 6, 10); ctx.restore();
+      if (best != null) { const bx = W(best); ctx.save(); ctx.strokeStyle = 'rgba(255,210,63,.8)'; ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.moveTo(bx, GY - 10); ctx.lineTo(bx, GY + 80); ctx.stroke(); ctx.restore(); label('REKOR ' + EV.gulle.fmt(best), bx, GY - 18, '#ffd23f', 11); }
+      // sporcu (dönme efekti)
+      const spinning = state === 'spin' || state === 'wait';
+      const sx = spinning ? Math.cos(spin) : 1;
+      ctx.save(); ctx.translate(W(0), 0); ctx.scale(Math.sign(sx || 1) * Math.max(.3, Math.abs(sx)), 1);
+      athlete(0, LANE, 0, state === 'ready' || state === 'foul' ? 'stand' : 'throw', pl.color, { k: state === 'fly' || state === 'land' ? 1 : 0 });
+      ctx.restore();
+      // gülle
+      let bx, by;
+      if (state === 'fly' || state === 'land') { bx = W(fl.x); by = Y(fl.y) - 4; }
+      else if (state === 'ang') { const a = ang * Math.PI / 180; bx = W(0) - 4 - Math.cos(a) * 8; by = LANE - 58 - Math.sin(a) * 6; }
+      else { bx = W(0) + Math.cos(spin) * 14; by = LANE - 50; }
+      ctx.save(); ctx.fillStyle = '#ffb24a'; ctx.shadowColor = '#ff8a00'; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(bx, by, 6, 0, 7); ctx.fill(); ctx.restore();
+      if (state === 'fly') label(dec(Math.max(0, fl.x), 1) + ' m', bx, by - 16, '#ffb24a', 12);
+      label(pl.name, W(0), LANE - 78, pl.color, 12);
+      // güç çubuğu
+      if (state !== 'fly' && state !== 'land') {
+        const w = Math.min(160, VW * .4), x = 14, y = 14;
+        ctx.fillStyle = 'rgba(10,8,40,.8)'; ctx.fillRect(x, y, w, 12);
+        const g = ctx.createLinearGradient(x, 0, x + w, 0); g.addColorStop(0, '#00f0ff'); g.addColorStop(.7, '#ffe600'); g.addColorStop(1, '#ff3b5c');
+        ctx.fillStyle = g; ctx.fillRect(x, y, w * pow, 12); ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.strokeRect(x, y, w, 12);
+        label('GÜÇ ' + Math.round(pow * 100) + '%', x, y + 24, '#cfd', 11, 'left');
+        if (state === 'spin') { ctx.fillStyle = '#ffd23f'; ctx.fillRect(x, y + 34, w * clamp(spinT / SPIN, 0, 1), 4); }
+      }
+      if (state === 'ang') gauge(W(0) + 40, LANE - 44, ang, true);
+      if (state === 'ready') bigText('SOL–SAĞ ile dönmeye başla', 80, '#d6fdff', 20);
+      if (state === 'spin') bigText(spinT > SPIN - .7 ? 'DÖN! SOL–SAĞ' : pow > .75 ? 'Süper güç! AT basılı tut' : 'DÖN! Sırayla bas', 80, '#ffd23f', 24);
+      if (state === 'wait') bigText('Şimdi AT! (basılı tut, ~40°)', 80, '#39ff14', 22);
+      if (st > 0 && state === 'spin') label('Sırayla bas!', VW / 2, 118, '#ff8095', 15);
+      if (state === 'land') bigText(EV.gulle.fmt(res) + (best == null || res > best ? '  🏅 REKOR!' : ''), 80);
+      if (state === 'foul') bigText(foul, 80, '#ff8095', 20);
+    }
+  };
+}
+
+/* ---------- 4×100 bayrak ---------- */
+function evRelay(pl, done) {
+  const PX = 22, zs = i => 100 * i - 10, ze = i => 100 * i + 10;
+  const R = [0, 1, 2, 3].map(i => Object.assign(runner(i ? zs(i) : 0), { go: i === 0 }));
+  const shade = ['', 'cc', 'aa', '88'];
+  let cur = 0, t = 0, state = 'cd', cd = 2.7, lastBeep = 4, fin = null, after = 0, msg = '', msgT = 0, msgC = '#39ff14', clean = 0;
+  const say = (m, c, d = 1.1) => { msg = m; msgC = c; msgT = d; };
+  const pass = q => { const n = R[cur + 1], o = R[cur]; n.v = Math.max(n.v * .7, o.v * q); n.last = o.last; cur++; };
+  setControls(['L', 'R', 'A'], 'VER');
+  return {
+    dbg: () => ({ state, cur, x: R[cur].x, v: R[cur].v, t, nx: R[cur + 1] ? R[cur + 1].x : null, ngo: R[cur + 1] ? R[cur + 1].go : null, clean }),
+    hud: () => ['Süre', state === 'cd' ? '0,00' : dec(fin != null ? fin : t), 'Etap', Math.min(4, cur + 1) + '/4'],
+    press(b) {
+      if (state === 'cd') { if (cd < 1.8) { cd = 2.7; lastBeep = 4; sfx.foul(); say('Erken çıkış! Yeniden', '#ff8095', 1.2); } return; }
+      if (state !== 'run') return;
+      if (b !== 'A') return runTap(R[cur], b);
+      if (cur >= 3) return;
+      const o = R[cur], n = R[cur + 1], d = n.x - o.x;
+      if (!n.go || d > 1.8) { o.v *= .9; sfx.stumble(); return say('Çok uzak! Arkadaşına yaklaş', '#ff8095', .9); }
+      if (o.x < zs(cur + 1) - .5) return say('Değişim bölgesine gir!', '#ff8095', .9);
+      const q = 1 - Math.max(0, d - .5) * .1; if (d < 1) clean++;
+      pass(q); sfx.good(); say(d < 1 ? 'Mükemmel değişim!' : 'İyi değişim!', '#39ff14');
+    },
+    update(dt) {
+      if (msgT > 0) msgT -= dt;
+      if (state === 'cd') { cd -= dt; const k = Math.ceil(cd / .9); if (k !== lastBeep && k >= 0) { lastBeep = k; if (k > 0 && k < 3) sfx.beep(false); } if (cd <= 0) { state = 'run'; sfx.beep(true); } return; }
+      if (state === 'run' || state === 'fin') {
+        if (state === 'run') t += dt;
+        for (let k = 0; k < cur; k++) { const o = R[k]; o.v *= Math.pow(.25, dt); o.x += o.v * dt; o.phase += o.v * dt * 1.7; }
+        const o = R[cur];
+        if (state === 'run') runStep(o, dt); else { runStep(o, dt * .6); o.v *= .97; }
+        const n = R[cur + 1];
+        if (n && state === 'run') {
+          if (!n.go && o.x >= n.x - 7.5) n.go = true;
+          if (n.go) { n.v = Math.min(9.6, n.v + 6 * dt); n.x += n.v * dt; n.phase += n.v * dt * 1.7 + dt * 2; if (n.x >= ze(cur + 1) - .5) { n.x = ze(cur + 1) - .5; n.v = 0; } }
+          if (o.x >= n.x) { pass(.45); sfx.stumble(); say('Geç kaldın! Değişim yavaş', '#ffd23f'); }
+        }
+        if (state === 'run' && cur === 3 && R[3].x >= 400 && fin == null) { fin = t - (R[3].x - 400) / Math.max(R[3].v, .1); state = 'fin'; sfx.cheer(); }
+        if (state === 'run' && t > 200) { fin = 200; state = 'fin'; }
+        if (state === 'fin') { after += dt; if (after > 1.6) { state = 'done'; done({ v: Math.round(fin * 100) / 100, text: dec(fin) + ' sn' }); } }
+      }
+    },
+    draw() {
+      const o = R[cur], cam = o.x * PX - VW * .32; stadium(cam, state === 'fin' ? 1 : 0);
+      for (let i = 1; i < 4; i++) { const a = zs(i) * PX - cam, b = ze(i) * PX - cam; if (b < -10 || a > VW + 10) continue; ctx.fillStyle = i === cur + 1 ? 'rgba(57,255,20,.22)' : 'rgba(255,255,255,.08)'; ctx.fillRect(a, GY + 20, b - a, 60); ctx.fillStyle = '#39ff14'; ctx.fillRect(a - 1, GY + 20, 3, 60); ctx.fillRect(b - 1, GY + 20, 3, 60); label('DEĞİŞİM', (a + b) / 2, GY + 30, '#9dff8a', 10); }
+      for (let m = 0; m <= 410; m += 10) { const sx = m * PX - cam; if (sx < -40 || sx > VW + 40) continue; ctx.fillStyle = m % 100 ? 'rgba(255,255,255,.2)' : 'rgba(255,255,255,.55)'; ctx.fillRect(sx - 1, GY + 20, 2, 60); if (m % 50 === 0 && m <= 400) label(m + ' m', sx, GY + 92, m === 400 ? '#ffd23f' : '#cbd', 11); }
+      const fx0 = 400 * PX - cam; if (fx0 > -50 && fx0 < VW + 50) { ctx.save(); ctx.fillStyle = '#ffd23f'; ctx.shadowColor = '#ffd23f'; ctx.shadowBlur = 14; ctx.fillRect(fx0 - 2, GY - 60, 4, 62); ctx.restore(); label('BİTİŞ', fx0, GY - 68, '#ffd23f', 12); }
+      R.forEach((q, k) => {
+        const sx = q.x * PX - cam; if (sx < -40 || sx > VW + 40) return;
+        ctx.globalAlpha = k < cur ? .45 : 1;
+        athlete(sx, LANE, q.phase, (k === cur && state !== 'cd') || q.v > .3 ? 'run' : 'stand', pl.color + shade[k]);
+        ctx.globalAlpha = 1;
+        label((k + 1) + '. koşucu', sx, LANE - 74, k === cur ? pl.color : 'rgba(255,255,255,.55)', 11);
+      });
+      const bx = o.x * PX - cam; ctx.save(); ctx.translate(bx + 10, LANE - 36); ctx.rotate(Math.sin(o.phase) * .6); ctx.fillStyle = '#ffe600'; ctx.shadowColor = '#ffe600'; ctx.shadowBlur = 10; ctx.fillRect(-2, -9, 4, 18); ctx.restore();
+      if (state !== 'cd') speedBar(o);
+      if (state === 'cd') bigText(cd > .9 ? 'Yerine…' : 'Hazır…', 80, '#d6fdff');
+      else if (t < .8) bigText('BAŞLA!', 80, '#39ff14');
+      const n = R[cur + 1];
+      if (state === 'run' && n && n.go && n.x - o.x <= 1.8 && o.x >= zs(cur + 1) - .5) bigText('VER!', 80, '#ffd23f', 34);
+      else if (state === 'run' && n && !n.go && n.x - o.x < 18) label('Arkadaşın hazır, yaklaşınca koşmaya başlayacak', VW / 2, 80, '#d6fdff', 13);
+      if (o.stumble > 0 && state === 'run' && msgT <= 0) label('Tökezledin! Sırayla bas', VW / 2, 120, '#ff8095', 15);
+      if (msgT > 0) bigText(msg, 120, msgC, 22);
+      if (state === 'fin' || state === 'done') bigText(dec(fin) + ' sn', 80);
+    }
+  };
+}
+const MAKERS = { yuz: ev100, engel: evHurdles, uzun: (p, d) => evJump(p, d, 'uzun'), cirit: (p, d) => evJump(p, d, 'cirit'), gulle: evShot, yuksek: evHigh, ok: evArch, bayrak: evRelay };
 
 /* =========================================================
    DÖNGÜ
@@ -696,7 +905,7 @@ function renderMenu() {
     <div class="bar" style="padding:0"><span style="flex:1"></span><button class="icon-btn snd" aria-label="Ses"></button></div>
     <div class="rings" aria-hidden="true"><i style="color:#00f0ff"></i><i style="color:#ffe600"></i><i style="color:#ffffff"></i><i style="color:#39ff14"></i><i style="color:#ff3b5c"></i></div>
     <h1 class="logo"><span class="l1">NEON</span><span class="l2">OLİMPİYAT</span></h1>
-    <p class="tagline">Koş, atla, fırlat, nişan al! 5 branş, 1–4 oyuncu,<br>bilgisayar rakipleri ve madalya töreni.</p>
+    <p class="tagline">Koş, atla, fırlat, nişan al! 8 branş, 1–4 oyuncu,<br>bilgisayar rakipleri ve madalya töreni.</p>
     <button class="btn primary" id="goO">OLİMPİYATA BAŞLA 🏅</button>
     <span class="lbl">Branş antrenmanı</span>
     <div class="evgrid">${EVENTS.map(e => `<button class="ev" data-pr="${e.id}" aria-pressed="true" style="--c:${e.c}"><span class="e">${e.ic}</span>${e.name}</button>`).join('')}</div>

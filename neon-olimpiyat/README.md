@@ -6,17 +6,20 @@
 
 **FOZ Yapım sunar · Fatih Özdemiroğlu**
 
-Koş, atla, fırlat, nişan al! Neon stadyumda 5 branşlık olimpiyat. Ücretsiz ve reklamsızdır, hesap gerektirmez, internetsiz çalışır. Tek `index.html` dosyasından oluşur, harici kütüphane kullanmaz.
+Koş, atla, fırlat, nişan al! Neon stadyumda 8 branşlık olimpiyat. Ücretsiz ve reklamsızdır, hesap gerektirmez, internetsiz çalışır. Tek `index.html` dosyasından oluşur, harici kütüphane kullanmaz.
 
 ## Branşlar
 
 | Branş | Nasıl oynanır |
 | --- | --- |
 | 🏃 100 Metre | "BAŞLA!"dan sonra SOL–SAĞ düğmelerine sırayla, hızlı bas. Erken çıkış ve aynı tuşa üst üste basmak cezalıdır. |
+| 🚧 110 m Engelli | SOL–SAĞ ile koş, engel yaklaşınca (sarı “ATLA!” yazısı) ATLA'ya bas. Engele takılırsan yavaşlarsın; havadayken koşu tuşları çalışmaz. |
 | 🦘 Uzun Atlama | Koşarak hızlan. Tahtada ATLA'ya bas ve basılı tut; açı yükselir, ~45°'de bırak. Tahtayı geçmek faul. 3 hak. |
 | ➶ Cirit Atma | Koşarak hızlan. Atış çizgisinden önce AT'a bas, basılı tut, açıyı ayarlayıp bırak. 3 hak. |
+| 🟠 Gülle Atma | 3 saniye SOL–SAĞ'a sırayla basarak dön ve güç topla, sonra AT'ı basılı tut ve ~40°'de bırak. Dönüş bitince 2 saniye içinde atmazsan faul. 3 hak. |
 | ⤴ Yüksek Atlama | Gidip gelen ışık yeşil bölgedeyken ZIPLA. Çıta yükseldikçe bölge daralır. Aynı yükseklikte 3 hatada yarışma biter. |
 | 🏹 Okçuluk | Titreyen nişangâhı rüzgâra göre kaydır, doğru anda ateş et. 6 okun toplamı sayılır (en fazla 60). |
+| 🏁 4×100 Bayrak | Dört koşucunun hepsini sen koşturursun. Yeşil değişim bölgesinde arkadaşın koşmaya başlar; ona yetişip “VER!” çıkınca VER'e bas. Yakından verilen bayrak hız kaybettirmez; geç kalırsan değişim yavaş olur. |
 
 ## Oyun
 
