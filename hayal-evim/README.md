@@ -16,9 +16,10 @@ Küçük çocuklar için bir hayal evi oyunu. Çocuk önce kendi karakterini yap
   - 5 yüz ifadesi, isim ve 🎲 Rastgele düğmesi.
   - Karaktere dokununca yüzü değişir. Stüdyoya her an sağ üstteki **Karakterim** düğmesiyle dönülür.
 - **4 oda:** Salon, Mutfak, Yatak Odası ve Bahçe, tek dokunuşla geçilir. 16 duvar deseni (yıldızlı, çizgili, kalpli, uzay, gökyüzü…) ve 9 zemin (ahşap parke, yeşil çim, renkli halı…) var.
-- **130'dan fazla eşya, 5 kategoride:** Mobilya, Eğlence, Mutfak, Oyuncak & Hayvan, Bahçe.
+- **160'tan fazla eşya, 5 kategoride:** Mobilya, Eğlence, Mutfak, Oyuncak & Hayvan, Bahçe. Eğlence'de oyun konsolu var: açınca odadaki televizyonda oyun başlar; oyun kolları konsolun üstüne de konabilir.
+- Bir odaya 150 eşyaya kadar konabilir.
   - Eşyaya dokununca odaya düşer, parmakla ya da fareyle sürüklenir.
-  - Büyütülüp küçültülebilir, ters çevrilebilir, kopyalanabilir.
+  - Büyütülüp küçültülebilir, yana çevrilebilir (↔️), baş aşağı çevrilebilir (↕️), kopyalanabilir.
   - İstenmeyen eşya çöp kutusuna atılır.
   - Masa, raf ve dolapların üstüne eşya konur; masa taşınınca üstündekiler de gelir.
 - **Etkileşimler:**
