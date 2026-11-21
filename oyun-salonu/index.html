@@ -113,7 +113,7 @@ footer{margin-top:28px;text-align:center;display:flex;flex-direction:column;gap:
     <button class="hbtn" id="offBtn" aria-label="İnternetsiz oynamak için hazırla"><span class="e">📥</span><span class="t">İnternetsiz</span></button>
     <button class="hbtn pri" id="instBtn" aria-label="Ana ekrana ekle"><span class="e">📲</span><span class="t">Ana Ekrana Ekle</span></button>
   </header>
-  <div class="strip"><span id="count">🎮 16 oyun</span><span>🚫 Reklam yok</span><span>🔒 Veri toplamaz</span><span id="offState" role="button" tabindex="0" style="cursor:pointer">📡 İnternetsiz çalışır</span></div>
+  <div class="strip"><span id="count">🎮 17 oyun</span><span>🚫 Reklam yok</span><span>🔒 Veri toplamaz</span><span id="offState" role="button" tabindex="0" style="cursor:pointer">📡 İnternetsiz çalışır</span></div>
   <section id="recentSec" hidden><h2>Son oynadıkların</h2><div class="recent" id="recent"></div></section>
   <h2>Bütün oyunlar</h2>
   <div class="chips" id="chips" role="toolbar" aria-label="Oyun türü"></div>
@@ -166,6 +166,7 @@ const BASE=location.pathname.replace(/[^/]*$/,'');            // /oyun-salonu/
 const PROXY=BASE+'oyna';
 // path: sitedeki gerçek adres · files: index dışındaki ek dosyalar
 const GAMES=[
+ {id:'neon-blok',name:'Neon Blok',e:'🟪',c:'#ff2bd6',path:'/neon-blok/',tags:['akil','aksiyon'],d:'İki mod: düşen blokları yerleştir ya da parçaları 8×8 tahtaya sürükle.'},
  {id:'neon-english',name:'Neon English',e:'🎓',c:'#00f0ff',path:'/neon-english/',files:['words.js'],tags:['egitici','akil'],d:'A1’den C1’e İngilizce: kelime kartları, cümle kurma, balon patlatma ve daha fazlası.'},
  {id:'hayal-evim',name:'Benim Hayal Evim',e:'🏠',c:'#ff8fd8',path:'/hayal-evim/',tags:['cocuk'],d:'Karakterini yap, evini döşe, eşyalarla oyna. Kaybetmek yok!'},
  {id:'neon-olimpiyat',name:'Neon Olimpiyat',e:'🏅',c:'#ffe600',path:'/neon-olimpiyat/',tags:['aksiyon','iki'],d:'8 branş: 100 m, engelli, bayrak, gülle, cirit ve fazlası. 1–4 oyuncu.'},

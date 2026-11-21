@@ -2,12 +2,12 @@
    - Salonun kendi dosyalarını saklar.
    - /oyun-salonu/oyna/<oyun>/ adreslerini sitedeki gerçek oyuna (/<oyun>/) bağlar,
      internet varken en yeni sürümü getirir, yoksa saklanan kopyayı açar. */
-const SHELL = 'foz-salon-kabuk-v5';
+const SHELL = 'foz-salon-kabuk-v6';
 const GAMES = 'foz-salon-oyunlar-v1';
 const BASE = new URL('./', self.location).pathname;          // /oyun-salonu/
 const PROXY = BASE + 'oyna/';
 const SHELL_FILES = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png',
-  ...['shadow-runner','neon-drift','neon-tower','tas-kagit-makas','xox-sos','mayin-tarlasi','dordu-bir-yerde','neon-hafiza','neon-tugla','neon-yilan','neon-kelime','neon-hesap','neon-2048','neon-olimpiyat','hayal-evim','neon-english'].map(g => `./img/${g}.webp`)];
+  ...['shadow-runner','neon-drift','neon-tower','tas-kagit-makas','xox-sos','mayin-tarlasi','dordu-bir-yerde','neon-hafiza','neon-tugla','neon-yilan','neon-kelime','neon-hesap','neon-2048','neon-olimpiyat','hayal-evim','neon-english','neon-blok'].map(g => `./img/${g}.webp`)];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(SHELL_FILES)).then(() => self.skipWaiting()));

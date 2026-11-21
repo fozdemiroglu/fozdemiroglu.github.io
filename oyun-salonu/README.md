@@ -4,7 +4,7 @@
 
 **FOZ Yapım sunar · Fatih Özdemiroğlu**
 
-FOZ Yapım'ın 16 oyunu tek uygulamada. Telefona, tablete veya bilgisayara **ana ekrana ekle**, simgeye dokun, oyunu seç. Reklamsızdır, veri toplamaz, hesap gerektirmez.
+FOZ Yapım'ın 17 oyunu tek uygulamada. Telefona, tablete veya bilgisayara **ana ekrana ekle**, simgeye dokun, oyunu seç. Reklamsızdır, veri toplamaz, hesap gerektirmez.
 
 - **Tek uygulama gibi:** Oyunlar Oyun Salonu'nun içinde açılır. Üst çubukta 🏠 Oyunlar, 🔄 yeniden başlat, ⛶ tam ekran ve ✕ kapat düğmeleri var. Telefonun geri tuşu da oyunu kapatıp salona döner.
 - **Ana ekrana ekle:** Android ve bilgisayarda Chrome / Edge tek dokunuşla yükler. iPhone / iPad'de Safari'de Paylaş → Ana Ekrana Ekle. Simgeye basılı tutunca Hayal Evim, Neon Tuğla, Neon Yılan ve Shadow Runner'a doğrudan girilir.
