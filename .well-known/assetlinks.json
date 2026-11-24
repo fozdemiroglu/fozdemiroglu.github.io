@@ -1,10 +1,18 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.fozanalytics.defter",
-    "sha256_cert_fingerprints": [
-      "C4:5C:CC:28:DA:37:1D:26:CE:60:D6:17:88:1E:0A:B9:C7:10:6B:2B:C3:4A:48:95:89:78:7F:64:B7:12:67:6E"
-    ]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.fozanalytics.defter",
+      "sha256_cert_fingerprints": [
+        "C4:5C:CC:28:DA:37:1D:26:CE:60:D6:17:88:1E:0A:B9:C7:10:6B:2B:C3:4A:48:95:89:78:7F:64:B7:12:67:6E",
+        "1A:6B:0E:22:34:ED:27:CA:67:88:07:0B:6C:07:55:1C:E1:45:A2:9F:90:6A:ED:51:3A:D3:52:93:DE:5A:E1:30",
+        "23:61:21:52:F8:AE:4C:DC:AD:C9:69:00:72:B3:F4:BF:68:6C:7E:DA:9C:D7:40:D1:7A:0C:95:52:72:FA:7E:02",
+        "F8:31:3B:A1:81:07:33:AD:6E:86:78:71:68:D4:C7:8F:DB:71:83:D5:2A:45:FE:D9:B4:D7:7F:76:4F:23:8B:D2"
+      ]
+    }
   }
-}]
+]
